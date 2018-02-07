@@ -13,7 +13,7 @@ exports.run = async (client, guild) => {
   const guilds = guildRes.reduce((prev, val) => prev + val, 0);
   client.user.setPresence({ game: { name: `;help | ${guilds.toLocaleString()} servers!`, type: 0 } });
 
-  snekfetch.post(`https://discordbots.org/api/bots/${client.user.id}/stats`)
+  /*snekfetch.post(`https://discordbots.org/api/bots/${client.user.id}/stats`)
     .set('Authorization', discordbotsToken)
     .send({
       server_count: client.guilds.size,
@@ -27,7 +27,7 @@ exports.run = async (client, guild) => {
       server_count: client.guilds.size,
       shard_id: client.shard.id,
       shard_count: client.shard.count
-    }).end();
+    }).end();*/
 
     const total = new Array();
     const users = await client.shard.fetchClientValues('users.size');
