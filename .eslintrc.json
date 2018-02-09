@@ -140,7 +140,6 @@
 		"operator-assignment": "error",
 		"operator-linebreak": ["error", "before"],
 		"padded-blocks": ["error", "never"],
-		"quote-props": ["error", "as-needed"],
 		"quotes": ["error", "single", { "avoidEscape": true, "allowTemplateLiterals": true }],
 		"semi-spacing": "error",
 		"semi": "error",

@@ -1,6 +1,8 @@
 const fs = require('fs');
 const path = require('path');
 
+/* eslint-disable max-len */
+
 exports.run = (client, member) => { // eslint-disable-line complexity
   const RichEmbed = client.embed;
   try {
@@ -18,13 +20,13 @@ exports.run = (client, member) => { // eslint-disable-line complexity
         const defaultChannel = guild.channels.find(c => c.permissionsFor(client.user).has('SEND_MESSAGES'));
         if (!guild.channels.find('name', 'join-log')) return defaultChannel.send(':no_entry_sign: **Error:** I couldn\'t send the join message in the #join-log. Please make sure the join log is enabled!');
         guild.channels.find('name', 'join-log').send(message).catch(() => {
-          return defaultChannel.channel.send(':no_entry_sign: **Error:** I couldn\'t send the join message in the #join-log. Please make sure the join log is enabled!');
+          defaultChannel.channel.send(':no_entry_sign: **Error:** I couldn\'t send the join message in the #join-log. Please make sure the join log is enabled!');
         });
       } else {
         const defaultChannel = guild.channels.find(c => c.permissionsFor(client.user).has('SEND_MESSAGES'));
         if (!guild.channels.find('name', 'join-log')) return defaultChannel.send(':no_entry_sign: **Error:** I couldn\'t send the join message in the #join-log. Please make sure the join log is enabled!');
         guild.channels.find('name', 'join-log').send(joinMessage).catch(() => {
-          return defaultChannel.send(':no_entry_sign: **Error:** I couldn\'t send the join message in the #join-log. Please make sure the join log is enabled!');
+          defaultChannel.send(':no_entry_sign: **Error:** I couldn\'t send the join message in the #join-log. Please make sure the join log is enabled!');
         });
       }
     }
@@ -63,7 +65,7 @@ exports.run = (client, member) => { // eslint-disable-line complexity
         if (!guild.member(client.user).permissions.has('EMBED_LINKS')) return defaultChannel.send(':no_entry_sign: **Error:** I couldn\'t send an embed in the #join-log. Please make sure I have the **Send Embeds** permission!');
         if (!guild.channels.find('name', 'join-log')) return defaultChannel.send(':no_entry_sign: **Error:** I couldn\'t send an embed in the #join-log. Please make sure I have access to a channel called join-log!');
         guild.channels.find('name', 'join-log').send({ embed }).catch(() => {
-          return defaultChannel.send(':no_entry_sign: **Error:** I couldn\'t send an embed in the #join-log. Please make sure I have access to a channel called join-log!');
+          defaultChannel.send(':no_entry_sign: **Error:** I couldn\'t send an embed in the #join-log. Please make sure I have access to a channel called join-log!');
         });
       } else {
         embed.setColor(0x32CD32)
@@ -79,6 +81,7 @@ exports.run = (client, member) => { // eslint-disable-line complexity
         });
       }
     }
+    return null;
   } catch (aLotOfErrors) {
     return console.error(aLotOfErrors);
   }

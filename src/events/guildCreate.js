@@ -1,11 +1,12 @@
 const fs = require('fs');
 const path = require('path');
-// const jsonPath = path.join(__dirname, '..', '..', 'web', 'static', 'assets', 'json', 'stats.json');
-// const statsData = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
+const jsonPath = path.join(__dirname, '..', '..', 'web', 'static', 'assets', 'json', 'stats.json');
+let statsData = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
 
-exports.run = async (client, guild) => {
+/* eslint-disable capitalized-comments, max-len */
+exports.run = async client => {
   client.session.guilds++;
-  /* Const defaultChannel = guild.channels.find(c => c.permissionsFor(client.user).has('SEND_MESSAGES'));
+  /* const defaultChannel = guild.channels.find(c => c.permissionsFor(client.user).has('SEND_MESSAGES'));
   defaultChannel.send(':wave: Hey there, I\'m Toasty!\nA fun, moderating, music playing and delicious multi-purpose Discord bot for all your needs!\nType, `;help` for a list of commands!\n*Info:* Some of the moderation commands such as the joinrole, modlog, joinlog, etc, require the **Administrator** permission to be used. Type, `;help set` and `;help toggle` for more info.\nIf you would like to change the prefix, you can do so with the `;prefix` command.\nIf you have any questions, please join https://discord.me/toasty, or type, `;hq`.\nThanks for inviting me!'); */
   const guildRes = await client.shard.fetchClientValues('guilds.size');
   const guilds = guildRes.reduce((prev, val) => prev + val, 0);
