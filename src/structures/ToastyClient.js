@@ -1,10 +1,10 @@
 const { CommandoClient } = require('discord.js-commando');
 const RichEmbed = require('./RichEmbed');
-/*const r = require('rethinkdbdash')({
+const r = require('rethinkdbdash')({
   port: 28015,
   host: 'localhost',
   db: 'Pokemon'
-});*/
+});
 
 module.exports = class ToastyClient extends CommandoClient {
   constructor(options) {
@@ -25,6 +25,6 @@ module.exports = class ToastyClient extends CommandoClient {
     this.timer = {};
     this.embed = RichEmbed;
     this.config = require('../config.json');
-    //this.r = r;
+    this.r = r;
   }
 };
