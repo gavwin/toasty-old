@@ -1,0 +1,9 @@
+{
+  "me": "owner id",
+  "prefix": "prefix",
+  "youTubeToken": "youtube api token for simple-youtube-api",
+  "token": "bot token",
+  "shardCount": 1,
+  "spawnDelay": 1000,
+  "autoRespawn": true
+}
