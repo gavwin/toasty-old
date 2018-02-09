@@ -3,7 +3,7 @@ const { stripIndents } = require('common-tags');
 const YouTube = require('simple-youtube-api');
 const ytdl = require('ytdl-core');
 
-const { GOOGLE_API } = require('../../config');
+const { youTubeToken } = require('../../config');
 const Song = require('../../structures/Song');
 
 module.exports = class PlaySongCommand extends Command {
@@ -29,7 +29,7 @@ module.exports = class PlaySongCommand extends Command {
     });
 
     this.queue = new Map();
-    this.youtube = new YouTube(GOOGLE_API);
+    this.youtube = new YouTube(youTubeToken);
   }
 
   async run(msg, args) {
