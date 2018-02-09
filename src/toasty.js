@@ -24,7 +24,6 @@ const client = new ToastyClient({
 });
 
 client
-  .on('debug', console.log)
   .on('error', console.error)
   .on('warn', console.info)
   .on('ready', async () => {
@@ -41,17 +40,22 @@ client
   .on('commandRun', cmd => {
     console.info(`COMMAND RUN: ${cmd.groupID}:${cmd.memberName}`);
     client.session.commands++;
-  });
+  })
+  .on('providerReady', () => console.info('SettingsProvider ready'));
 
 // Load the events with huge chunks of code from the events folder
 (async () => {
   try {
     const files = await readdir(`${__dirname}/events/`);
     for (const file of files) {
-      if (!file.endsWith('.js')) continue;
+      if (!file.endsWith('.js')) {
+        console.warn('Loading invalid event file, skipping...');
+        continue;
+      }
       const { run } = require(`${__dirname}/events/${file}`);
-      const event = [file.split(' ')];
+      const [event] = file.split('.');
       client.on(event, (...args) => run(client, ...args));
+      console.info('Loaded event:', event);
     }
   } catch (err) {
     console.error(err);
