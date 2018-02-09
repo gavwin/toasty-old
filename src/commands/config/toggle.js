@@ -10,7 +10,7 @@ module.exports = class ToggleCommand extends Command {
 			group: 'config',
 			memberName: 'toggle',
 			description: 'Toggles a certain feature.',
-      details: 'Anybody with the Administrator permission can toggle a certain feature from the list below.\nnoinvite, nonsfw, nomemedog, modlog or joinlog.',
+      details: 'Anybody with the Administrator permission can toggle a certain feature from the list below.\nnoinvite, nonsfw, nomemedog, modlog, djrole or joinlog.',
 			examples: ['toggle joinlog', 'toggle noinvite'],
 			guildOnly: true,
 			args: [
@@ -50,6 +50,12 @@ module.exports = class ToggleCommand extends Command {
           fs.writeFileSync(jsonPath, JSON.stringify(data, null, 2));
           msg.reply(':white_check_mark: The no NSFW feature is now **enabled**.');
         }
+      } else
+
+      if (feature === 'DJROLE') {
+        if (!msg.guild.settings.has('dj')) return msg.reply(`there is no DJ Role set.`);
+        msg.guild.settings.delete('dj');
+        return msg.reply('the DJ role has been disabled.');
       } else
 
       if (feature === 'NOINVITE' || feature === 'NOINV') {

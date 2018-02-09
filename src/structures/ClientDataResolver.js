@@ -1,11 +1,10 @@
 class ClientDataResolver {
-
   /**
   * Resolves a ColorResolvable into a color number.
   * @param {ColorResolvable} color Color to resolve
   * @returns {number} A color
   */
- static resolveColor(color) {
+  static resolveColor(color) {
     if (typeof color === 'string') {
       if (color === 'RANDOM') return Math.floor(Math.random() * (0xFFFFFF + 1));
       color = Constants.Colors[color] || parseInt(color.replace('#', ''), 16);
@@ -26,10 +25,9 @@ class ClientDataResolver {
   * @param {ColorResolvable} color Color to resolve
   * @returns {number} A color
   */
- resolveColor(color) {
+  resolveColor(color) {
     return this.constructor.resolveColor(color);
   }
-
 }
 
 module.exports = ClientDataResolver;

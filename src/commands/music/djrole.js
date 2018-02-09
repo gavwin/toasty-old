@@ -1,51 +1,36 @@
 const { Command } = require('discord.js-commando');
-const fs = require('fs');
-const path = require('path');
-const jsonPath = path.join(__dirname, '..', '..', 'data/servers.json');
 
 module.exports = class DJRoleCommand extends Command {
-	constructor(client) {
-		super(client, {
-			name: 'djrole',
-			group: 'music',
-			memberName: 'djrole',
-			description: 'Sets the server DJ role.',
-      details: 'The DJ role allows a user to use `skip`, `clearqueue`,',
-			examples: ['djrole', 'djrole off'],
-			guildOnly: true,
-			args: [
-				{
-					key: 'role',
-					prompt: 'What role would you like to set the DJ role to?\n',
-					type: 'string'
-				}
-			],
-      throttling: {
-        usages: 1,
-        duration: 15
-      }
-		});
-	}
-
-  hasPermission(msg) {
-    return msg.member.hasPermission('ADMINISTRATOR') || msg.author.id === msg.guild.ownerID;
+  constructor(client) {
+    super(client, {
+      name: 'djrole',
+      description: 'Shows the DJ role, or sets the DJ role.',
+      group: 'music',
+      memberName: 'djrole',
+      args: [
+        {
+          key: 'role',
+          prompt: 'what role would you like to set the DJ Role to (to disable the DJ role, set it to disabled)?\n',
+          type: 'role',
+          default: ''
+        }
+      ]
+    });
   }
 
-  run(msg, args) {
-		const data = JSON.parse(fs.readFileSync(jsonPath), 'utf8');
-    const { role } = args;
+  hasPermission(msg) {
+    return this.client.isOwner(msg.author)
+      || (msg.guild.roles.has(msg.guild.settings.get('dj')) ? this.hasDJRole(msg.author, msg) : msg.member.hasPermission('MANAGE_MESSAGES'));
+  }
 
-    if (!data[msg.guild.id]) data[msg.guild.id] = {'DJRole': 'disabled'};
-
-    if (role.toLowerCase() === 'off') {
-      data[msg.guild.id].DJRole = 'disabled';
-      fs.writeFileSync(jsonPath, JSON.stringify(data, null, 2));
-      msg.reply(':white_check_mark: The DJ role is now **disabled**.');
+  async run(msg, { role }) {
+    if (!role) {
+      const DJRole = msg.guild.roles.get(msg.guild.settings.get('dj'));
+      if (!DJRole) return msg.reply('there is no DJ role set.');
+      return msg.reply(`the current DJ role is ${DJRole.name}.`);
     } else {
-      data[msg.guild.id].DJRole = role;
-      fs.writeFileSync(jsonPath, JSON.stringify(data, null, 2));
-      msg.reply(`:white_check_mark: The DJ role is now **${role}**`);
+      await msg.guild.settings.set('dj', role.id);
+      return msg.reply(`successfully set the DJ role to ${role.name}`);
     }
-
   }
 };

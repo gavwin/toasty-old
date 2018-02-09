@@ -1,8 +1,8 @@
 const snekfetch = require('snekfetch');
 const fs = require('fs');
 const path = require('path');
-const jsonPath = path.join(__dirname, '..', '..', 'web', 'static', 'assets', 'json', 'stats.json');
-const statsData = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
+//const jsonPath = path.join(__dirname, '..', '..', 'web', 'static', 'assets', 'json', 'stats.json');
+//const statsData = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
 
 exports.run = async (client, guild) => {
   client.session.guilds++;
@@ -43,9 +43,9 @@ exports.run = async (client, guild) => {
       "channels": 0,
       "voiceConnections": 0
     };
-    statsData.servers = total[0];
+    /*statsData.servers = total[0];
     statsData.users = total[1];
     statsData.channels = total[2];
-    statsData.voiceConnections = total[3];
-    fs.writeFileSync(jsonPath, JSON.stringify(statsData, null, 2));
+    statsData.voiceConnections = total[3];*/
+    //fs.writeFileSync(jsonPath, JSON.stringify(statsData, null, 2));
 }

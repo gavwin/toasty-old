@@ -6,11 +6,11 @@ const fs = require('fs');
 const url = require('url');
 const statsPath = path.join(__dirname, '..', 'data', 'stats.json');
 const yt = require('ytdl-core');
-const YouTube = require('youtube-node');
-const youTube = new YouTube();
-youTube.setKey(youTubeToken);
-const DYouTube = require('discord-youtube-api');
-const dyouTube = new DYouTube(youTubeToken);
+//const YouTube = require('youtube-node');
+//const youTube = new YouTube();
+//youTube.setKey(youTubeToken);
+//const DYouTube = require('discord-youtube-api');
+//const dyouTube = new DYouTube(youTubeToken);
 const playlists = ['pop', 'hiphop', 'electro', 'classical', 'rock-n-roll', 'chill', 'jazz', 'metal', 'retro', 'korean', 'toast'];
 
 exports.run = (client, msg) => {
@@ -90,7 +90,7 @@ exports.run = (client, msg) => {
   if (!msg.content.startsWith(prefix)) return;
   client.session.commands++;
   //if (msg.content.startsWith(prefix + 'play') && !msg.guild.member(client.user).permissions.has('CONNECT') || !msg.guild.member(client.user).permissions.has('SPEAK')) return msg.reply(':no_entry_sign: I don\'t have the **Connect** or **Speak** permission!');
-  if (musicCommands.hasOwnProperty(msg.content.toLowerCase().slice(1).split(' ')[0])) musicCommands[msg.content.toLowerCase().slice(1).split(' ')[0]](msg);
+  // if (musicCommands.hasOwnProperty(msg.content.toLowerCase().slice(1).split(' ')[0])) musicCommands[msg.content.toLowerCase().slice(1).split(' ')[0]](msg);
 }
 
 const queue = new Object();
