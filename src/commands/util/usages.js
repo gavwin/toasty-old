@@ -17,11 +17,11 @@ module.exports = class UsagesCommand extends Command {
   async run(msg) {
     const client = this.client;
     async function getUsages(command, client) {
-      let usages = await client.shard.fetchClientValues(`commands.${command}`);
+      const usages = await client.shard.fetchClientValues(`commands.${command}`);
       return usages.reduce((prev, val) => prev + val, 0).toLocaleString();
     }
     msg.say(
-`Pokemon: **${await getUsages('pokemon', client)}**.
+      `Pokemon: **${await getUsages('pokemon', client)}**.
 TTS: **${await getUsages('tts', client)}**.
 Play: **${await getUsages('play', client)}**.
 Roast: **${await getUsages('roast', client)}**.

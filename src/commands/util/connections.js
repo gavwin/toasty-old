@@ -17,6 +17,6 @@ module.exports = class ConnectionsCommand extends Command {
 
   async run(msg) {
     const connections = await this.client.shard.fetchClientValues('voiceConnections.size');
-    msg.say(`:notes: Currently playing some *toasty* music in **${connections.reduce((prev, val) => prev + val, 0)}** voice channels.`)
+    msg.say(`:notes: Currently playing some *toasty* music in **${connections.reduce((prev, val) => prev + val, 0)}** voice channels.`);
   }
-}
+};

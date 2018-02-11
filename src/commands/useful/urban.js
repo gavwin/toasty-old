@@ -24,13 +24,13 @@ module.exports = class UrbanCommand extends Command {
 
   async run(msg, args) {
     urban(args.query).first(async (json) => {
-      if (json == undefined) return msg.say(`**No Results Found!**`);
+      if (json == undefined) return msg.say('**No Results Found!**');
       const embed = new this.client.embed();
-      embed.setAuthor(`Urban Search - ${json.word}`, `https://i.imgur.com/miYLsGw.jpg`)
-          .setColor('RANDOM')
-          .addField('Definition', json.definition.length <= 1024 ? json.definition : `Truncated due to exceeding maximum length\n${json.definition.slice(0,970)}`, false)
-          .addField('Example', json.example.length <= 1024 ? json.example : `Truncated due to exceeding maximum length\n${json.example.slice(0,970)}`, false)
-          .addField('Permalink', json.permalink, false)
+      embed.setAuthor(`Urban Search - ${json.word}`, 'https://i.imgur.com/miYLsGw.jpg')
+        .setColor('RANDOM')
+        .addField('Definition', json.definition.length <= 1024 ? json.definition : `Truncated due to exceeding maximum length\n${json.definition.slice(0,970)}`, false)
+        .addField('Example', json.example.length <= 1024 ? json.example : `Truncated due to exceeding maximum length\n${json.example.slice(0,970)}`, false)
+        .addField('Permalink', json.permalink, false);
       await msg.embed(embed);
     });
   }

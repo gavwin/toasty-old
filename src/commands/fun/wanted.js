@@ -48,7 +48,7 @@ module.exports = class WantedCommand extends Command {
       generate();
       const buffer = canvas.toBuffer();
       const toSend = fs.writeFileSync('file.png', buffer);
-      return msg.say('', {file: 'file.png'}).catch(err => msg.say(`${err.name}: ${err.message}`));
+      return msg.say('', { file: 'file.png' }).catch(err => msg.say(`${err.name}: ${err.message}`));
     } catch (err) {
       return msg.say(`${err.name}: ${err.message}`);
     }

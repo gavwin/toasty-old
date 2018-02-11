@@ -26,11 +26,11 @@ module.exports = class SuggestCommand extends Command {
 
   run(msg, args) {
     function clean(text) {
-        if (typeof(text) === "string")
-            return text.replace(/`/g, "`" + String.fromCharCode(8203)).replace(/@/g, "@" + String.fromCharCode(8203));
-        else
-            return text;
-      }
+      if (typeof(text) === 'string')
+        return text.replace(/`/g, '`' + String.fromCharCode(8203)).replace(/@/g, '@' + String.fromCharCode(8203));
+      else
+        return text;
+    }
     const { suggestion } = args;
     const content = clean(`**${msg.author.username}**#${msg.author.discriminator} (${msg.author.id}) suggested a feature:\n${suggestion}\nServer: **${msg.guild.name}**\nID: **${msg.guild.id}**`);
     const id = '303204291198451715';
@@ -47,6 +47,6 @@ module.exports = class SuggestCommand extends Command {
           }
         });
     });
-	}
+  }
 
 };

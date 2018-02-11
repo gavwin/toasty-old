@@ -20,4 +20,4 @@ module.exports = class JokeCommand extends Command {
     const joke = await knockknock();
     msg.say(`**${msg.author.username}**, ${joke}`);
   }
-}
+};

@@ -10,12 +10,12 @@ module.exports = class IDCommand extends Command {
       description: 'Sends the ID of you or the mentioned user.',
       examples: ['id', 'id @user'],
       args: [
-				{
-					key: 'user',
-					prompt: 'What user\'s ID would you like to get?\n',
-					type: 'user',
+        {
+          key: 'user',
+          prompt: 'What user\'s ID would you like to get?\n',
+          type: 'user',
           default: ''
-				}
+        }
       ],
       throttling: {
         usages: 2,
@@ -28,4 +28,4 @@ module.exports = class IDCommand extends Command {
     const user = args.user || msg.author;
     msg.channel.sendMessage(`:id: for **${user.username} :** \`${user.id}\``);
   }
-}
+};

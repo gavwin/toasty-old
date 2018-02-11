@@ -25,7 +25,7 @@ module.exports = class ComplimentCommand extends Command {
 
   run(msg, args) {
     const { thing } = args;
-    let emojis = [':smile:', ':wink:', ':yum:', ':ok_hand:', ':blush:', ':innocent:', ':grinning:', ':stuck_out_tongue_winking_eye:'];
+    const emojis = [':smile:', ':wink:', ':yum:', ':ok_hand:', ':blush:', ':innocent:', ':grinning:', ':stuck_out_tongue_winking_eye:'];
     msg.say(`**${thing}**, ${emojis[Math.floor(Math.random() * emojis.length)]} ${generator.Compliment()}`);
   }
 };

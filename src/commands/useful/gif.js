@@ -29,4 +29,4 @@ module.exports = class GifCommand extends Command {
       m.edit(`:clapper: **${msg.author.username}**, http://giphy.com/search/${gif}`);
     }, 750);
   }
-}
+};

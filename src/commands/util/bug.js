@@ -26,11 +26,11 @@ module.exports = class BugCommand extends Command {
 
   run(msg, args) {
     function clean(text) {
-        if (typeof(text) === "string")
-            return text.replace(/`/g, "`" + String.fromCharCode(8203)).replace(/@/g, "@" + String.fromCharCode(8203));
-        else
-            return text;
-      }
+      if (typeof(text) === 'string')
+        return text.replace(/`/g, '`' + String.fromCharCode(8203)).replace(/@/g, '@' + String.fromCharCode(8203));
+      else
+        return text;
+    }
     const { bug } = args;
     const content = clean(`**${msg.author.username}**#${msg.author.discriminator} (${msg.author.id}) reported a bug:\n${bug}\nServer: **${msg.guild.name}**\nID: **${msg.guild.id}**`);
     const id = '379285435152728069';
@@ -47,6 +47,6 @@ module.exports = class BugCommand extends Command {
           }
         });
     });
-	}
+  }
 
 };

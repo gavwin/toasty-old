@@ -10,12 +10,12 @@ module.exports = class AvatarCommand extends Command {
       description: 'Sends the avatar of you or the mentioned user.',
       examples: ['avatar', 'avatar @user'],
       args: [
-				{
-					key: 'user',
-					prompt: 'What user\'s avatar would you like to get?\n',
-					type: 'user',
+        {
+          key: 'user',
+          prompt: 'What user\'s avatar would you like to get?\n',
+          type: 'user',
           default: ''
-				}
+        }
       ],
       throttling: {
         usages: 2,
@@ -28,4 +28,4 @@ module.exports = class AvatarCommand extends Command {
     const user = args.user || msg.author;
     msg.say(`Avatar for, **${user.username}**:\n${user.avatarURL}`);
   }
-}
+};

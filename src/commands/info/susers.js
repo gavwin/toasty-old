@@ -19,4 +19,4 @@ module.exports = class SusersCommand extends Command {
   run(msg) {
     msg.say(`There are **${msg.guild.memberCount.toLocaleString()}** members on this server.`);
   }
-}
+};
