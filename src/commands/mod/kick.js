@@ -1,4 +1,5 @@
 const { Command } = require('discord.js-commando');
+const { caseNumber } = require('../../util/caseNumber.js');
 const fs = require('fs');
 const path = require('path');
 
@@ -42,18 +43,13 @@ module.exports = class KickCommand extends Command {
     } else
     if (modlogData.modlog === 'enabled') {
       const embed = new this.client.embed();
-      const today = new Date();
-      const date = (today.getMonth() + 1) + '/' + today.getDate() + '/' + today.getFullYear();
-      const time = today.getHours() + ':' + today.getMinutes() + ':' + today.getSeconds();
-      const channel = msg.guild.channels.find('name', 'mod-log').id;
+      const channel = msg.guild.channels.find('name', 'mod-log');
+      const caseNum = await caseNumber(client, channel);
       embed.setColor(0xFFA500)
-        .setAuthor(member.user.username, member.user.avatarURL)
-        .setTitle('User Kicked:')
-        .setDescription(`${member.user.username}#${member.user.discriminator} (${member.user.id})`)
-        .addField('Reason:', reason ? reason : 'not specified')
-        .addField('Responsible Moderator:', `${msg.author.username}#${msg.author.discriminator} (${msg.author.id})`)
-        .setFooter(`${date} at ${time}`);
-      this.client.channels.get(channel).send({ embed }).catch(err => {
+        .setAuthor(member.user.username, member.user.displayAvatarURL())
+        .setDescription(`**Action:** Kick\n**Target:** ${member.user.username}#${member.user.discriminator} (${member.user.id})\n**Responsible Moderator:** ${msg.author.username}#${msg.author.discriminator} (${msg.author.id})\n**Reason:** ${reason}`)
+        .setFooter(`Case ${caseNum}`);
+      channel.send({ embed }).catch(err => {
         return msg.reply(':no_entry_sign: **Error:** I couldn\'t send the kick embed in the #mod-log. Please make sure I have access to a channel called mod-log!');
       });
       m.edit(`**${member.user.username}**#${member.user.discriminator} has been kicked. I've logged it in the #mod-log.`);

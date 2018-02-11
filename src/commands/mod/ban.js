@@ -1,4 +1,5 @@
 const { Command } = require('discord.js-commando');
+const { caseNumer } = require('../../util/caseNumber.js');
 const fs = require('fs');
 const path = require('path');
 
@@ -61,18 +62,13 @@ module.exports = class BanCommand extends Command {
         } else
         if (modlogData.modlog === 'enabled') {
           const embed = new this.client.embed();
-          const today = new Date();
-          const date = `${today.getMonth() + 1 }/${today.getDate()}/${today.getFullYear()}`;
-          const time = `${today.getHours() }:${today.getMinutes() }:${today.getSeconds()}`;
-          const channel = msg.guild.channels.find('name', 'mod-log').id;
+          const channel = msg.guild.channels.find('name', 'mod-log');
+          const caseNum = await caseNumber(this.client, channel);
           embed.setColor(0xFF0000)
-            .setAuthor(member.user.username, member.user.avatarURL)
-            .setTitle('User Banned:')
-            .setDescription(`${member.user.username}#${member.user.discriminator} (${member.user.id})`)
-            .addField('Reason:', reason)
-            .addField('Responsible Moderator:', `${msg.author.username}#${msg.author.discriminator} (${msg.author.id})`)
-            .setFooter(`${date} at ${time}`);
-          this.client.channels.get(channel).send({ embed }).catch(err => msg.reply(':no_entry_sign: **Error:** I couldn\'t send the ban embed in the #mod-log. Please make sure I have access to a channel called mod-log!'));
+            .setAuthor(member.user.username, member.user.displayAvatarURL())
+            .setDescription(`**Action:** Ban\n**Target:** ${member.user.username}#${member.user.discriminator} (${member.user.id})\n**Responsible Moderator:** ${msg.author.username}#${msg.author.discriminator} (${msg.author.id})\n**Reason:** ${reason}`)
+            .setFooter(`Case ${caseNum}`);
+          channel.send({ embed }).catch(err => msg.reply(':no_entry_sign: **Error:** I couldn\'t send the ban embed in the #mod-log. Please make sure I have access to a channel called mod-log!'));
           m.edit(`**${member.user.username}**#${member.user.discriminator} has been banned. I've logged it in the #mod-log.`);
         } else {
           m.edit(`**${member.user.username}**#${member.user.discriminator} has been banned.`);
