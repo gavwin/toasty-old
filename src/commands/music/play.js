@@ -40,7 +40,7 @@ module.exports = class PlaySongCommand extends Command {
     if (!queue) {
       voiceChannel = msg.member.voiceChannel; // eslint-disable-line
       if (!voiceChannel) {
-        return msg.reply('you aren\'t in a voice channel, ya dingus.');
+        return msg.reply('you aren\'t in a voice channel, please join one first!');
       }
 
       const permissions = voiceChannel.permissionsFor(msg.client.user);
