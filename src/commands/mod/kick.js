@@ -46,6 +46,7 @@ module.exports = class KickCommand extends Command {
       const channel = msg.guild.channels.find('name', 'mod-log');
       const caseNum = await caseNumber(client, channel);
       embed.setColor(0xFFA500)
+        .setTimestamp(new Date())
         .setAuthor(member.user.username, member.user.displayAvatarURL())
         .setDescription(`**Action:** Kick\n**Target:** ${member.user.username}#${member.user.discriminator} (${member.user.id})\n**Responsible Moderator:** ${msg.author.username}#${msg.author.discriminator} (${msg.author.id})\n**Reason:** ${reason}`)
         .setFooter(`Case ${caseNum}`);

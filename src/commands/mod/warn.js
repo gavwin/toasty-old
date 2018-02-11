@@ -42,6 +42,7 @@ module.exports = class WarnCommand extends Command {
       const channel = msg.guild.channels.find('name', 'mod-log');
       const caseNum = await caseNumber(this.client, channel);
       embed.setColor(0xFFFF00)
+        .setTimestamp(new Date())
         .setAuthor(member.user.username, member.user.displayAvatarURL())
         .setDescription(`**Action:** Warn\n**Target:** ${member.user.username}#${member.user.discriminator} (${member.user.id})\n**Responsible Moderator:** ${msg.author.username}#${msg.author.discriminator} (${msg.author.id})\n**Reason:** ${reason}`)
         .setFooter(`Case ${caseNum}`);
