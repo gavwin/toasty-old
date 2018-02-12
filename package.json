@@ -8,15 +8,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/devdutchy/toasty-1.git"
+    "url": "git+https://github.com/gavwin/toasty.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/devdutchy/toasty-1/issues"
+    "url": "https://github.com/gavwin/toasty/issues"
   },
-  "homepage": "https://github.com/devdutchy/toasty-1#readme",
+  "homepage": "https://github.com/gavwin/toasty#readme",
   "devDependencies": {
     "eslint": "^4.17.0"
   },
