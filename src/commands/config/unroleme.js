@@ -33,10 +33,10 @@ module.exports = class UnRoleMeCommand extends Command {
     if (!data.hasOwnProperty(msg.guild.id)) data[msg.guild.id] = {}, data[msg.guild.id].roles = [];
     if (!data[msg.guild.id].roles || data[msg.guild.id].roles === undefined || data[msg.guild.id].roles.size === 0) return msg.reply(`:no_entry_sign: That isn't an avaliable role to gain with this command. If you are a server Administrator please add a role to the server roles list with, \`${this.client.commandPrefix}roles-add [role name]\``);
     if (!data[msg.guild.id].roles.includes(role)) return msg.reply(`:no_entry_sign: The role, **${role}** isn't an avaliable role to gain with this command. You can check the avaliable roles with \`${this.client.commandPrefix}roles-list\`.`);
-    const botMember = await msg.guild.fetchMember(this.client.user);
+    const botMember = await msg.guild.members.fetch(this.client.user);
     if (!botMember.hasPermission('MANAGE_ROLES')) return msg.reply(':no_entry_sign: [**Missing Permissions**]: I don\'t have the **Manage Roles** permission!');
     const m = await msg.say('*Removing...*');
-    const authorMember = await msg.guild.fetchMember(msg.author);
+    const authorMember = await msg.guild.members.fetch(msg.author);
     await authorMember.removeRole(msg.guild.roles.find('name', role).id);
     return m.edit(`:white_check_mark: I have removed you from **${role}**.`);
   }

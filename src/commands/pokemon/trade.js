@@ -40,7 +40,7 @@ module.exports = class TradeCommand extends Command {
   async run(msg, args) {
     const RichEmbed = this.client.embed;
     if (msg.author.id !== '316241705689022464') return;
-    const botMember = await msg.guild.fetchMember(this.client.user);
+    const botMember = await msg.guild.members.fetch(this.client.user);
     if (!botMember.hasPermission('USE_EXTERNAL_EMOJIS')) return msg.reply(':no_entry_sign: I don\'t have **External Emojies** permission to use this cmd!');
     if (!botMember.hasPermission('EMBED_LINKS')) return msg.reply(':no_entry_sign: I don\'t have **Embed Links** permission to use this cmd!');
 
