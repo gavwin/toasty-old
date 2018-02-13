@@ -224,6 +224,7 @@ module.exports = class PlaySongCommand extends Command {
         console.error('DISCORD', 'Error occurred in stream dispatcher:', err);
         queue.textChannel.send(`An error occurred while playing the song: \`${err}\``);
       });
+    dispatcher.setPLP(0.01);
     dispatcher.setVolumeLogarithmic(queue.volume / 5);
     song.dispatcher = dispatcher;
     song.playing = true;
