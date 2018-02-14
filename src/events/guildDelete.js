@@ -1,3 +1,3 @@
-exports.run = (client, guild) => {
+exports.run = client => {
   client.session.guilds--;
-}
+};
