@@ -1,5 +1,5 @@
-const { Util } = require("discord.js");
-const { oneLineTrim } = require("common-tags");
+const { Util } = require('discord.js');
+const { oneLineTrim } = require('common-tags');
 
 module.exports = class Song {
   constructor(video, member) {
@@ -28,7 +28,7 @@ module.exports = class Song {
   }
 
   get avatar() {
-    const avatar = `${this.member.user.displayAvatarURL({ format: "png" })}`;
+    const avatar = `${this.member.user.displayAvatarURL({ format: 'png' })}`;
 
     return avatar;
   }
@@ -50,7 +50,7 @@ module.exports = class Song {
     const minutes = Math.floor(seconds % 3600 / 60);
 
     return oneLineTrim`
-      ${forceHours || hours >= 1 ? `${hours}:` : ""}
+      ${forceHours || hours >= 1 ? `${hours}:` : ''}
       ${hours >= 1 ? `0${minutes}`.slice(-2) : minutes}:
       ${`0${Math.floor(seconds % 60)}`.slice(-2)}
     `;

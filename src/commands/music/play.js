@@ -115,11 +115,7 @@ module.exports = class PlaySongCommand extends Command {
 
         return null;
       } catch (error) {
-<<<<<<< HEAD
-        this.client.utils.logger.error('DISCORD', 'Error occurred when joining voice channel.', error);
-=======
         console.error('DISCORD', 'Error occurred when joining voice channel.', error);
->>>>>>> upstream/master
         this.queue.delete(msg.guild.id);
         statusMsg.edit(`${msg.author}, unable to join your voice channel.`);
 
