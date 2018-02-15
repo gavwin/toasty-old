@@ -47,7 +47,11 @@ module.exports = class ViewQueueCommand extends Command {
       /* eslint-disable max-len */
       description: stripIndents`
         __**Song queue, page ${paginated.page}**__
+<<<<<<< HEAD
         ${paginated.items.map(song => `**-** ${!isNaN(song.id) ? `${song.name} (${song.lengthString})` : `[${song.name}](${`https://www.youtube.com/watch?v=${song.id}`})`} (${song.lengthString})`).slice(1).join('\n')}
+=======
+        ▶ ${paginated.items.map(song => `**-** ${!isNaN(song.id) ? `${song.name} (${song.lengthString})` : `[${song.name}](${`https://www.youtube.com/watch?v=${song.id}`})`} (${song.lengthString})`).join('\n')}
+>>>>>>> upstream/master
         ${paginated.maxPage > 1 ? `\nUse ${msg.usage()} to view a specific page.\n` : ''}
         **Now playing:** ${!isNaN(currentSong.id) ? `${currentSong.name}` : `[${currentSong.name}](${`https://www.youtube.com/watch?v=${currentSong.id}`})`}
         ${oneLine`

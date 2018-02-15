@@ -4,6 +4,7 @@ const path = require('path');
 const jsonPath = path.join(__dirname, '..', '..', 'data/servers.json');
 
 module.exports = class ToggleCommand extends Command {
+<<<<<<< HEAD
   constructor(client) {
     super(client, {
       name: 'toggle',
@@ -20,6 +21,24 @@ module.exports = class ToggleCommand extends Command {
           type: 'string'
         }
       ],
+=======
+	constructor(client) {
+		super(client, {
+			name: 'toggle',
+			group: 'config',
+			memberName: 'toggle',
+			description: 'Toggles a certain feature.',
+      details: 'Anybody with the Administrator permission can toggle a certain feature from the list below.\nnoinvite, nonsfw, nomemedog, modlog, djrole or joinlog.',
+			examples: ['toggle joinlog', 'toggle noinvite'],
+			guildOnly: true,
+			args: [
+				{
+					key: 'feature',
+					prompt: 'What feature would you like to toggle?\n',
+					type: 'string'
+				}
+			],
+>>>>>>> upstream/master
       throttling: {
         usages: 1,
         duration: 10
@@ -53,7 +72,11 @@ module.exports = class ToggleCommand extends Command {
       } else
 
       if (feature === 'DJROLE') {
+<<<<<<< HEAD
         if (!msg.guild.settings.has('dj')) return msg.reply('there is no DJ Role set.');
+=======
+        if (!msg.guild.settings.has('dj')) return msg.reply(`there is no DJ Role set.`);
+>>>>>>> upstream/master
         msg.guild.settings.delete('dj');
         return msg.reply('the DJ role has been disabled.');
       } else

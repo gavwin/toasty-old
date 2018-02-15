@@ -85,7 +85,11 @@ module.exports = class PruneCommand extends Command {
       const messagesToDelete = await msg.channel.messages.fetch({ limit: limit + 1 }).catch(() => null);
       return msg.channel.bulkDelete(messagesToDelete.array().reverse()).catch(() => null);
     } else {
+<<<<<<< HEAD
       const messages = await msg.channel.messages.fetch({ limit: limit + 1 }).catch(() => null);
+=======
+      const messages = await msg.channel.fetchMessages({ limit: limit + 1 }).catch(() => null);
+>>>>>>> upstream/master
       const messagesToDelete = messages.filter(messageFilter);
       return msg.channel.bulkDelete(messagesToDelete.array().reverse()).catch(() => null);
     }
