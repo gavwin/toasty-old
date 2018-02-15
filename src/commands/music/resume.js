@@ -22,11 +22,7 @@ module.exports = class ResumeSongCommand extends Command {
 
   run(msg) {
     const queue = this.queue.get(msg.guild.id);
-<<<<<<< HEAD
-    if (!queue) return msg.reply('cannot resume a song when there\'s no song playing, silly!');
-=======
     if (!queue) return msg.reply(`cannot resume a song when there's no song playing, silly!`);
->>>>>>> upstream/master
     if (!queue.songs[0].dispatcher) {
       return msg.reply('cannot resume a song when there\'s no song playing, silly!');
     }

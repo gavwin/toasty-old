@@ -40,11 +40,7 @@ module.exports = class PlaySongCommand extends Command {
     if (!queue) {
       voiceChannel = msg.member.voiceChannel; // eslint-disable-line
       if (!voiceChannel) {
-<<<<<<< HEAD
-        return msg.reply('you aren\'t in a voice channel, ya dingus.');
-=======
         return msg.reply('you aren\'t in a voice channel, please join one first!');
->>>>>>> upstream/master
       }
 
       const permissions = voiceChannel.permissionsFor(msg.client.user);
@@ -76,11 +72,7 @@ module.exports = class PlaySongCommand extends Command {
 
           return this.handleVideo(video2, queue, voiceChannel, msg, statusMsg);
         } catch (err) {
-<<<<<<< HEAD
-          this.client.utils.logger.error('YOUTUBE API', err);
-=======
           console.error('YOUTUBE API', err);
->>>>>>> upstream/master
 
           return statusMsg.edit(`${msg.author}, couldn't obtain the search result video's details.`);
         }
