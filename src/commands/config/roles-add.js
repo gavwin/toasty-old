@@ -32,6 +32,7 @@ module.exports = class RolesAddCommand extends Command {
         const data = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
         const { role } = args;
         if (!data[msg.guild.id]) data[msg.guild.id] = { roles: [] };
+        if (!data[msg.guild.id].roles) data[msg.guild.id].roles = [];
         if (data[msg.guild.id].roles.includes(role.name)) return msg.reply(`:no_entry_sign: The role, **${role.name}** is already in the server roles list.`);
         data[msg.guild.id].roles.push(role.name);
         fs.writeFileSync(jsonPath, JSON.stringify(data, null, 2));
