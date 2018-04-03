@@ -1,7 +1,6 @@
 const { Command } = require('discord.js-commando');
 const events = require('events');
 const pokemonEvent = new events.EventEmitter();
-const path = require('path');
 
 module.exports = class TradeCommand extends Command {
   constructor(client) {
@@ -9,7 +8,7 @@ module.exports = class TradeCommand extends Command {
       name: 'trade',
       group: 'pokemon',
       memberName: 'trade',
-      description: 'Trade your Pokemon with another user\'s Pokemon.',
+      description: '[DISABLED] Trade your Pokemon with another user\'s Pokemon.',
       details: 'Catch pokemon with the pokemon command.\nYou can trade the pokemon you catch with this command.',
       examples: ['trade @user pikachu charzard'],
       guildOnly: true,
@@ -38,6 +37,9 @@ module.exports = class TradeCommand extends Command {
   }
 
   async run(msg, args) {
+    return msg.reply('the trade command has been disabled due to some bugs.');
+    /* eslint-disable */
+    // To be looked at in a later PR
     const RichEmbed = this.client.embed;
       if(msg.author.id !== '316241705689022464') return;
         const botMember = await msg.guild.fetchMember(this.client.user);

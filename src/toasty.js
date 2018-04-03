@@ -41,7 +41,12 @@ client
     console.info(`COMMAND RUN: ${cmd.groupID}:${cmd.memberName}`);
     client.session.commands++;
   })
-  .on('providerReady', () => console.info('SettingsProvider ready'));
+  .on('commandError', (cmd, err) => {
+    console.error(`Error in cmd ${cmd.name}:`, err);
+  })
+  .on('providerReady', () => console.info('SettingsProvider ready'))
+  // eslint-disable-next-line max-len
+  .on('commandBlocked', (message, reason) => console.info(`Command ${message.command.groupID}:${message.command.memberName} blocked, reason: ${reason}`));
 
 // Load the events with huge chunks of code from the events folder
 (async () => {
@@ -66,6 +71,15 @@ client.dispatcher.addInhibitor(msg => {
   const blacklist = client.provider.get('global', 'userBlacklist', []);
   if (!blacklist.includes(msg.author.id)) return false;
   return `Has been blacklisted.`;
+});
+
+client.dispatcher.addInhibitor(msg => {
+  if (!msg.command) return false;
+  if (msg.command.name !== 'trade') return false;
+  return [
+    'Trade command',
+    msg.reply('the trade command is disabled.')
+  ];
 });
 
 sqlite.open(path.join(__dirname, 'data', 'servers.sqlite3')).then(db => {
