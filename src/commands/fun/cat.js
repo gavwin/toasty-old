@@ -20,7 +20,7 @@ module.exports = class CatCommand extends Command {
       if (!msg.channel.permissionsFor(this.client.user).has('ATTACH_FILES')) return msg.say(':no_entry_sign: I don\'t have the **Attach Files** permission!');
     try {
       const { body } = await snekfetch
-        .get('http://random.cat/meow');
+        .get('http://aws.random.cat/meow');
       const embed = new this.client.embed()
         .setColor('RANDOM')
         .setImage(body.file);
