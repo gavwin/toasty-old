@@ -39,8 +39,8 @@ module.exports = class StatsCommand extends Command {
     sessionMessages = sessionMessages.reduce((prev, val) => prev + val, 0);
     let sessionPokemon = await this.client.shard.fetchClientValues('commands.pokemon');
     sessionPokemon = sessionPokemon.reduce((prev, val) => prev + val, 0);
-    let uptime = await this.client.shard.fetchClientValues('uptime');
-    let averageUptime = uptime.reduce((prev, val) => prev + val, 0) / this.client.shard.count;
+    const uptime = await this.client.shard.fetchClientValues('uptime');
+    const averageUptime = uptime.reduce((prev, val) => prev + val, 0) / this.client.shard.count;
 
     const embed = new this.client.embed();
     const toExec = `
@@ -49,24 +49,24 @@ sed \"s/.*, *\\([0-9.]*\\)%* id.*/\\1/\" | \\
 awk '{print 100 - $1\"%\"}'
 `;
     exec(toExec, {}, (err, stdout, stderr) => {
-		  if (err) return msg.reply(':no_entry_sign: There was an error fetching my stats. Please try again later.');
+      if (err) return msg.reply(':no_entry_sign: There was an error fetching my stats. Please try again later.');
       embed.setColor('RANDOM')
-          .setAuthor(this.client.user.username + ' Statistics', this.client.user.avatarURL)
-          .addField('On All Shards:', `Servers: **${guilds.toLocaleString()}** | Users: **${users.toLocaleString()}** | Channels: **${channels.toLocaleString()}** | Connections: **${voiceConnections.toLocaleString()}**`, true)
-          .addField(`On Shard ${this.client.shard.id + 1}/${this.client.shard.count}:`, `Servers: **${this.client.guilds.size.toLocaleString()}** | Users: **${this.client.users.size.toLocaleString()}** | Channels: **${this.client.channels.size.toLocaleString()}** | Connections: **${this.client.voiceConnections.size.toLocaleString()}**`, true)
-          .addField('Average Shard Uptime:', moment.duration(averageUptime).format(' D [days], H [hrs], m [mins], s [secs]'))
-          .addField('Messages This Session:', sessionMessages.toLocaleString())
-          .addField('Commands This Session:', sessionCommands.toLocaleString())
-          .addField('Guilds This Session:', sessionGuilds.toLocaleString())
-          .addField('Pokemon Caught This Session:', sessionPokemon.toLocaleString())
-          .addField('Message Latency:', `${m.createdTimestamp - msg.createdTimestamp} MS`, true)
-          .addField('Discord Latency:', `${Math.round(this.client.ping)} MS`, true)
-          .addField('Memory Usage:', `${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB`, true)
-          .addField('Swap Size:', `${(process.memoryUsage().rss / 1024 / 1024).toFixed(2)} MB`, true)
-          .addField('CPU Usage:', stdout.substring(5), true)
-          .addField('Operating System:', `Ubuntu 16.0.4 LTS`, true)
-          .addField('Creator:', 'i am toast#1213');
+        .setAuthor(this.client.user.username + ' Statistics', this.client.user.avatarURL)
+        .addField('On All Shards:', `Servers: **${guilds.toLocaleString()}** | Users: **${users.toLocaleString()}** | Channels: **${channels.toLocaleString()}** | Connections: **${voiceConnections.toLocaleString()}**`, true)
+        .addField(`On Shard ${this.client.shard.id + 1}/${this.client.shard.count}:`, `Servers: **${this.client.guilds.size.toLocaleString()}** | Users: **${this.client.users.size.toLocaleString()}** | Channels: **${this.client.channels.size.toLocaleString()}** | Connections: **${this.client.voiceConnections.size.toLocaleString()}**`, true)
+        .addField('Average Shard Uptime:', moment.duration(averageUptime).format(' D [days], H [hrs], m [mins], s [secs]'))
+        .addField('Messages This Session:', sessionMessages.toLocaleString())
+        .addField('Commands This Session:', sessionCommands.toLocaleString())
+        .addField('Guilds This Session:', sessionGuilds.toLocaleString())
+        .addField('Pokemon Caught This Session:', sessionPokemon.toLocaleString())
+        .addField('Message Latency:', `${m.createdTimestamp - msg.createdTimestamp} MS`, true)
+        .addField('Discord Latency:', `${Math.round(this.client.ping)} MS`, true)
+        .addField('Memory Usage:', `${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB`, true)
+        .addField('Swap Size:', `${(process.memoryUsage().rss / 1024 / 1024).toFixed(2)} MB`, true)
+        .addField('CPU Usage:', stdout.substring(5), true)
+        .addField('Operating System:', 'Ubuntu 16.0.4 LTS', true)
+        .addField('Creator:', 'i am toast#1213');
       m.edit({ embed });
     });
   }
-}
+};

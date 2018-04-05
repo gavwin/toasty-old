@@ -18,4 +18,4 @@ module.exports = class LennyCommand extends Command {
   run(msg) {
     msg.say('( ͡° ͜ʖ ͡°)');
   }
-}
+};

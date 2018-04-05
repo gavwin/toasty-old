@@ -16,8 +16,8 @@ module.exports = class CatCommand extends Command {
   }
 
   async run(msg) {
-  if (msg.channel.type !== 'dm')
-    if (!msg.channel.permissionsFor(this.client.user).has('ATTACH_FILES')) return msg.say(':no_entry_sign: I don\'t have the **Attach Files** permission!');
+    if (msg.channel.type !== 'dm')
+      if (!msg.channel.permissionsFor(this.client.user).has('ATTACH_FILES')) return msg.say(':no_entry_sign: I don\'t have the **Attach Files** permission!');
     try {
       const { body } = await snekfetch
         .get('http://aws.random.cat/meow');

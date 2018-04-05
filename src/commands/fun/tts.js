@@ -35,22 +35,22 @@ module.exports = class TTSCommand extends Command {
       .set('Authorization', discordbotsToken)
         if (!body.includes(msg.author.id)) return msg.reply(`:no_entry_sign: You can\'t use this command because you haven\'t upvoted me.\nType, \`${this.client.commandPrefix}upvote\` for the steps on how to upvote me.`);
         */const voiceChannel = msg.member.voiceChannel;
-        if (!voiceChannel) return msg.reply(':no_entry_sign: Please be in a voice channel first!');
-        if (!this.client.voiceConnections.get(msg.channel.guild.id)) {
-        voiceChannel.join()
+    if (!voiceChannel) return msg.reply(':no_entry_sign: Please be in a voice channel first!');
+    if (!this.client.voiceConnections.get(msg.channel.guild.id)) {
+      voiceChannel.join()
         .then(connnection => {
           tts(args.text, 'en', 1)
-          .then((url) => {
-            const dispatcher = connnection.playStream(url);
-            msg.react('📢');
-            dispatcher.on('end', () => voiceChannel.leave());
-          })
-          .catch((err) => {
-            msg.say(':no_entry_sign: Something wen\'t wrong.\n' + err);
-          });
+            .then((url) => {
+              const dispatcher = connnection.playStream(url);
+              msg.react('📢');
+              dispatcher.on('end', () => voiceChannel.leave());
+            })
+            .catch((err) => {
+              msg.say(':no_entry_sign: Something wen\'t wrong.\n' + err);
+            });
         });
-       } else {
-         msg.say(':no_entry_sign: Sorry but it seems like I\'m already playing something on this server.');
-       }
+    } else {
+      msg.say(':no_entry_sign: Sorry but it seems like I\'m already playing something on this server.');
     }
+  }
 };

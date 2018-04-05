@@ -16,6 +16,6 @@ module.exports = class SourcesCommand extends Command {
   }
 
   run(msg) {
-    msg.say('Avaliable news sources for the news command are:\ncnn, time, the-verge, cnbc, nytimes, buzzfeed, washington-post, wsj, daily-mail, google, espn, reddit, bbc, associated-press, techradar, polygon, hacker-news, mashable, and national-geographic')
+    msg.say('Avaliable news sources for the news command are:\ncnn, time, the-verge, cnbc, nytimes, buzzfeed, washington-post, wsj, daily-mail, google, espn, reddit, bbc, associated-press, techradar, polygon, hacker-news, mashable, and national-geographic');
   }
 };

@@ -25,4 +25,4 @@ module.exports = class LeetCommand extends Command {
   run(msg, args) {
     msg.say(leet(args.text));
   }
-}
+};

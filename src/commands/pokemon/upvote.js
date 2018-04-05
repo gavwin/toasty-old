@@ -26,6 +26,6 @@ module.exports = class UpvoteCommand extends Command {
       http://i.imgur.com/ussvWiV.png
       `;
 
-      msg.say(steps);
+    msg.say(steps);
   }
 };

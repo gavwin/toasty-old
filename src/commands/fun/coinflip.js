@@ -18,8 +18,8 @@ module.exports = class CoinFlipCommand extends Command {
 
   async run(msg) {
     const m = await msg.say('Flipping.');
-    setTimeout(() => { m.edit('Flipping..') }, 350);
-    setTimeout(() => { m.edit('Flipping...') }, 700);
-    setTimeout(() => { m.edit(`**${msg.author.username}**, you got **${options[Math.floor(Math.random() * options.length)]}**!`) }, 1000);
+    setTimeout(() => { m.edit('Flipping..'); }, 350);
+    setTimeout(() => { m.edit('Flipping...'); }, 700);
+    setTimeout(() => { m.edit(`**${msg.author.username}**, you got **${options[Math.floor(Math.random() * options.length)]}**!`); }, 1000);
   }
-}
+};

@@ -19,4 +19,4 @@ module.exports = class InviteCommand extends Command {
   run(msg) {
     msg.say(`**${msg.author.username}**, You can invite me to your server with this!\n**https://toastybot.com/invite**`);
   }
-}
+};
