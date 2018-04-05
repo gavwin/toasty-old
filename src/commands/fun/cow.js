@@ -18,9 +18,9 @@ module.exports = class CowCommand extends Command {
 
   run(msg) {
     const options = {
-        min: 0,
-        max: cows().length - 1,
-        integer: true
+      min: 0,
+      max: cows().length - 1,
+      integer: true
     };
     const random = rn(options);
     msg.channel.send(cows()[random], { code: ''});

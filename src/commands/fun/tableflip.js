@@ -17,8 +17,8 @@ module.exports = class TableFlipCommand extends Command {
 
   async run(msg) {
     const m = await msg.say('┬─┬ノ( º _ ºノ)');
-    setTimeout(() => { m.edit('(°-°)\\ ┬─┬') }, 450);
-    setTimeout(() => { m.edit('(╯°□°)╯    ]') }, 950);
-    setTimeout(() => { m.edit('(╯°□°)╯  ︵  ┻━┻') }, 1250);
+    setTimeout(() => { m.edit('(°-°)\\ ┬─┬'); }, 450);
+    setTimeout(() => { m.edit('(╯°□°)╯    ]'); }, 950);
+    setTimeout(() => { m.edit('(╯°□°)╯  ︵  ┻━┻'); }, 1250);
   }
 };

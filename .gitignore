@@ -1,4 +1,3 @@
-src/config.json
-src/data
-src/node_modules
-web/config.json
+config.json
+node_modules/
+src/data/

@@ -16,16 +16,18 @@ module.exports = class CleanCommand extends Command {
 
   async run(msg) {
     const m = await msg.say('*Cleaning my commands*...');
-    if (!msg.guild.member(this.client.user).permissions.has('MANAGE_MESSAGES')) return m.edit(':no_entry_sign: Failed to clear commands because I\'m missing the **Manage Messages** permission.');
-    const msgs = await msg.channel.fetchMessages({ limit: 90 });
-    let msg_array = msgs.array().filter
-    (m =>
-      m.author.id === this.client.user.id ||
-      m.content.startsWith(this.client.commandPrefix) ||
-      m.content.toLowerCase().startsWith('cancel')
+    if (!msg.guild.member(this.client.user).permissions.has('MANAGE_MESSAGES')) {
+      return m.edit(':no_entry_sign: Failed to clear commands because I\'m missing the **Manage Messages** permission.');
+    }
+    const msgs = await msg.channel.messages.fetch({ limit: 90 });
+    const msgArray = msgs.filter(mes =>
+      mes.author.id === this.client.user.id
+      || mes.content.startsWith(this.client.commandPrefix)
+      || mes.content.toLowerCase().startsWith('cancel')
     );
-    msg.channel.bulkDelete(msg_array);
+    msg.channel.bulkDelete(msgArray);
     m.edit(':white_check_mark: Successfully cleaned up my commands!');
-    setTimeout(() => { msg.delete() }, 1000);
+    setTimeout(msg.delete, 1000);
+    return null;
   }
 };
