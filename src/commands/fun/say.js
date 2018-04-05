@@ -23,7 +23,7 @@ module.exports = class SayCommand extends Command {
     });
   }
 
-    run(msg, args) {
-      msg.say(args.text);
-    }
+  run(msg, args) {
+    msg.say(args.text);
+  }
 };

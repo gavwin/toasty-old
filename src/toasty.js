@@ -70,7 +70,7 @@ client
 client.dispatcher.addInhibitor(msg => {
   const blacklist = client.provider.get('global', 'userBlacklist', []);
   if (!blacklist.includes(msg.author.id)) return false;
-  return `Has been blacklisted.`;
+  return 'Has been blacklisted.';
 });
 
 client.dispatcher.addInhibitor(msg => {

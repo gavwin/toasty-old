@@ -19,4 +19,4 @@ module.exports = class DonatorsCommand extends Command {
     const donators = require(path.join(__dirname, '..', '..', 'data', 'donators.json'));
     msg.say('These are the kind people that have kept Toasty alive!\n  **' + donators.join('\n** **') + '**');
   }
-}
+};

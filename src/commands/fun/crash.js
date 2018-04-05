@@ -14,7 +14,7 @@ module.exports = class CrashCommand extends Command {
     });
   }
 
-   run(msg) {
-     msg.say(':x: Uh oh!\nhttp://www.howtogeek.com/wp-content/uploads/2013/05/windows-8-blue-screen-error.png');
-   }
+  run(msg) {
+    msg.say(':x: Uh oh!\nhttp://www.howtogeek.com/wp-content/uploads/2013/05/windows-8-blue-screen-error.png');
+  }
 };

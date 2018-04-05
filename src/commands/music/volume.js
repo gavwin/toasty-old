@@ -21,10 +21,10 @@ module.exports = class ChangeVolumeCommand extends Command {
 
   run(msg, args) {
     const queue = this.queue.get(msg.guild.id);
-    if (!queue) return msg.reply(`can't change the volume when there is no music playing!`);
+    if (!queue) return msg.reply('can\'t change the volume when there is no music playing!');
     if (!args) return msg.reply(`the volume is currently set to ${queue.volume}.`);
     if (!queue.voiceChannel.members.has(msg.author.id)) {
-      return msg.reply(`you're not in the voice channel.`);
+      return msg.reply('you\'re not in the voice channel.');
     }
 
     let volume = parseInt(args);
@@ -32,7 +32,7 @@ module.exports = class ChangeVolumeCommand extends Command {
       volume = args.toLowerCase();
       if (volume === 'up' || volume === '+') volume = queue.volume + 2;
       else if (volume === 'down' || volume === '-') volume = queue.volume - 2;
-      else return msg.reply(`invalid volume level. You can only set the volume from 1 to 10.`);
+      else return msg.reply('invalid volume level. You can only set the volume from 1 to 10.');
       if (volume === 11) volume = 10;
     }
 

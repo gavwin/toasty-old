@@ -15,6 +15,6 @@ module.exports = class ShardCommand extends Command {
   }
 
   run(msg) {
-		msg.say(`**${msg.author.username}**, you are on shard **${this.client.shard.id + 1}/${this.client.shard.count}**.`);
-	}
+    msg.say(`**${msg.author.username}**, you are on shard **${this.client.shard.id + 1}/${this.client.shard.count}**.`);
+  }
 };
