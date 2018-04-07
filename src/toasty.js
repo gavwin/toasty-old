@@ -37,11 +37,16 @@ client
   .on('reconnecting', () => {
     console.log(`Reconnecting event fired on shard ${client.shard.id + 1}.`);
   })
-  /*.on('commandRun', cmd => {
-    console.info(`COMMAND RUN: ${cmd.groupID}:${cmd.memberName}`);
+  .on('commandRun', cmd => {
+    //console.info(`COMMAND RUN: ${cmd.groupID}:${cmd.memberName}`);
     client.session.commands++;
-  })*/
-  .on('providerReady', () => console.info('SettingsProvider ready'));
+  })
+  .on('commandError', (cmd, err) => {
+    console.error(`Error in cmd ${cmd.name}:`, err);
+  })
+  .on('providerReady', () => console.info('SettingsProvider ready'))
+  // eslint-disable-next-line max-len
+  .on('commandBlocked', (message, reason) => console.info(`Command ${message.command.groupID}:${message.command.memberName} blocked, reason: ${reason}`));
 
 // Load the events with huge chunks of code from the events folder
 (async () => {
@@ -67,6 +72,27 @@ client.dispatcher.addInhibitor(msg => {
   if (!blacklist.includes(msg.author.id)) return false;
   return 'Has been blacklisted.';
 });
+
+client.dispatcher.addInhibitor(msg => {
+  if (!msg.command) return false;
+  if (msg.command.name !== 'trade') return false;
+  return [
+    'Trade command',
+    msg.reply('the trade command is disabled.')
+  ];
+});
+
+client.dispatcher.addInhibitor(msg => {
+  if (!msg.command) return false;
+  if (!msg.guild) return false;
+  if (msg.guild.id !== '208674478773895168') return false;
+  if (msg.channel.id === '303206425113657344') return false;
+  if (msg.command.groupID !== 'pokemon') return false;
+  return [
+    'pokemon outside commands',
+    msg.reply('pokemon commands must be used in <#303206425113657344>!')
+  ];
+})
 
 sqlite.open(path.join(__dirname, 'data', 'servers.sqlite3')).then(db => {
   client.setProvider(new SQLiteProvider(db));
