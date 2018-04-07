@@ -32,7 +32,7 @@ module.exports = class BanCommand extends Command {
     const { user, reason } = args;
     if (user.id === this.client.user.id) return msg.reply('I can\'t ban myself \\:P');
     if (!msg.member.permissions.has('BAN_MEMBERS') && msg.author.id !== msg.guild.ownerID) return msg.reply(':no_entry_sign: [**Invalid Permissions**]: You don\'t have the **Ban Members** permission!');
-    if (!msg.guild.member(this.client.user).permissions.has('BAN_MEMBERS')) return msg.reply(':no_entry_sign: [**Missing Permissions**]: I don\'t have the **Ban Members** permission!');
+    if (!msg.guild.me.permissions.has('BAN_MEMBERS')) return msg.reply(':no_entry_sign: [**Missing Permissions**]: I don\'t have the **Ban Members** permission!');
     const member = await msg.guild.members.fetch(user).catch(() => null);
     await msg.say('Are you sure you want to ban this user?  (__y__es or __n__o)');
     await msg.embed({

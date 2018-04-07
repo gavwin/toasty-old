@@ -17,7 +17,8 @@ module.exports = class TTSCommand extends Command {
         {
           key: 'text',
           prompt: 'What would you like me to say in the voice channel?\n',
-          type: 'string'
+          type: 'string',
+          max: 200
         }
       ],
       throttling: {
@@ -29,7 +30,7 @@ module.exports = class TTSCommand extends Command {
 
   async run(msg, args) {
     this.client.commands.tts++;
-    if (!msg.guild.member(this.client.user).permissions.has('CONNECT') || !msg.guild.member(this.client.user).permissions.has('SPEAK')) return msg.say(':no_entry_sign: I don\'t have the **Connect** or **Speak** permission.');
+    if (!msg.guild.me.permissions.has('CONNECT') || !msg.guild.me.permissions.has('SPEAK')) return msg.say(':no_entry_sign: I don\'t have the **Connect** or **Speak** permission.');
     /*const { body } = await snekfetch
       .get(`https://discordbots.org/api/bots/208946659361554432/votes?onlyids=1`)
       .set('Authorization', discordbotsToken)
@@ -41,11 +42,12 @@ module.exports = class TTSCommand extends Command {
         .then(connnection => {
           tts(args.text, 'en', 1)
             .then((url) => {
-              const dispatcher = connnection.playStream(url);
+              const dispatcher = connnection.play(url);
               msg.react('📢');
               dispatcher.on('end', () => voiceChannel.leave());
             })
             .catch((err) => {
+              console.error(err);
               msg.say(':no_entry_sign: Something wen\'t wrong.\n' + err);
             });
         });

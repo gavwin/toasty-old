@@ -50,7 +50,7 @@ module.exports = class PruneCommand extends Command {
 			:no_entry_sign: [**Invalid Permissions**]: You don\'t have the **Manage Messages** permission!
 			`);
     }
-    if (!msg.guild.member(this.client.user).permissions.has('MANAGE_MESSAGES')) {
+    if (!msg.guild.me.permissions.has('MANAGE_MESSAGES')) {
       return msg.reply(':no_entry_sign: [**Missing Permissions**]: I don\'t have the **Manage Messages** permission!');
     }
     const limit = args.limit === 100 ? 99 : args.limit;
