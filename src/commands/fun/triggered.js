@@ -30,7 +30,7 @@ module.exports = class TriggeredCommand extends Command {
   async run(msg, args) {
     if (!msg.channel.permissionsFor(this.client.user).has('ATTACH_FILES')) return msg.say(':no_entry_sign: [**Missing Permissions**]: I don\'t have the **Attach Files** permission!');
     const user = args.user || msg.author;
-    const avatarURL = user.avatarURL;
+    const avatarURL = user.avatarURL();
     if (!avatarURL) return msg.say(':no_entry_sign: That user has no avatar.');
     try {
       const Image = Canvas.Image;
