@@ -159,11 +159,7 @@ module.exports = class PlaySongCommand extends Command {
           this.play(msg.guild, queue.songs[0]);
           statusMsg.delete();
         } catch (error) {
-<<<<<<< HEAD
-          this.client.utils.logger.error('DISCORD', 'Error occurred when joining voice channel.', error);
-=======
           console.error('DISCORD', 'Error occurred when joining voice channel.', error);
->>>>>>> upstream/master
           this.queue.delete(msg.guild.id);
           statusMsg.edit(`${msg.author}, unable to join your voice channel.`);
         }
@@ -213,11 +209,7 @@ module.exports = class PlaySongCommand extends Command {
     const stream = ytdl(song.url, { audioonly: true })
       .on('error', err => {
         streamErrored = true;
-<<<<<<< HEAD
-        this.client.utils.logger.error('YTDL', 'Error occurred when streaming video:', err);
-=======
         console.error('YTDL', 'Error occurred when streaming video:', err);
->>>>>>> upstream/master
         playing.then(msg => msg.edit(`👎 Couldn't play ${song}.`));
         queue.songs.shift();
         this.play(guild, queue.songs[0]);
@@ -229,16 +221,10 @@ module.exports = class PlaySongCommand extends Command {
         this.play(guild, queue.songs[0]);
       })
       .on('error', err => {
-<<<<<<< HEAD
-        this.client.utils.logger.error('DISCORD', 'Error occurred in stream dispatcher:', err);
-        queue.textChannel.send(`An error occurred while playing the song: \`${err}\``);
-      });
-=======
         console.error('DISCORD', 'Error occurred in stream dispatcher:', err);
         queue.textChannel.send(`An error occurred while playing the song: \`${err}\``);
       });
     dispatcher.setPLP(0.01);
->>>>>>> upstream/master
     dispatcher.setVolumeLogarithmic(queue.volume / 5);
     song.dispatcher = dispatcher;
     song.playing = true;
