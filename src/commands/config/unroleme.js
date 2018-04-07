@@ -37,7 +37,7 @@ module.exports = class UnRoleMeCommand extends Command {
     if (!botMember.hasPermission('MANAGE_ROLES')) return msg.reply(':no_entry_sign: [**Missing Permissions**]: I don\'t have the **Manage Roles** permission!');
     const m = await msg.say('*Removing...*');
     const authorMember = await msg.guild.members.fetch(msg.author);
-    await authorMember.removeRole(msg.guild.roles.find('name', role).id);
+    await authorMember.roles.remove(msg.guild.roles.find('name', role).id);
     return m.edit(`:white_check_mark: I have removed you from **${role}**.`);
   }
 };

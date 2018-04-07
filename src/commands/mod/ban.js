@@ -1,5 +1,5 @@
 const { Command } = require('discord.js-commando');
-const { caseNumer } = require('../../util/caseNumber.js');
+const { caseNumber } = require('../../util/caseNumber.js');
 const fs = require('fs');
 const path = require('path');
 
@@ -55,7 +55,7 @@ module.exports = class BanCommand extends Command {
     }).then(async co => {
       if (['yes', 'y'].includes(co.first().content)) {
         const m = await msg.say('*Banning user...*');
-        await msg.guild.ban(user, 7);
+        await msg.guild.members.ban(user, 7);
         const modlogData = data[msg.guild.id] ? data[msg.guild.id] : { modlog: 'disabled' };
         if (modlogData.modlog === 'disabled' || !msg.guild.channels.find('name', 'mod-log')) {
           m.edit(`**${member.user.username}**#${member.user.discriminator} has been banned.`);

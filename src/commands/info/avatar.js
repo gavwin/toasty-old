@@ -26,6 +26,6 @@ module.exports = class AvatarCommand extends Command {
 
   run(msg, args) {
     const user = args.user || msg.author;
-    msg.say(`Avatar for, **${user.username}**:\n${user.avatarURL}`);
+    msg.say(`Avatar for, **${user.username}**:\n${user.avatarURL()}`);
   }
 };

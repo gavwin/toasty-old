@@ -179,7 +179,7 @@ module.exports = class PlaySongCommand extends Command {
   addSong(msg, video) {
     const queue = this.queue.get(msg.guild.id);
 
-    console.info('DISCORD', 'Adding song to queue.', { song: video.id, guild: msg.guild.id });
+    //console.info('DISCORD', 'Adding song to queue.', { song: video.id, guild: msg.guild.id });
     const song = new Song(video, msg.member);
     queue.songs.push(song);
 

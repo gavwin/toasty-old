@@ -44,7 +44,7 @@ module.exports = class KickCommand extends Command {
     if (modlogData.modlog === 'enabled') {
       const embed = new this.client.embed();
       const channel = msg.guild.channels.find('name', 'mod-log');
-      const caseNum = await caseNumber(client, channel);
+      const caseNum = await caseNumber(this.client, channel);
       embed.setColor(0xFFA500)
         .setTimestamp(new Date())
         .setAuthor(member.user.username, member.user.displayAvatarURL())
