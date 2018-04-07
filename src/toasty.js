@@ -37,10 +37,10 @@ client
   .on('reconnecting', () => {
     console.log(`Reconnecting event fired on shard ${client.shard.id + 1}.`);
   })
-  .on('commandRun', cmd => {
+  /*.on('commandRun', cmd => {
     console.info(`COMMAND RUN: ${cmd.groupID}:${cmd.memberName}`);
     client.session.commands++;
-  })
+  })*/
   .on('providerReady', () => console.info('SettingsProvider ready'));
 
 // Load the events with huge chunks of code from the events folder
@@ -55,7 +55,7 @@ client
       const { run } = require(`${__dirname}/events/${file}`);
       const [event] = file.split('.');
       client.on(event, (...args) => run(client, ...args));
-      console.info('Loaded event:', event);
+      //console.info('Loaded event:', event);
     }
   } catch (err) {
     console.error(err);

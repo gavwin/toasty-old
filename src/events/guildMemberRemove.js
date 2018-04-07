@@ -2,10 +2,10 @@ const fs = require('fs');
 const path = require('path');
 /* eslint-disable max-len */
 exports.run = (client, member) => {
+  const { guild } = member;
   const defaultChannel = guild.channels.find(c => c.permissionsFor(client.user).has('SEND_MESSAGES'));
   const RichEmbed = client.embed;
   const data = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'servers.json')));
-  const { guild } = member;
 
   if (!data[guild.id]) data[guild.id] = { 'leaveMessage': 'disabled' };
   if (data[guild.id].leaveMessage && data[guild.id].leaveMessage !== 'disabled') {
