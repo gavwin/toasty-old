@@ -109,7 +109,7 @@ module.exports = class ToggleCommand extends Command {
           data[msg.guild.id].modlog = 'enabled';
           fs.writeFileSync(jsonPath, JSON.stringify(data, null, 2));
           msg.reply(':white_check_mark: The modlog is now **enabled**.');
-          msg.guild.createChannel('mod-log', 'text')
+          msg.guild.channels.create('mod-log', 'text')
             .then(modlog => {
               modlog.send('You have enabled the modlog. To disable this and delete this channel type, `toggle modlog`');
             });
@@ -117,7 +117,7 @@ module.exports = class ToggleCommand extends Command {
           data[msg.guild.id].modlog = 'enabled';
           fs.writeFileSync(jsonPath, JSON.stringify(data, null, 2));
           msg.reply(':white_check_mark: The modlog is now **enabled**.');
-          msg.guild.createChannel('mod-log', 'text')
+          msg.guild.channels.create('mod-log', 'text')
             .then(modlog => {
               modlog.send('You have enabled the modlog. To disable this and delete this channel type, `toggle modlog`');
             });
@@ -139,7 +139,7 @@ module.exports = class ToggleCommand extends Command {
           data[msg.guild.id].joinlog = 'enabled';
           fs.writeFileSync(jsonPath, JSON.stringify(data, null, 2));
           msg.reply(':white_check_mark: The joinlog is now **enabled**.');
-          msg.guild.createChannel('join-log', 'text')
+          msg.guild.channels.create('join-log', 'text')
             .then(joinlog => {
               joinlog.send('You have enabled the joinlog. To disable this and delete this channel, type, `toggle joinlog`');
             });
@@ -147,7 +147,7 @@ module.exports = class ToggleCommand extends Command {
           data[msg.guild.id].joinlog = 'enabled';
           fs.writeFileSync(jsonPath, JSON.stringify(data, null, 2));
           msg.reply(':white_check_mark: The joinlog is now **enabled**.');
-          msg.guild.createChannel('join-log', 'text')
+          msg.guild.channels.create('join-log', 'text')
             .then(joinlog => {
               joinlog.send('You have enabled the joinlog. To disable this and delete this channel, type, `toggle joinlog`');
             });
