@@ -1,8 +1,13 @@
 const { Command } = require('discord.js-commando');
-const Canvas = require('canvas');
-const snekfetch = require('snekfetch');
-const fs = require('fs');
+const Discord = require('discord.js');
 const path = require('path');
+const Jimp = require('jimp');
+const GIFEncoder = require('gifencoder');
+
+const options = {
+    size: 256,
+    frames: 8
+}
 
 module.exports = class TriggeredCommand extends Command {
   constructor(client) {
@@ -10,55 +15,79 @@ module.exports = class TriggeredCommand extends Command {
       name: 'triggered',
       group: 'fun',
       memberName: 'triggered',
-      description: 'Put a user\'s avatar on a "Triggered" sign.',
       guildOnly: true,
-      args: [
-        {
-          key: 'user',
-          prompt: 'Which user would you like to make triggered?\n',
-          type: 'user',
-          default: ''
-        }
-      ],
+      description: 'Takes a user\'s avatar and makes it into a triggered gif.',
       throttling: {
         usages: 1,
-        duration: 15
+        duration: 10
       }
     });
   }
 
-  async run(msg, args) {
-    if (!msg.channel.permissionsFor(this.client.user).has('ATTACH_FILES')) return msg.say(':no_entry_sign: [**Missing Permissions**]: I don\'t have the **Attach Files** permission!');
-    const user = args.user || msg.author;
-    const avatarURL = user.avatarURL();
-    if (!avatarURL) return msg.say(':no_entry_sign: That user has no avatar.');
-    try {
-      const Image = Canvas.Image;
-      const canvas = new Canvas(320, 371);
-      const ctx = canvas.getContext('2d');
-      const base = new Image();
-      const avatar = new Image();
-      const generate = () => {
-        ctx.fillStyle = 'white';
-        ctx.fillRect(0, 0, 320, 371);
-        ctx.drawImage(avatar, 0, 0, 320, 320);
-        const imgData = ctx.getImageData(0, 0, 320, 320);
-        const data = imgData.data;
-        for (let i = 0; i < data.length; i += 4) {
-          data[i] = Math.max(255, data[i]);
+    async run(msg) {
+      function getRandomInt(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+      }
+
+      if (!msg.channel.permissionsFor(this.client.user).has('ATTACH_FILES')) return msg.channel.send('I can\'t attach messages!');
+
+      const args = msg.content.split(' ').slice(1);
+
+      let avatarurl = (msg.mentions.users.size > 0 ? msg.mentions.users.first().displayAvatarURL({ format: 'png' }) : msg.author.displayAvatarURL({ format: 'png' }));
+      if (['jpg', 'jpeg', 'gif', 'png', 'webp'].some(x => args.join(' ').includes(x))) {
+        avatarurl = args.join(' ').replace(/gif|webp/g, 'png');
+      }
+
+      const base = new Jimp(options.size, options.size);
+      const avatar = await Jimp.read(avatarurl);
+      const text = await Jimp.read(path.join(__dirname, '..', '..', 'data', 'images', 'triggered.jpg'));
+      const tint = await Jimp.read(path.join(__dirname, '..', '..', 'data', 'images', 'red.png'));
+
+      avatar.resize(320, 320);
+      tint.scaleToFit(base.bitmap.width, base.bitmap.height);
+      tint.opacity(0.2);
+      text.scaleToFit(280, 60);
+
+      const frames = [];
+      const buffers = [];
+      const encoder = new GIFEncoder(options.size, options.size);
+      const stream = encoder.createReadStream();
+      let temp;
+
+      stream.on('data', async buffer => await buffers.push(buffer));
+      stream.on('end', async() => {
+        return await msg.channel.send({
+          files: [{
+            name: 'triggered.gif',
+            attachment: Buffer.concat(buffers)
+          }]
+        });
+      });
+
+      for (let i = 0; i < options.frames; i++) {
+        temp = base.clone();
+
+        if (i === 0) {
+          temp.composite(avatar, -16, -16);
+        } else {
+          temp.composite(avatar, -32 + getRandomInt(-16, 16), -32 + getRandomInt(-16, 16));
         }
-        ctx.putImageData(imgData, 0, 0);
-        ctx.drawImage(base, 0, 0);
-      };
-      base.src = await fs.readFileAsync(path.join(__dirname, '..', '..', 'data', 'images', 'triggered.png'));
-      const { body } = await snekfetch.get(avatarURL);
-      avatar.src = body;
-      generate();
-      const buffer = canvas.toBuffer();
-      const toSend = fs.writeFileSync('file.png', buffer);
-      return msg.say('', {file: 'file.png'}).catch(err => msg.say(`${err.name}: ${err.message}`));
-    } catch (err) {
-      return msg.say(`${err.name}: ${err.message}`);
+
+        temp.composite(tint, 0, 0);
+
+        if (i === 0) temp.composite(text, -10, 200);
+        else temp.composite(text, -12 + getRandomInt(-8, 8), 200 + getRandomInt(-0, 12));
+
+        frames.push(temp.bitmap.data);
+        }
+
+      encoder.start();
+      encoder.setRepeat(0);
+      encoder.setDelay(20);
+      for (const frame of frames) {
+        encoder.addFrame(frame);
+      }
+      encoder.finish();
+
     }
-  }
 };
