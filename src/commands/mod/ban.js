@@ -1,5 +1,5 @@
 const { Command } = require('discord.js-commando');
-const { caseNumer } = require('../../util/caseNumber.js');
+const { caseNumber } = require('../../util/caseNumber.js');
 const fs = require('fs');
 const path = require('path');
 
@@ -32,7 +32,7 @@ module.exports = class BanCommand extends Command {
     const { user, reason } = args;
     if (user.id === this.client.user.id) return msg.reply('I can\'t ban myself \\:P');
     if (!msg.member.permissions.has('BAN_MEMBERS') && msg.author.id !== msg.guild.ownerID) return msg.reply(':no_entry_sign: [**Invalid Permissions**]: You don\'t have the **Ban Members** permission!');
-    if (!msg.guild.member(this.client.user).permissions.has('BAN_MEMBERS')) return msg.reply(':no_entry_sign: [**Missing Permissions**]: I don\'t have the **Ban Members** permission!');
+    if (!msg.guild.me.permissions.has('BAN_MEMBERS')) return msg.reply(':no_entry_sign: [**Missing Permissions**]: I don\'t have the **Ban Members** permission!');
     const member = await msg.guild.members.fetch(user).catch(() => null);
     await msg.say('Are you sure you want to ban this user?  (__y__es or __n__o)');
     await msg.embed({
@@ -55,7 +55,7 @@ module.exports = class BanCommand extends Command {
     }).then(async co => {
       if (['yes', 'y'].includes(co.first().content)) {
         const m = await msg.say('*Banning user...*');
-        await msg.guild.ban(user, 7);
+        await msg.guild.members.ban(user, 7);
         const modlogData = data[msg.guild.id] ? data[msg.guild.id] : { modlog: 'disabled' };
         if (modlogData.modlog === 'disabled' || !msg.guild.channels.find('name', 'mod-log')) {
           m.edit(`**${member.user.username}**#${member.user.discriminator} has been banned.`);

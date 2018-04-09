@@ -41,11 +41,11 @@ exports.run = (client, member) => { // eslint-disable-line complexity
       if (data[guild.id].joinlog) {
         if (!guild.channels.find('name', 'join-log')) return defaultChannel.send(':no_entry_sign: **Error:** I couldn\'t send an embed in the #join-log. Please make sure I have access to a channel called join-log!');
         if (member.user.bot) return guild.channels.find('name', 'join-log').send(`Didn't add the join role to **${member.user.username}** because it is a bot.`);
-        member.addRole(role.id);
+        member.roles.add(role.id);
         guild.channels.find('name', 'join-log').send(`Added the join role of \`${joinRole}\` to **${member.user.username}**.`);
       } else if (!data[guild.id].joinlog) {
         if (member.user.bot) return null;
-        member.addRole(role);
+        member.roles.add(role);
       }
     }
 

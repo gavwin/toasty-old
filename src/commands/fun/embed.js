@@ -25,7 +25,7 @@ module.exports = class EmbedCommand extends Command {
   run(msg, args) {
     const embed = new this.client.embed();
     embed.setColor('RANDOM')
-      .setAuthor(msg.author.username, msg.author.avatarURL)
+      .setAuthor(msg.author.username, msg.author.avatarURL())
       .setDescription(args.text);
     msg.embed(embed);
   }

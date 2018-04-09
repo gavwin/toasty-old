@@ -33,10 +33,10 @@ module.exports = class AddRoleCommand extends Command {
     if (!msg.guild.member(this.client.user).permissions.has('MANAGE_ROLES')) return msg.reply(':no_entry_sign: [**Missing Permissions**]: I don\'t have the **Manage Roles** permission!');
     // const role = msg.guild.roles.filter(ro => ro.name.toLowerCase() === role.toLowerCase()).first();
     if (member.roles.has(role.id)) return msg.reply(':no_entry_sign: That user already has that role!');
-    if (botMember.highestRole.comparePositionTo(role) < 1) return msg.reply(':no_entry_sign: [**Missing Permissions**]: I don\'t have permissions to edit this role, please check the role order!');
-    if (msg.member.highestRole.comparePositionTo(role) < 1) return msg.reply(':no_entry_sign: [**Invalid Permissions**]: You don\'t have access to this role, please check role order!');
+    if (botMember.roles.highest.comparePositionTo(role) < 1) return msg.reply(':no_entry_sign: [**Missing Permissions**]: I don\'t have permissions to edit this role, please check the role order!');
+    if (msg.member.roles.highest.comparePositionTo(role) < 1) return msg.reply(':no_entry_sign: [**Invalid Permissions**]: You don\'t have access to this role, please check role order!');
     const m = await msg.say('*Adding...*');
-    await member.addRole(role);
+    await member.roles.add(role);
     return m.edit(`:white_check_mark: I have added the role of **${role.name}** to **${user.username}**.`);
   }
 };

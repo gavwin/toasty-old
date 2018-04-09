@@ -18,9 +18,9 @@ module.exports = class ServerInfoCommand extends Command {
   }
 
   async run(msg) {
-    if (!msg.channel.permissionsFor(this.client.user).hasPermission('EMBED_LINKS')) return msg.reply(':no_entry_sign: I don\'t have the **Embed Links** permission!');
+    if (!msg.channel.permissionsFor(this.client.user).has('EMBED_LINKS')) return msg.reply(':no_entry_sign: I don\'t have the **Embed Links** permission!');
 
-    const guild = await msg.guild.members.fetchs();
+    const guild = await msg.guild.members.fetch();
     const bots = `${guild.members.filter(member => member.user.bot).size} bots`;
     const onlinePeeps = `${guild.members.size} members\n${guild.members.filter(member => member.presence.status !== 'offline').size} online`;
 

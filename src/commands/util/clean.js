@@ -16,7 +16,7 @@ module.exports = class CleanCommand extends Command {
 
   async run(msg) {
     const m = await msg.say('*Cleaning my commands*...');
-    if (!msg.guild.member(this.client.user).permissions.has('MANAGE_MESSAGES')) {
+    if (!msg.guild.me.permissions.has('MANAGE_MESSAGES')) {
       return m.edit(':no_entry_sign: Failed to clear commands because I\'m missing the **Manage Messages** permission.');
     }
     const msgs = await msg.channel.messages.fetch({ limit: 90 });

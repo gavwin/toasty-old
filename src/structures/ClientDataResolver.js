@@ -1,3 +1,5 @@
+const { Constants } = require('discord.js');
+
 class ClientDataResolver {
   /**
   * Resolves a ColorResolvable into a color number.

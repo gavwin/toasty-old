@@ -27,7 +27,7 @@ module.exports = class UserInfoCommand extends Command {
   }
 
   async run(msg, args) {
-    if (!msg.channel.permissionsFor(this.client.user).hasPermission('EMBED_LINKS')) return msg.reply(':no_entry_sign: I don\'t have the **Embed Links** permission!');
+    if (!msg.channel.permissionsFor(this.client.user).has('EMBED_LINKS')) return msg.reply(':no_entry_sign: I don\'t have the **Embed Links** permission!');
 
     const statuses = {
       online: '212789758110334977',
@@ -40,9 +40,9 @@ module.exports = class UserInfoCommand extends Command {
     const member = args.member || msg.member;
 
     const embed = new this.client.embed();
-    embed.setAuthor(`${user.username}#${user.discriminator} (${user.id})`, user.avatarURL);
-    embed.setThumbnail(user.displayAvatarURL);
-    embed.setFooter(this.client.user.username, this.client.user.avatarURL);
+    embed.setAuthor(`${user.username}#${user.discriminator} (${user.id})`, user.avatarURL());
+    embed.setThumbnail(user.displayAvatarURL());
+    embed.setFooter(this.client.user.username, this.client.user.avatarURL());
     embed.setTimestamp(new Date());
     embed.addField('**User Information**', stripIndents`
 		Account Creation: ${moment(user.createdAt).tz('America/Chicago').format('dddd, MMMM Do YYYY, h:mm:ss a zz')}
