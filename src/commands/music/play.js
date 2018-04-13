@@ -72,8 +72,7 @@ module.exports = class PlaySongCommand extends Command {
 
           return this.handleVideo(video2, queue, voiceChannel, msg, statusMsg);
         } catch (err) {
-          console.error('YOUTUBE API', err);
-
+          //console.error('YOUTUBE API', err);
           return statusMsg.edit(`${msg.author}, couldn't obtain the search result video's details.`);
         }
       }

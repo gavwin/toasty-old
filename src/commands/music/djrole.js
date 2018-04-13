@@ -20,7 +20,7 @@ module.exports = class DJRoleCommand extends Command {
 
   hasPermission(msg) {
     return this.client.isOwner(msg.author)
-      || (msg.guild.roles.has(msg.guild.settings.get('dj')) ? this.hasDJRole(msg.author, msg) : msg.member.hasPermission('MANAGE_MESSAGES'));
+      || (msg.guild.roles.has(msg.guild.settings.get('dj')) ? this.hasDJRole(msg.author, msg) : msg.member.permissions.has('MANAGE_MESSAGES'));
   }
 
   async run(msg, { role }) {

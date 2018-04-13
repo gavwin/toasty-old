@@ -21,7 +21,6 @@ module.exports = class PokemonCommand extends Command {
   }
 
   async run(msg) {
-    this.client.commands.pokemon++;
     const user = msg.author;
     if (msg.channel.id === '208674478773895168') return msg.reply('Pokemon commands must be used in <#303206425113657344>!');
     /* eslint-disable max-len */
@@ -39,10 +38,12 @@ module.exports = class PokemonCommand extends Command {
       `);
     }
 
+    this.client.commands.pokemon++;
+
     const newPokemon = randomPokemon();
 
     try {
-      const pe = this.client.emojis.get('328574358710910978');
+      const pe = this.client.emojis.get('433754631328235532');
       if (!pe) {
         await this.client.pokemon.addPokemon(newPokemon, user);
         return msg.say(stripIndents`
@@ -52,12 +53,12 @@ module.exports = class PokemonCommand extends Command {
       } else {
         await this.client.pokemon.addPokemon(newPokemon, user);
         return msg.say(stripIndents`
-          **${user.username}**, ${pe} you've caught a **${newPokemon}**!
+          **${user.username}**, ${pe.toString()} you've caught a **${newPokemon}**!
           http://www.pokestadium.com/sprites/xy/${newPokemon.toLowerCase()}.gif
         `);
       }
     } catch (err) {
-      console.error(err);
+      //console.error(err);
       return msg.say(`**${user.username}**, you failed to catch a pokemon :cry:`);
     }
   }
