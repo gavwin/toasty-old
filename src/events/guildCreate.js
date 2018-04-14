@@ -43,9 +43,9 @@ exports.run = async client => {
     'channels': 0,
     'voiceConnections': 0
   };
-  /* statsData.servers = total[0];
+  statsData.servers = total[0];
   statsData.users = total[1];
   statsData.channels = total[2];
-  statsData.voiceConnections = total[3]; */
-  // fs.writeFileSync(jsonPath, JSON.stringify(statsData, null, 2));
+  statsData.voiceConnections = total[3];
+  fs.writeFileSync(jsonPath, JSON.stringify(statsData, null, 2));
 };

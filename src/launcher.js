@@ -3,7 +3,7 @@ const { stripIndents } = require('common-tags');
 const { token, shardCount, spawnDelay, autoRespawn = true } = require('./config.json');
 
 if (shardCount === 'auto') {
-  Util.fetchRecommendedShards(token, 1150).then(count => {
+  Util.fetchRecommendedShards(token, 1300).then(count => {
     console.log('Shards launching via AUTO');
     console.log(stripIndents`
       Ready to spawn ${count.toFixed(0)} shards (${count}).

@@ -1,5 +1,4 @@
 const { Command } = require('discord.js-commando');
-const Discord = require('discord.js');
 const path = require('path');
 const Jimp = require('jimp');
 const GIFEncoder = require('gifencoder');
@@ -29,7 +28,7 @@ module.exports = class TriggeredCommand extends Command {
         return Math.floor(Math.random() * (max - min + 1)) + min;
       }
 
-      if (!msg.channel.permissionsFor(this.client.user).has('ATTACH_FILES')) return msg.channel.send('I can\'t attach messages!');
+      if (!msg.guild.me.permissions.has('ATTACH_FILES')) return msg.channel.send(':no_entry_sign: [**Missing Permissions**]: I don\'t have the **Attach Files** permission!');
 
       const args = msg.content.split(' ').slice(1);
 

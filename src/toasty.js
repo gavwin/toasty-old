@@ -20,7 +20,7 @@ const client = new ToastyClient({
     ]
   },
   disableEveryone: true,
-  invite: 'https://discord.me/toasty'
+  invite: 'https://toastybot.com/hq'
 });
 
 client
@@ -46,7 +46,7 @@ client
   })
   .on('providerReady', () => console.info('SettingsProvider ready'))
   // eslint-disable-next-line max-len
-  .on('commandBlocked', (message, reason) => console.info(`Command ${message.command.groupID}:${message.command.memberName} blocked, reason: ${reason}`));
+  //.on('commandBlocked', (message, reason) => console.info(`Command ${message.command.groupID}:${message.command.memberName} blocked, reason: ${reason}`));
 
 // Load the events with huge chunks of code from the events folder
 (async () => {

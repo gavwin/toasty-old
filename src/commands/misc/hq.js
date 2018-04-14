@@ -16,6 +16,6 @@ module.exports = class HQCommand extends Command {
   }
   run(msg) {
     msg.say(`:mailbox_with_mail: **${msg.author.username}**, check your DM's!`);
-    msg.author.sendMessage('**Join Toasty HQ with these invites!**\nhttps://discord.gg/sKCDdfp\nhttps://discord.me/toasty');
+    msg.author.send('**Join Toasty HQ with these invites!**\nhttps://discord.gg/sKCDdfp\nhttps://toastybot.com/hq');
   }
 };
