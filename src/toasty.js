@@ -24,8 +24,29 @@ const client = new ToastyClient({
 });
 
 client
-  .on('error', console.error)
-  .on('warn', console.info)
+  .on('error', err => {
+    if (/ETIMEDOUT|getaddrinfo|Something took too long to do/.test(err)) process.exit(200);
+    if (/SequelizeUniqueConstraintError/.test(err)) return;
+    client.channels
+      .get('434682326232989696')
+      .send(stripIndents`
+        \`ERROR EVENT EMITTED:\`
+        \`\`\`javascript
+        ${err.stack.split(client.token).join('-censored-')}
+        \`\`\`
+      `, { split: { char: '', prepend: '```javascript\n', append: '\n```', maxLength: 1900 } }).catch(err_ => console.error('DISCORD', err_));
+    console.error('ERROR', 'Unhandled promise rejection at', promise, err);
+  })
+  .on('warn', warn => {
+    client.channels
+      .get('434682326232989696')
+      .send(stripIndents`
+        \`WARN EVENT EMITTED:\`
+        \`\`\`
+        ${warn.split(client.token).join('-censored-')}
+        \`\`\`
+      `, { split: true }).catch(err_ => console.error('DISCORD', err_));
+  })
   .on('ready', async () => {
     console.log(oneLine`
     Shard ${client.shard.id + 1}/${client.shard.count} ready!
@@ -36,6 +57,9 @@ client
   })
   .on('reconnecting', () => {
     console.log(`Reconnecting event fired on shard ${client.shard.id + 1}.`);
+    client.channels
+      .get('434682326232989696')
+      .send(`Reconnecting event fired on shard ${client.shard.id + 1} of ${client.shard}.`);
   })
   .on('commandRun', cmd => {
     //console.info(`COMMAND RUN: ${cmd.groupID}:${cmd.memberName}`);
@@ -44,12 +68,14 @@ client
   .on('commandError', (cmd, err) => {
     if (err instanceof FriendlyError) return;
     console.error(`Error in cmd ${cmd.name}:`, err);
-    client.channels.get('305383689464971264').send(stripIndents`
-    \`COMMAND ERRORED: ${cmd.groupID}:${cmd.memberName}\`
-    \`\`\`javascript
-      ${err.stack}
-    \`\`\`
-  `);
+    client.channels
+      .get('434682326232989696')
+      .send(stripIndents`
+        \`COMMAND ERRORED: ${cmd.groupID}:${cmd.memberName}\`
+        \`\`\`javascript
+        ${err.stack.split(client.token).join('-censored-')}
+        \`\`\`
+      `, { split: { char: '', prepend: '```javascript\n', append: '\n```', maxLength: 1900 } }).catch(err_ => client.utils.logger.error('DISCORD', err_));
   })
   .on('providerReady', () => console.info('SettingsProvider ready'))
   // eslint-disable-next-line max-len
@@ -64,7 +90,13 @@ client
         console.warn('Loading invalid event file, skipping...');
         continue;
       }
-      const { run } = require(`${__dirname}/events/${file}`);
+      let run;
+      try {
+        run = require(`${__dirname}/events/${file}`).run;
+      } catch (err) {
+        console.error(err);
+        continue;
+      }
       const [event] = file.split('.');
       client.on(event, (...args) => run(client, ...args));
       //console.info('Loaded event:', event);
@@ -99,7 +131,7 @@ client.dispatcher.addInhibitor(msg => {
     'pokemon outside commands',
     msg.reply('pokemon commands must be used in <#303206425113657344>!')
   ];
-})
+});
 
 sqlite.open(path.join(__dirname, 'data', 'servers.sqlite3')).then(db => {
   client.setProvider(new SQLiteProvider(db));
@@ -124,3 +156,17 @@ client.registry
   .registerCommandsIn(path.join(__dirname, 'commands'));
 
 client.login(token).catch(console.error);
+
+process.on('unhandledRejection', (err, promise) => {
+  if (/ETIMEDOUT|getaddrinfo|Something took too long to do/.test(err)) process.exit(200);
+  if (/SequelizeUniqueConstraintError/.test(err)) return;
+  client.channels
+    .get('434682326232989696')
+    .send(stripIndents`
+      \`UNHANDLED PROMISE REJECTION:\`
+      \`\`\`javascript
+      ${require('util').inspect(promise, { depth: 2 }).split(client.token).join('-censored-')}
+      \`\`\`
+    `, { split: { char: '', prepend: '```javascript\n', append: '\n```', maxLength: 1900 } }).catch(err_ => client.utils.logger.error('DISCORD', err_));
+  console.error('ERROR', 'Unhandled promise rejection at', promise, err);
+});
