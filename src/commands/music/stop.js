@@ -27,15 +27,13 @@ module.exports = class StopMusicCommand extends Command {
     if (!queue) return msg.reply('there isn\'t any music playing right now.');
     const song = queue.songs[0];
     queue.songs = [];
-    if (song.dispatcher) song.dispatcher.end();
+    if (song && song.dispatcher) song.dispatcher.end();
 
     return msg.reply('I\'ve successfully stopped playback and cleared the queue.');
   }
 
   get queue() {
-    if (!this._queue) this._queue = this.client.registry.resolveCommand('music:play').queue;
-
-    return this._queue;
+    return this.client.registry.resolveCommand('music:play').queue;
   }
 
   hasDJRole(user, msg) {
