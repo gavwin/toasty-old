@@ -3,6 +3,7 @@ const indico = require('indico.io');
 const path = require('path');
 const fs = require('fs');
 const url = require('url');
+const { stripIndents } = require('common-tags');
 
 exports.run = (client, msg) => {
   const RichEmbed = client.embed;
@@ -52,18 +53,12 @@ exports.run = (client, msg) => {
     }
   }
 
-  const invites = [
-    'https://discord.gg/',
-    'http://discord.gg/',
-    'discord.gg/',
-    'https://discordapp.com/invite/',
-    'http://discordapp.com/invite/',
-    'discordapp.com/invite/'
-  ];
-  if (invites.some(m => msg.content.toLowerCase().includes(m))) {
+  // console.log(/discord(?:app\.com|\.gg)[\/invite\/]?(?:(?!.*[Ii10OolL]).[a-zA-Z0-9]{5,6}|[a-zA-Z0-9\-]{2,32})/g.test(msg.content.toLowerCase()));
+  // console.log(settings.noinvite);
+  if (/discord(?:app\.com|\.gg)[\/invite\/]?(?:(?!.*[Ii10OolL]).[a-zA-Z0-9]{5,6}|[a-zA-Z0-9\-]{2,32})/g.test(msg.content.toLowerCase())) {
     if (settings.noinvite === 'enabled') {
-      if (msg.author.id === msg.guild.ownerID) return;
-      if (!msg.guild.member(client.user).permissions.has('MANAGE_MESSAGES')) {
+      //if (msg.author.id === msg.guild.ownerID || client.isOwner(msg.author)) return;
+      if (!msg.guild.me.permissions.has('MANAGE_MESSAGES')) {
         msg.channel.send(':no_entry_sign: **Error:** I could not delete a Discord invite because I do not have the **Manage Messages** permission!');
         return;
       }
@@ -75,9 +70,10 @@ exports.run = (client, msg) => {
         const time = `${today.getHours()}:${today.getMinutes()}:${today.getSeconds()}`;
         const channel = msg.guild.channels.find('name', 'mod-log').id;
         embed.setColor(0xADD8E6)
-          .setAuthor(msg.author.username, msg.author.avatarURL)
-          .setTitle('Invite Deleted:')
-          .setDescription(`${msg.author.username}#${msg.author.discriminator} (${msg.author.id})`)
+          .setAuthor(`${msg.author.username} (${msg.author.id})`, msg.author.avatarURL)
+          .setDescription(stripIndents`
+            **Invite by ${msg.author.tag} deleted in ${msg.channel.toString()}**
+          `)
           .setFooter(`${date} at ${time}`);
         // eslint-disable-next-line max-len
         client.channels.get(channel).send({ embed }).catch(() => msg.reply(':no_entry_sign: **Error:** I couldn\'t send an embed in the #mod-log. Please make sure I have access to a channel called mod-log!'));
@@ -98,10 +94,6 @@ exports.run = (client, msg) => {
 
 
 const ctLogger = [];
-process.on('unhandledRejection', err => {
-  if (err.name.includes('Could not extract html5player key:')) return ctLogger.push(err.stack);
-  return ctLogger.push(err.stack);
-});
 process.on('uncaughtException', err => {
   if (err.name.includes('Could not extract html5player key:')) return ctLogger.push(err.stack);
   return console.error(err);

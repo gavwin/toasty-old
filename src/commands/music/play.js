@@ -130,8 +130,15 @@ module.exports = class PlaySongCommand extends Command {
 
   async handlePlaylist(playlist, queue, voiceChannel, msg, statusMsg) {
     const videos = await playlist.getVideos();
+    console.log([...Object.values(videos)].length);
     for (const video of Object.values(videos)) {
-      const video2 = await this.youtube.getVideoByID(video.id); // eslint-disable-line no-await-in-loop
+      let video2;
+      try {
+        video2 = await this.youtube.getVideoByID(video.id); // eslint-disable-line no-await-in-loop
+      } catch (err) {
+        console.error(err);
+        continue;
+      }
       if (video2.durationSeconds === 0) {
         statusMsg.edit(`${msg.author}, you can't play live streams.`);
 
@@ -156,7 +163,8 @@ module.exports = class PlaySongCommand extends Command {
           const connection = await queue.voiceChannel.join(); // eslint-disable-line no-await-in-loop
           queue.connection = connection;
           this.play(msg.guild, queue.songs[0]);
-          statusMsg.delete();
+          console.log([...Object.values(videos)].indexOf(video));
+          if ([...Object.values(videos)].indexOf(video) === [...Object.values(videos)].length - 1) statusMsg.delete();
         } catch (error) {
           console.error('DISCORD', 'Error occurred when joining voice channel.', error);
           this.queue.delete(msg.guild.id);
@@ -164,7 +172,8 @@ module.exports = class PlaySongCommand extends Command {
         }
       } else {
         await this.addSong(msg, video2); // eslint-disable-line no-await-in-loop
-        statusMsg.delete();
+        console.log([...Object.values(videos)].indexOf(video));
+        if ([...Object.values(videos)].indexOf(video) === [...Object.values(videos)].length - 1) statusMsg.delete();
       }
     }
 

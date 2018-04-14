@@ -6,5 +6,6 @@
   "shardCount": "auto",
   "spawnDelay": 5000,
   "autoRespawn": true,
-  "serversPerShard": 1000
+  "serversPerShard": 1000,
+  "newsApiToken": "news api token"
 }
