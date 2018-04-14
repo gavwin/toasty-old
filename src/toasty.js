@@ -1,10 +1,10 @@
-const { SQLiteProvider } = require('discord.js-commando');
+const { SQLiteProvider, FriendlyError } = require('discord.js-commando');
 const readdir = require('util').promisify(require('fs').readdir);
 const path = require('path');
 const sqlite = require('sqlite');
 const { me, prefix, token } = require('./config');
 const ToastyClient = require('./structures/ToastyClient');
-const { oneLine } = require('common-tags');
+const { oneLine, stripIndents } = require('common-tags');
 
 const client = new ToastyClient({
   commandPrefix: prefix,
@@ -42,7 +42,14 @@ client
     client.session.commands++;
   })
   .on('commandError', (cmd, err) => {
+    if (err instanceof FriendlyError) return;
     console.error(`Error in cmd ${cmd.name}:`, err);
+    client.channels.get('305383689464971264').send(stripIndents`
+    \`COMMAND ERRORED: ${cmd.groupID}:${cmd.memberName}\`
+    \`\`\`javascript
+      ${err.stack}
+    \`\`\`
+  `);
   })
   .on('providerReady', () => console.info('SettingsProvider ready'))
   // eslint-disable-next-line max-len

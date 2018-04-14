@@ -33,9 +33,7 @@ module.exports = class StopMusicCommand extends Command {
   }
 
   get queue() {
-    if (!this._queue) this._queue = this.client.registry.resolveCommand('music:play').queue;
-
-    return this._queue;
+    return this.client.registry.resolveCommand('music:play').queue;
   }
 
   hasDJRole(user, msg) {

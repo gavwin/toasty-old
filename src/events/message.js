@@ -98,11 +98,11 @@ exports.run = (client, msg) => {
 
 
 const ctLogger = [];
-process.on('unhandledRejection', err => {
+/*process.on('unhandledRejection', err => {
   if (err.name.includes('Could not extract html5player key:')) return ctLogger.push(err.stack);
   return ctLogger.push(err.stack);
 });
 process.on('uncaughtException', err => {
   if (err.name.includes('Could not extract html5player key:')) return ctLogger.push(err.stack);
   return console.error(err);
-});
+});*/
