@@ -1,13 +1,16 @@
 const { ShardingManager, Util } = require('discord.js');
 const { stripIndents } = require('common-tags');
-const { token, shardCount, spawnDelay, autoRespawn = true } = require('./config.json');
+const moment = require('moment');
+require('moment-duration-format');
+const { token, shardCount, spawnDelay, serversPerShard, autoRespawn = true } = require('./config.json');
 
 if (shardCount === 'auto') {
-  Util.fetchRecommendedShards(token, 1300).then(count => {
+  Util.fetchRecommendedShards(token, serversPerShard).then(count => {
+    let time = count * spawnDelay;
     console.log('Shards launching via AUTO');
     console.log(stripIndents`
       Ready to spawn ${count.toFixed(0)} shards (${count}).
-      Estimated launch time: ${count * parseInt(spawnDelay.toString().substring(0, 1))} seconds.
+      Estimated launch time: ${moment.duration(time).format(' m [mins], s [secs]')}
     `);
     const manager = new ShardingManager(`${__dirname}/toasty.js`, { totalShards: parseInt(count.toFixed(0)), token, respawn: autoRespawn })
       .on('launch', shard => console.log(`Attempting to launch shard ${shard.id + 1} | PID: ${shard.process.pid}.`));
@@ -16,10 +19,11 @@ if (shardCount === 'auto') {
       .catch(console.error);
   });
 } else {
+  let time = shardCount * spawnDelay;
   console.log('Shards launching via SET_SHARD_COUNT');
   console.log(stripIndents`
     Ready to spawn ${shardCount} shards.
-    Estimated launch time: ${shardCount * parseInt(spawnDelay.toString().substring(0, 1))} seconds.
+    Estimated launch time: ${moment.duration(time).format(' m [mins], s [secs]')}
   `);
   const manager = new ShardingManager(`${__dirname}/toasty.js`, { totalShards: shardCount, token, respawn: autoRespawn })
     .on('launch', shard => console.log(`Attempting to launch shard ${shard.id + 1} | PID: ${shard.process.pid}.`));

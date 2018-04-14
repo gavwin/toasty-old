@@ -3,7 +3,8 @@
   "prefix": "prefix",
   "youTubeToken": "youtube api token for simple-youtube-api",
   "token": "bot token",
-  "shardCount": 1,
-  "spawnDelay": 1000,
-  "autoRespawn": true
+  "shardCount": "auto",
+  "spawnDelay": 5000,
+  "autoRespawn": true,
+  "serversPerShard": 1000
 }
