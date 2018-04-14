@@ -2,7 +2,7 @@ const { Command } = require('discord.js-commando');
 const path = require('path');
 const { newsApiToken } = require(path.join(__dirname, '..', '..', 'config.json'));
 const NewsAPI = require('newsapi');
-//const newsapi = new NewsAPI(newsApiToken);
+const newsapi = new NewsAPI(newsApiToken);
 
 module.exports = class CleanCommand extends Command {
   constructor(client) {
