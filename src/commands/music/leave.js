@@ -16,14 +16,15 @@ module.exports = class ForceLeaveCommand extends Command {
     });
   }
   run(msg) {
+    const queue = this.queue.get(msg.guild.id);
     if (!msg.guild.me.voiceChannel) {
       return msg.reply('I am not connected to a voice channel, silly!');
-    } else if (msg.guild.voiceConnection && msg.guild.voiceConnection.dispatcher) {
+    } else if (msg.guild.voiceConnection && msg.guild.voiceConnection.dispatcher && (queue && queue.songs && queue.songs[0] && queue.songs[0].dispatcher)) {
       return msg.reply('please try the `stop` command first before trying to force me to leave :(');
     } else {
-      const queue = this.queue.get(msg.guild.id);
       if (queue && queue.songs) queue.songs = [];
       if (queue && queue.songs[0]) queue.songs[0].dispatcher.end();
+      if (msg.guild.voiceConnection && msg.guild.voiceConnection.dispatcher) msg.guild.voiceConnection.dispatcher.end();
       msg.guild.me.voiceChannel.leave();
       return msg.reply('successfully left your voice channel.');
     }
