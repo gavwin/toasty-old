@@ -35,7 +35,7 @@ client
         ${err.stack.split(client.token).join('-censored-')}
         \`\`\`
       `, { split: { char: '', prepend: '```javascript\n', append: '\n```', maxLength: 1900 } }).catch(err_ => console.error('DISCORD', err_));
-    console.error('ERROR', 'Unhandled promise rejection at', promise, err);
+    console.error('ERROR', err);
   })
   .on('warn', warn => {
     client.channels

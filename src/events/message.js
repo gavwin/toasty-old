@@ -55,7 +55,7 @@ exports.run = (client, msg) => {
 
   // console.log(/discord(?:app\.com|\.gg)[\/invite\/]?(?:(?!.*[Ii10OolL]).[a-zA-Z0-9]{5,6}|[a-zA-Z0-9\-]{2,32})/g.test(msg.content.toLowerCase()));
   // console.log(settings.noinvite);
-  if (/discord(?:app\.com|\.gg)[\/invite\/]?(?:(?!.*[Ii10OolL]).[a-zA-Z0-9]{5,6}|[a-zA-Z0-9\-]{2,32})/g.test(msg.content.toLowerCase())) {
+  if (/discord(?:app\.com|\.gg)[/invite/]?(?:(?!.*[Ii10OolL]).[a-zA-Z0-9]{5,6}|[a-zA-Z0-9-]{2,32})/g.test(msg.content.toLowerCase())) {
     if (settings.noinvite === 'enabled') {
       //if (msg.author.id === msg.guild.ownerID || client.isOwner(msg.author)) return;
       if (!msg.guild.me.permissions.has('MANAGE_MESSAGES')) {

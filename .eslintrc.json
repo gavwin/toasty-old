@@ -51,25 +51,28 @@
       }
     ],
     "no-undef": [
-      "off"
+      "error"
     ],
     "no-cond-assign": [
-      "off"
+      "error"
     ],
     "no-constant-condition": [
-      "off"
+      "error"
     ],
     "no-unused-vars": [
-      "off"
+      "warn"
     ],
     "no-useless-escape": [
-      "off"
+      "error"
     ],
     "no-redeclare": [
-      "off"
+      "error"
     ],
     "no-inner-declarations": [
-      "off"
+      "warn"
+    ],
+    "consistent-return": [
+      "error"
     ]
   }
 }
