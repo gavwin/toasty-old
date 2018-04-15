@@ -58,9 +58,11 @@ class Pokemon {
               .run()
               .then(response_ => {
                 console.log('Successfully updated count for pokemon.', response_);
+                return true;
               })
               .error(err => {
                 console.log('Failed to update count for pokemon.', err);
+                return false;
               });
           } else {
             this.r.table('Pokemon')
@@ -79,9 +81,11 @@ class Pokemon {
               .run()
               .then(_response => {
                 console.log('Successfully added in pokemon.', _response);
+                return true;
               })
               .error(err => {
                 console.log('Failed to add in pokemon.', err);
+                return false;
               });
           }
         } catch (err) {
@@ -102,14 +106,155 @@ class Pokemon {
             .run()
             .then(_response => {
               console.log('Successfully added in pokemon via insert', _response);
+              return true;
             })
             .error(err_ => {
               console.log('Failed to add in pokemon via insert.', err_);
+              return false;
             });
         }
       })
       .error(err => {
         console.log(err);
+        return false;
+      });
+  }
+
+  addPokemonForce(newPokemon, user) {
+    this.r.table('Pokemon')
+      .get(user.id)
+      .run()
+      .then(response => {
+        // Console.log(response);
+        try {
+          const data = response[user.id].pokemon;
+          if (data[newPokemon]) {
+            const oldCount = data[newPokemon].count;
+            this.r.table('Pokemon')
+              .get(user.id)
+              .update({
+                [user.id]: {
+                  pokemon: { [newPokemon]: { count: oldCount + 1 } }
+                }
+              })
+              .run()
+              .then(response_ => {
+                console.log('Successfully updated count for pokemon.', response_);
+                return true;
+              })
+              .error(err => {
+                console.log('Failed to update count for pokemon.', err);
+                return false;
+              });
+          } else {
+            this.r.table('Pokemon')
+              .get(user.id)
+              .update({
+                [user.id]: {
+                  pokemon: {
+                    [newPokemon]: {
+                      name: newPokemon,
+                      count: 1, gif: `http://www.pokestadium.com/sprites/xy/${newPokemon.toLowerCase()}.gif`
+                    }
+                  }
+                }
+              })
+              .run()
+              .then(_response => {
+                console.log('Successfully added in pokemon.', _response);
+                return true;
+              })
+              .error(err => {
+                console.log('Failed to add in pokemon.', err);
+                return false;
+              });
+          }
+        } catch (err) {
+          this.r.table('Pokemon')
+            .insert({
+              id: user.id,
+              [user.id]: {
+                pokemon: {
+                  [newPokemon]: {
+                    name: newPokemon,
+                    count: 1,
+                    gif: `http://www.pokestadium.com/sprites/xy/${newPokemon.toLowerCase()}.gif`
+                  }
+                },
+                next: Date.now()
+              }
+            })
+            .run()
+            .then(_response => {
+              console.log('Successfully added in pokemon via insert', _response);
+              return true;
+            })
+            .error(err_ => {
+              console.log('Failed to add in pokemon via insert.', err_);
+              return false;
+            });
+        }
+      })
+      .error(err => {
+        console.log(err);
+        return false;
+      });
+  }
+
+  removePokemon(newPokemon, user) {
+    this.r.table('Pokemon')
+      .get(user.id)
+      .run()
+      .then(response => {
+        // Console.log(response);
+        try {
+          const data = response[user.id].pokemon;
+          const oldCount = data[newPokemon].count;
+          if (oldCount - 1 === 0) {
+            delete data[newPokemon];
+            console.log(data[newPokemon]);
+            console.log(data);
+            this.r.table('Pokemon')
+              .get(user.id)
+              .replace({
+                id: user.id,
+                [user.id]: {
+                  pokemon: data
+                }
+              })
+              .run()
+              .then(response_ => {
+                console.log('Successfully updated count for pokemon.', response_);
+              })
+              .error(err => {
+                console.log('Failed to update count for pokemon.', err);
+              });
+          } else {
+            this.r.table('Pokemon')
+              .get(user.id)
+              .update({
+                [user.id]: {
+                  pokemon: { [newPokemon]: { count: oldCount - 1 } }
+                }
+              })
+              .run()
+              .then(response_ => {
+                console.log('Successfully updated count for pokemon.', response_);
+                return true;
+              })
+              .error(err => {
+                console.log('Failed to update count for pokemon.', err);
+                return false;
+              });
+          }
+        } catch (err) {
+          console.error(err);
+          return false;
+        }
+      })
+      .error(err => {
+        console.log(err);
+        return false;
       });
   }
 
@@ -127,6 +272,11 @@ class Pokemon {
           return arr;
         }
       });
+  }
+
+  async hasPokemon(id, pokemon) {
+    const inventory = await this.getInventory(id);
+    return inventory.some(item => item.name.toLowerCase() === pokemon.toLowerCase());
   }
 }
 

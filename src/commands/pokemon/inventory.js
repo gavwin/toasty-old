@@ -30,6 +30,10 @@ module.exports = class InventoryCommand extends Command {
     const { embed: RichEmbed } = this.client;
     const user = args.user || msg.author;
     let inventory = await this.client.pokemon.getInventory(user.id);
+    if (!inventory.length) {
+      msg.reply(`${args.user ? 'that user doesn\'t' : 'you don\'t'} have any Pokemon!`);
+      return;
+    }
     inventory = inventory.map(item => `**${item.name}** x${item.count}`);
     const paginatedItems = util.paginate(inventory, 1, 25);
 

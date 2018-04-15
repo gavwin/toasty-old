@@ -112,14 +112,14 @@ client.dispatcher.addInhibitor(msg => {
   return 'Has been blacklisted.';
 });
 
-client.dispatcher.addInhibitor(msg => {
+/*client.dispatcher.addInhibitor(msg => {
   if (!msg.command) return false;
   if (msg.command.name !== 'trade') return false;
   return [
     'Trade command',
     msg.reply('the trade command is disabled.')
   ];
-});
+});*/
 
 client.dispatcher.addInhibitor(msg => {
   if (!msg.command) return false;
