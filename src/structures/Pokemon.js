@@ -113,6 +113,133 @@ class Pokemon {
       });
   }
 
+  addPokemonForce(newPokemon, user) {
+    this.r.table('Pokemon')
+      .get(user.id)
+      .run()
+      .then(response => {
+        // Console.log(response);
+        try {
+          const data = response[user.id].pokemon;
+          if (data[newPokemon]) {
+            const oldCount = data[newPokemon].count;
+            this.r.table('Pokemon')
+              .get(user.id)
+              .update({
+                [user.id]: {
+                  pokemon: { [newPokemon]: { count: oldCount + 1 } }
+                }
+              })
+              .run()
+              .then(response_ => {
+                console.log('Successfully updated count for pokemon.', response_);
+              })
+              .error(err => {
+                console.log('Failed to update count for pokemon.', err);
+              });
+          } else {
+            this.r.table('Pokemon')
+              .get(user.id)
+              .update({
+                [user.id]: {
+                  pokemon: {
+                    [newPokemon]: {
+                      name: newPokemon,
+                      count: 1, gif: `http://www.pokestadium.com/sprites/xy/${newPokemon.toLowerCase()}.gif`
+                    }
+                  }
+                }
+              })
+              .run()
+              .then(_response => {
+                console.log('Successfully added in pokemon.', _response);
+              })
+              .error(err => {
+                console.log('Failed to add in pokemon.', err);
+              });
+          }
+        } catch (err) {
+          this.r.table('Pokemon')
+            .insert({
+              id: user.id,
+              [user.id]: {
+                pokemon: {
+                  [newPokemon]: {
+                    name: newPokemon,
+                    count: 1,
+                    gif: `http://www.pokestadium.com/sprites/xy/${newPokemon.toLowerCase()}.gif`
+                  }
+                },
+                next: Date.now()
+              }
+            })
+            .run()
+            .then(_response => {
+              console.log('Successfully added in pokemon via insert', _response);
+            })
+            .error(err_ => {
+              console.log('Failed to add in pokemon via insert.', err_);
+            });
+        }
+      })
+      .error(err => {
+        console.log(err);
+      });
+  }
+
+  removePokemon(newPokemon, user) {
+    this.r.table('Pokemon')
+      .get(user.id)
+      .run()
+      .then(response => {
+        // Console.log(response);
+        try {
+          const data = response[user.id].pokemon;
+          const oldCount = data[newPokemon].count;
+          if (oldCount - 1 === 0) {
+            delete data[newPokemon];
+            // console.log(data[newPokemon]);
+            // console.log(data);
+            this.r.table('Pokemon')
+              .get(user.id)
+              .replace({
+                id: user.id,
+                [user.id]: {
+                  pokemon: data
+                }
+              })
+              .run()
+              .then(response_ => {
+                console.log('Successfully updated count for pokemon.', response_);
+              })
+              .error(err => {
+                console.log('Failed to update count for pokemon.', err);
+              });
+          } else {
+            this.r.table('Pokemon')
+              .get(user.id)
+              .update({
+                [user.id]: {
+                  pokemon: { [newPokemon]: { count: oldCount - 1 } }
+                }
+              })
+              .run()
+              .then(response_ => {
+                console.log('Successfully updated count for pokemon.', response_);
+              })
+              .error(err => {
+                console.log('Failed to update count for pokemon.', err);
+              });
+          }
+        } catch (err) {
+          console.error(err);
+        }
+      })
+      .error(err => {
+        console.log(err);
+      });
+  }
+
   getInventory(id) {
     const arr = [];
     return this.r.table('Pokemon')
@@ -127,6 +254,11 @@ class Pokemon {
           return arr;
         }
       });
+  }
+
+  async hasPokemon(id, pokemon) {
+    const inventory = await this.getInventory(id);
+    return inventory.some(item => item.name.toLowerCase() === pokemon.toLowerCase());
   }
 }
 

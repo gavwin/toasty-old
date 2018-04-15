@@ -35,7 +35,7 @@ client
         ${err.stack.split(client.token).join('-censored-')}
         \`\`\`
       `, { split: { char: '', prepend: '```javascript\n', append: '\n```', maxLength: 1900 } }).catch(err_ => console.error('DISCORD', err_));
-    console.error('ERROR', 'Unhandled promise rejection at', promise, err);
+    console.error('ERROR', err);
   })
   .on('warn', warn => {
     client.channels
@@ -112,14 +112,14 @@ client.dispatcher.addInhibitor(msg => {
   return 'Has been blacklisted.';
 });
 
-client.dispatcher.addInhibitor(msg => {
+/*client.dispatcher.addInhibitor(msg => {
   if (!msg.command) return false;
   if (msg.command.name !== 'trade') return false;
   return [
     'Trade command',
     msg.reply('the trade command is disabled.')
   ];
-});
+});*/
 
 client.dispatcher.addInhibitor(msg => {
   if (!msg.command) return false;
