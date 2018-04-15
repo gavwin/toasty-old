@@ -58,11 +58,9 @@ class Pokemon {
               .run()
               .then(response_ => {
                 console.log('Successfully updated count for pokemon.', response_);
-                return true;
               })
               .error(err => {
                 console.log('Failed to update count for pokemon.', err);
-                return false;
               });
           } else {
             this.r.table('Pokemon')
@@ -81,11 +79,9 @@ class Pokemon {
               .run()
               .then(_response => {
                 console.log('Successfully added in pokemon.', _response);
-                return true;
               })
               .error(err => {
                 console.log('Failed to add in pokemon.', err);
-                return false;
               });
           }
         } catch (err) {
@@ -106,17 +102,14 @@ class Pokemon {
             .run()
             .then(_response => {
               console.log('Successfully added in pokemon via insert', _response);
-              return true;
             })
             .error(err_ => {
               console.log('Failed to add in pokemon via insert.', err_);
-              return false;
             });
         }
       })
       .error(err => {
         console.log(err);
-        return false;
       });
   }
 
@@ -140,11 +133,9 @@ class Pokemon {
               .run()
               .then(response_ => {
                 console.log('Successfully updated count for pokemon.', response_);
-                return true;
               })
               .error(err => {
                 console.log('Failed to update count for pokemon.', err);
-                return false;
               });
           } else {
             this.r.table('Pokemon')
@@ -162,11 +153,9 @@ class Pokemon {
               .run()
               .then(_response => {
                 console.log('Successfully added in pokemon.', _response);
-                return true;
               })
               .error(err => {
                 console.log('Failed to add in pokemon.', err);
-                return false;
               });
           }
         } catch (err) {
@@ -187,17 +176,14 @@ class Pokemon {
             .run()
             .then(_response => {
               console.log('Successfully added in pokemon via insert', _response);
-              return true;
             })
             .error(err_ => {
               console.log('Failed to add in pokemon via insert.', err_);
-              return false;
             });
         }
       })
       .error(err => {
         console.log(err);
-        return false;
       });
   }
 
@@ -212,8 +198,8 @@ class Pokemon {
           const oldCount = data[newPokemon].count;
           if (oldCount - 1 === 0) {
             delete data[newPokemon];
-            console.log(data[newPokemon]);
-            console.log(data);
+            // console.log(data[newPokemon]);
+            // console.log(data);
             this.r.table('Pokemon')
               .get(user.id)
               .replace({
@@ -240,21 +226,17 @@ class Pokemon {
               .run()
               .then(response_ => {
                 console.log('Successfully updated count for pokemon.', response_);
-                return true;
               })
               .error(err => {
                 console.log('Failed to update count for pokemon.', err);
-                return false;
               });
           }
         } catch (err) {
           console.error(err);
-          return false;
         }
       })
       .error(err => {
         console.log(err);
-        return false;
       });
   }
 
