@@ -66,25 +66,36 @@ module.exports = class TradeCommand extends Command {
       return msg.channel.send('Yea.. Your inventory has been cleared due to abusement of the beta-cmd w/o telling my dev!');
     } else {
       await msg.reply('are you sure you want to trade that pokemon?');
-      const filter = m => m.author.id === msg.author.id && ['yes', 'y', 'no', 'n'].includes(m.content.toLowerCase());
+      
+      const filter = m => m.author.id === user.id && ['yes', 'y', 'no', 'n'].includes(m.content.toLowerCase());
       const collected = await msg.channel.awaitMessages(filter, { time: 30e3, errors: ['time'], max: 1 })
         .catch(() => msg.reply(`${xmark} Time ran out, aborted command.`));
+
       if (['y', 'yes'].includes(collected.first().content.toLowerCase())) {
-        try {
-          const toAdd = toCapitalCase(pokemon2);
-          const toAdd1 = toCapitalCase(pokemon1);
-          await Promise.all([
-            this.client.pokemon.addPokemonForce(toAdd, msg.author),
-            this.client.pokemon.addPokemonForce(toAdd1, user),
-            this.client.pokemon.removePokemon(toAdd1, msg.author),
-            this.client.pokemon.removePokemon(toAdd, user)
-          ]);
-          return msg.reply(`${checkmark} You've successfully traded ${toAdd1} with ${toAdd}!`);
-        } catch (err) {
-          this.client.emit('commandError', this, err);
-          return msg.reply(`${xmark} An error occurred while trading that Pokemon! My developer has been notified.`);
+        const filter1 = m => m.author.id === msg.author.id && ['yes', 'y', 'no', 'n'].includes(m.content.toLowerCase());
+        const collected1 = await msg.channel.awaitMessages(filter1, { time: 30e3, errors: ['time'], max: 1 })
+          .catch(() => msg.reply(`${xmark} Time ran out, aborted command.`));
+        if (['y', 'yes'].includes(collected1.first().content.toLowerCase())) {
+          try {
+            const toAdd = toCapitalCase(pokemon2);
+            const toAdd1 = toCapitalCase(pokemon1);
+            await Promise.all([
+              this.client.pokemon.addPokemonForce(toAdd, msg.author),
+              this.client.pokemon.addPokemonForce(toAdd1, user),
+              this.client.pokemon.removePokemon(toAdd1, msg.author),
+              this.client.pokemon.removePokemon(toAdd, user)
+            ]);
+            return msg.reply(`${checkmark} You've successfully traded ${toAdd1} with ${toAdd}!`);
+          } catch (err) {
+            this.client.emit('commandError', this, err);
+            return msg.reply(`${xmark} An error occurred while trading that Pokemon! My developer has been notified.`);
+          }
+        } else if (['n', 'no'].includes(collected1.first().content.toLowerCase())) {
+          return msg.reply(`${xmark} Cancelled trade.`);
+        } else {
+          return msg.reply(`${xmark} That was not a valid option! Aborting trade...`);
         }
-      } else if ([].includes(collected.first().content.toLowerCase())) {
+      } else if (['n', 'no'].includes(collected.first().content.toLowerCase())) {
         return msg.reply(`${xmark} Cancelled trade.`);
       } else {
         return msg.reply(`${xmark} That was not a valid option! Aborting trade...`);
