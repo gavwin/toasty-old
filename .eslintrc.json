@@ -73,6 +73,9 @@
     ],
     "consistent-return": [
       "error"
+    ],
+    "no-useless-return": [
+      "error"
     ]
   }
 }
