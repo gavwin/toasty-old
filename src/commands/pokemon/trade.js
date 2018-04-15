@@ -65,16 +65,17 @@ module.exports = class TradeCommand extends Command {
     if (msg.author.id === '263105387912232979') {
       return msg.channel.send('Yea.. Your inventory has been cleared due to abusement of the beta-cmd w/o telling my dev!');
     } else {
-      await msg.reply('are you sure you want to trade that pokemon?');
-      
-      const filter = m => m.author.id === user.id && ['yes', 'y', 'no', 'n'].includes(m.content.toLowerCase());
+      await msg.reply('are you sure you want to trade that pokemon? Respond with `yes` or `no`');
+      const filter = m => m.author.id === msg.author.id && ['yes', 'y', 'no', 'n'].includes(m.content.toLowerCase());
       const collected = await msg.channel.awaitMessages(filter, { time: 30e3, errors: ['time'], max: 1 })
         .catch(() => msg.reply(`${xmark} Time ran out, aborted command.`));
 
       if (['y', 'yes'].includes(collected.first().content.toLowerCase())) {
-        const filter1 = m => m.author.id === msg.author.id && ['yes', 'y', 'no', 'n'].includes(m.content.toLowerCase());
+        const filter1 = m => m.author.id === user.id && ['yes', 'y', 'no', 'n'].includes(m.content.toLowerCase());
+        await msg.say(`${user}, are you sure you want to trade that pokemon? Respond with \`yes\` or \`no\``);
         const collected1 = await msg.channel.awaitMessages(filter1, { time: 30e3, errors: ['time'], max: 1 })
           .catch(() => msg.reply(`${xmark} Time ran out, aborted command.`));
+
         if (['y', 'yes'].includes(collected1.first().content.toLowerCase())) {
           try {
             const toAdd = toCapitalCase(pokemon2);
