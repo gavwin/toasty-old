@@ -114,7 +114,7 @@ module.exports = class PlaySongCommand extends Command {
 
         return null;
       } catch (error) {
-        console.error('DISCORD', 'Error occurred when joining voice channel.', error);
+        //console.error('DISCORD', 'Error occurred when joining voice channel.', error);
         this.queue.delete(msg.guild.id);
         statusMsg.edit(`${msg.author}, unable to join your voice channel.`);
 
@@ -136,7 +136,7 @@ module.exports = class PlaySongCommand extends Command {
       try {
         video2 = await this.youtube.getVideoByID(video.id); // eslint-disable-line no-await-in-loop
       } catch (err) {
-        console.error(err);
+        //console.error(err);
         continue;
       }
       if (video2.durationSeconds === 0) {
@@ -166,7 +166,7 @@ module.exports = class PlaySongCommand extends Command {
           console.log([...Object.values(videos)].indexOf(video));
           if ([...Object.values(videos)].indexOf(video) === [...Object.values(videos)].length - 1) statusMsg.delete();
         } catch (error) {
-          console.error('DISCORD', 'Error occurred when joining voice channel.', error);
+          //console.error('DISCORD', 'Error occurred when joining voice channel.', error);
           this.queue.delete(msg.guild.id);
           statusMsg.edit(`${msg.author}, unable to join your voice channel.`);
         }
@@ -217,7 +217,7 @@ module.exports = class PlaySongCommand extends Command {
     const stream = ytdl(song.url, { audioonly: true })
       .on('error', err => {
         streamErrored = true;
-        console.error('YTDL', 'Error occurred when streaming video:', err);
+        //console.error('YTDL', 'Error occurred when streaming video:', err);
         playing.then(msg => msg.edit(`👎 Couldn't play ${song}.`));
         queue.songs.shift();
         this.play(guild, queue.songs[0]);
@@ -229,7 +229,7 @@ module.exports = class PlaySongCommand extends Command {
         this.play(guild, queue.songs[0]);
       })
       .on('error', err => {
-        console.error('DISCORD', 'Error occurred in stream dispatcher:', err);
+        //console.error('DISCORD', 'Error occurred in stream dispatcher:', err);
         queue.textChannel.send(`An error occurred while playing the song: \`${err}\``);
       });
     dispatcher.setPLP(0.01);

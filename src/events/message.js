@@ -10,12 +10,6 @@ exports.run = (client, msg) => {
   client.session.messages++;
   if (msg.channel.type === 'dm') return;
 
-  if (msg.content.startsWith(`${prefix}ctlogs`) && client.isOwner(msg.author)) {
-    msg.reply(':white_check_mark: Logged and cleared ctLogger.');
-    console.log(ctLogger.join('\n'));
-    ctLogger.splice(0, ctLogger.length);
-  }
-
   const data = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'servers.json'), 'utf8'));
   const settings = data[msg.guild.id] ? data[msg.guild.id] : { nonsfw: 'disabled', noinvite: 'disabled', nomemedog: 'disabled' };
 
@@ -92,10 +86,3 @@ exports.run = (client, msg) => {
     }
   }
 };
-
-
-const ctLogger = [];
-process.on('uncaughtException', err => {
-  if (err.name.includes('Could not extract html5player key:')) return ctLogger.push(err.stack);
-  return console.error(err);
-});

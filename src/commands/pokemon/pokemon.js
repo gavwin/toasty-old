@@ -10,8 +10,8 @@ module.exports = class PokemonCommand extends Command {
       name: 'pokemon',
       group: 'pokemon',
       memberName: 'pokemon',
-      description: 'Lets you catch a Pokemon every 5 hours.',
-      details: 'Lets you catch a random Pokemon every 5 hours and stores it in your virtual inventory.\nYou can trade pokemon with other players.',
+      description: 'Catch a pokemon!',
+      details: 'Lets you catch a random Pokemon every 3 hours and stores it in your virtual inventory.\nYou can trade pokemon with other players.',
       guildOnly: true,
       throttling: {
         usages: 2,
@@ -23,11 +23,7 @@ module.exports = class PokemonCommand extends Command {
   async run(msg) {
     const user = msg.author;
     if (msg.channel.id === '208674478773895168') return msg.reply('Pokemon commands must be used in <#303206425113657344>!');
-    /* eslint-disable max-len */
-    /* Const { body } = await snekfetch.get(`https://discordbots.org/api/bots/${this.client.user.id}/votes?onlyids=1`)
-      .set('Authorization', discordbotsToken)
-        if (!body.includes(user.id)) return msg.reply(`:no_entry_sign: You can\'t use the Pokemon commands because you haven\'t upvoted me.\nType, \`${this.client.commandPrefix}upvote\` for the steps on how to upvote me.`);
-        */
+
     /* eslint-enable max-len */
     const received = await this.client.pokemon.hasReceived(user.id);
     if (received) {
