@@ -1,4 +1,4 @@
-const HOURS = 0 * 60 * 60 * 1000;
+const HOURS = 3 * 60 * 60 * 1000;
 
 class Pokemon {
   constructor(client) {
