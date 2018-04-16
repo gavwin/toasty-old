@@ -10,12 +10,6 @@ exports.run = (client, msg) => {
   client.session.messages++;
   if (msg.channel.type === 'dm') return;
 
-  if (msg.content.startsWith(`${prefix}ctlogs`) && client.isOwner(msg.author)) {
-    msg.reply(':white_check_mark: Logged and cleared ctLogger.');
-    console.log(ctLogger.join('\n'));
-    ctLogger.splice(0, ctLogger.length);
-  }
-
   const data = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'servers.json'), 'utf8'));
   const settings = data[msg.guild.id] ? data[msg.guild.id] : { nonsfw: 'disabled', noinvite: 'disabled', nomemedog: 'disabled' };
 
@@ -55,13 +49,14 @@ exports.run = (client, msg) => {
 
   // console.log(/discord(?:app\.com|\.gg)[\/invite\/]?(?:(?!.*[Ii10OolL]).[a-zA-Z0-9]{5,6}|[a-zA-Z0-9\-]{2,32})/g.test(msg.content.toLowerCase()));
   // console.log(settings.noinvite);
-  if (/discord(?:app\.com|\.gg)[\/invite\/]?(?:(?!.*[Ii10OolL]).[a-zA-Z0-9]{5,6}|[a-zA-Z0-9\-]{2,32})/g.test(msg.content.toLowerCase())) {
-    if (settings.noinvite === 'enabled') {
-      //if (msg.author.id === msg.guild.ownerID || client.isOwner(msg.author)) return;
-      if (!msg.guild.me.permissions.has('MANAGE_MESSAGES')) {
-        msg.channel.send(':no_entry_sign: **Error:** I could not delete a Discord invite because I do not have the **Manage Messages** permission!');
-        return;
-      }
+  if (
+    /discord(?:app\.com|\.gg)[/invite/]?(?:(?!.*[Ii10OolL]).[a-zA-Z0-9]{5,6}|[a-zA-Z0-9-]{2,32})/g.test(msg.content.toLowerCase())
+      && settings.noinvite === 'enabled'
+  ) {
+    //if (msg.author.id === msg.guild.ownerID || client.isOwner(msg.author)) return;
+    if (!msg.guild.me.permissions.has('MANAGE_MESSAGES')) {
+      msg.channel.send(':no_entry_sign: **Error:** I could not delete a Discord invite because I do not have the **Manage Messages** permission!');
+    } else {
       msg.delete().then(() => msg.reply(':no_entry_sign: There is no invite link sending allowed on this server!'));
       if (settings.modlog === 'enabled') {
         const embed = new RichEmbed();
@@ -84,17 +79,10 @@ exports.run = (client, msg) => {
   if (msg.content.includes('This is memedog.')
     && msg.content.includes('Help memedog take over Discord by pasting in 10 other servers or he will never be a meme dog')
     && settings.nomemedog === 'enabled') {
-    if (!msg.guild.member(client.user).permissions.has('MANAGE_MESSAGES')) {
+    if (!msg.guild.me.permissions.has('MANAGE_MESSAGES')) {
       msg.channel.send(':no_entry_sign: **Error:** I could not delete memedog because I do not have the **Manage Messages** permission!');
-      return;
+    } else {
+      msg.delete().then(() => msg.reply(':no_entry_sign: There is no memedog allowed on this server!'));
     }
-    msg.delete().then(() => msg.reply(':no_entry_sign: There is no memedog allowed on this server!'));
   }
 };
-
-
-const ctLogger = [];
-process.on('uncaughtException', err => {
-  if (err.name.includes('Could not extract html5player key:')) return ctLogger.push(err.stack);
-  return console.error(err);
-});
