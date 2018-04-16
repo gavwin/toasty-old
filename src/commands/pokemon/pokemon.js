@@ -38,6 +38,8 @@ module.exports = class PokemonCommand extends Command {
 
     const newPokemon = randomPokemon();
 
+    //const newPokemon = ['Pikachu', 'Bulbasaur'][Math.floor(Math.random() * 2)];
+
     try {
       const pe = this.client.emojis.get('433754631328235532');
       if (!pe) {
