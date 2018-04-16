@@ -1,6 +1,4 @@
 const { Command } = require('discord.js-commando');
-const events = require('events');
-const pokemonEvent = new events.EventEmitter();
 
 module.exports = class TradeCommand extends Command {
   constructor(client) {
@@ -44,13 +42,13 @@ module.exports = class TradeCommand extends Command {
     if (!msg.guild.me.hasPermission('USE_EXTERNAL_EMOJIS')) return msg.reply(':no_entry_sign: I don\'t have **External Emojies** permission to use this cmd!');
     if (!msg.guild.me.hasPermission('EMBED_LINKS')) return msg.reply(':no_entry_sign: I don\'t have **Embed Links** permission to use this cmd!');
 
-    const xmark = this.client.emojis.get('345201622827139082');
-    const checkmark = this.client.emojis.get('345201601427800064');
-    
+    /*const xmark = this.client.emojis.get('345201622827139082');
+    const checkmark = this.client.emojis.get('345201601427800064');*/
+
     const inventory = await this.client.pokemon.getInventory(msg.author.id);
-    if (!inventory.length) return msg.reply('you don\'t have any Pokemon to trade!');
+    if (!inventory.length) return msg.reply(':no_entry_sign: you don\'t have any Pokemon to trade!');
     const inventory1 = await this.client.pokemon.getInventory(user.id);
-    if (!inventory1.length) return msg.reply('that user doesn\'t have any Pokemon to trade!');
+    if (!inventory1.length) return msg.reply(':no_entry_sign: that user doesn\'t have any Pokemon to trade!');
 
     const hasPokemon = await this.client.pokemon.hasPokemon(msg.author.id, pokemon1),
       hasPokemon1 = await this.client.pokemon.hasPokemon(user.id, pokemon2);
@@ -68,13 +66,13 @@ module.exports = class TradeCommand extends Command {
       await msg.reply('are you sure you want to trade that pokemon? Respond with `yes` or `no`');
       const filter = m => m.author.id === msg.author.id && ['yes', 'y', 'no', 'n'].includes(m.content.toLowerCase());
       const collected = await msg.channel.awaitMessages(filter, { time: 30e3, errors: ['time'], max: 1 })
-        .catch(() => msg.reply(`${xmark} Time ran out, aborted command.`));
+        .catch(() => msg.reply(':no_entry_sign: Time ran out... Aborted command.'));
 
       if (['y', 'yes'].includes(collected.first().content.toLowerCase())) {
         const filter1 = m => m.author.id === user.id && ['yes', 'y', 'no', 'n'].includes(m.content.toLowerCase());
         await msg.say(`${user}, are you sure you want to trade that pokemon? Respond with \`yes\` or \`no\``);
         const collected1 = await msg.channel.awaitMessages(filter1, { time: 30e3, errors: ['time'], max: 1 })
-          .catch(() => msg.reply(`${xmark} Time ran out, aborted command.`));
+          .catch(() => msg.reply(':no_entry_sign: Time ran out... Aborted command.'));
 
         if (['y', 'yes'].includes(collected1.first().content.toLowerCase())) {
           try {
@@ -83,30 +81,28 @@ module.exports = class TradeCommand extends Command {
             await Promise.all([
               await this.client.pokemon.addPokemonForce(toAdd1, user),
               await this.client.pokemon.removePokemon(toAdd1, msg.author),
-              console.log('test')
             ]).then(async () => {
               setTimeout(async () => {
                 await Promise.all([
                   await this.client.pokemon.addPokemonForce(toAdd, msg.author),
                   await this.client.pokemon.removePokemon(toAdd, user),
-                  console.log('test1')
                 ]);
               }, 1000);
             });
-            return msg.reply(`${checkmark} You've successfully traded ${toAdd1} with ${toAdd}!`);
+            return msg.reply(`:white_check_mark: You've successfully traded your **${toAdd1}** for a **${toAdd}**!`);
           } catch (err) {
             this.client.emit('commandError', this, err);
-            return msg.reply(`${xmark} An error occurred while trading that Pokemon! My developer has been notified.`);
+            return msg.reply(':no_entry_sign: An error occurred while trading that Pokemon! My developer has been notified.');
           }
         } else if (['n', 'no'].includes(collected1.first().content.toLowerCase())) {
-          return msg.reply(`${xmark} Cancelled trade.`);
+          return msg.reply(':no_entry_sign: Cancelled trade.');
         } else {
-          return msg.reply(`${xmark} That was not a valid option! Aborting trade...`);
+          return msg.reply(':no_entry_sign: That was not a valid option! Aborting trade...');
         }
       } else if (['n', 'no'].includes(collected.first().content.toLowerCase())) {
-        return msg.reply(`${xmark} Cancelled trade.`);
+        return msg.reply(':no_entry_sign: Cancelled trade.');
       } else {
-        return msg.reply(`${xmark} That was not a valid option! Aborting trade...`);
+        return msg.reply(':no_entry_sign: That was not a valid option! Aborting trade...');
       }
     }
   }

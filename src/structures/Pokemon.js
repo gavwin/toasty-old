@@ -57,7 +57,7 @@ class Pokemon {
               })
               .run()
               .then(response_ => {
-                console.log('Successfully updated count for pokemon.', response_);
+                //console.log('Successfully updated count for pokemon.', response_);
               })
               .error(err => {
                 console.log('Failed to update count for pokemon.', err);
@@ -78,7 +78,7 @@ class Pokemon {
               })
               .run()
               .then(_response => {
-                console.log('Successfully added in pokemon.', _response);
+                //console.log('Successfully added in pokemon.', _response);
               })
               .error(err => {
                 console.log('Failed to add in pokemon.', err);
@@ -101,7 +101,7 @@ class Pokemon {
             })
             .run()
             .then(_response => {
-              console.log('Successfully added in pokemon via insert', _response);
+              //console.log('Successfully added in pokemon via insert', _response);
             })
             .error(err_ => {
               console.log('Failed to add in pokemon via insert.', err_);
@@ -132,7 +132,7 @@ class Pokemon {
               })
               .run()
               .then(response_ => {
-                console.log('Successfully updated count for pokemon.', response_);
+                //console.log('Successfully updated count for pokemon.', response_);
               })
               .error(err => {
                 console.log('Failed to update count for pokemon.', err);
@@ -152,7 +152,7 @@ class Pokemon {
               })
               .run()
               .then(_response => {
-                console.log('Successfully added in pokemon.', _response);
+                //console.log('Successfully added in pokemon.', _response);
               })
               .error(err => {
                 console.log('Failed to add in pokemon.', err);
@@ -175,7 +175,7 @@ class Pokemon {
             })
             .run()
             .then(_response => {
-              console.log('Successfully added in pokemon via insert', _response);
+              //console.log('Successfully added in pokemon via insert', _response);
             })
             .error(err_ => {
               console.log('Failed to add in pokemon via insert.', err_);
@@ -211,7 +211,7 @@ class Pokemon {
               })
               .run()
               .then(response_ => {
-                console.log('Successfully removed pokemon.', response_);
+                //console.log('Successfully removed pokemon.', response_);
               })
               .error(err => {
                 console.log('Failed to update count for pokemon.', err);
@@ -227,7 +227,7 @@ class Pokemon {
               })
               .run()
               .then(response_ => {
-                console.log('Successfully decremented count for pokemon.', response_);
+                //console.log('Successfully decremented count for pokemon.', response_);
               })
               .error(err => {
                 console.log('Failed to update count for pokemon.', err);
