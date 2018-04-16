@@ -81,11 +81,18 @@ module.exports = class TradeCommand extends Command {
             const toAdd = toCapitalCase(pokemon2);
             const toAdd1 = toCapitalCase(pokemon1);
             await Promise.all([
-              this.client.pokemon.addPokemonForce(toAdd, msg.author),
-              this.client.pokemon.addPokemonForce(toAdd1, user),
-              this.client.pokemon.removePokemon(toAdd1, msg.author),
-              this.client.pokemon.removePokemon(toAdd, user)
-            ]);
+              await this.client.pokemon.addPokemonForce(toAdd1, user),
+              await this.client.pokemon.removePokemon(toAdd1, msg.author),
+              console.log('test')
+            ]).then(async () => {
+              setTimeout(async () => {
+                await Promise.all([
+                  await this.client.pokemon.addPokemonForce(toAdd, msg.author),
+                  await this.client.pokemon.removePokemon(toAdd, user),
+                  console.log('test1')
+                ]);
+              }, 1000);
+            });
             return msg.reply(`${checkmark} You've successfully traded ${toAdd1} with ${toAdd}!`);
           } catch (err) {
             this.client.emit('commandError', this, err);

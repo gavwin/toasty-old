@@ -1,4 +1,4 @@
-const HOURS = 5 * 60 * 60 * 1000;
+const HOURS = 0 * 60 * 60 * 1000;
 
 class Pokemon {
   constructor(client) {
@@ -196,8 +196,9 @@ class Pokemon {
         try {
           const data = response[user.id].pokemon;
           const oldCount = data[newPokemon].count;
-          if (oldCount - 1 === 0) {
+          if (oldCount - 1 < 1) {
             delete data[newPokemon];
+            console.log(data);
             // console.log(data[newPokemon]);
             // console.log(data);
             this.r.table('Pokemon')
@@ -210,12 +211,13 @@ class Pokemon {
               })
               .run()
               .then(response_ => {
-                console.log('Successfully updated count for pokemon.', response_);
+                console.log('Successfully removed pokemon.', response_);
               })
               .error(err => {
                 console.log('Failed to update count for pokemon.', err);
               });
           } else {
+            console.log(response[user.id].pokemon)
             this.r.table('Pokemon')
               .get(user.id)
               .update({
@@ -225,7 +227,7 @@ class Pokemon {
               })
               .run()
               .then(response_ => {
-                console.log('Successfully updated count for pokemon.', response_);
+                console.log('Successfully decremented count for pokemon.', response_);
               })
               .error(err => {
                 console.log('Failed to update count for pokemon.', err);
