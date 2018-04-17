@@ -20,19 +20,21 @@ module.exports = class ShardsCommand extends Command {
   }
 
   async run(msg) {
-    const evalstr = `[this.shard.id, this.guilds.size, this.channels.size, this.users.size, (process.memoryUsage().heapTotal / 1024 / 1024).toFixed(2), this.voiceConnections.size, this.uptime]`;
+    const evalstr = `[this.shard.id, this.guilds.size, this.users.size, this.channels.size, this.voiceConnections.size, this.uptime, (process.memoryUsage().heapTotal / 1024 / 1024).toFixed(2), process.memoryUsage().heapTotal]`;
     const shard = this.client.shard;
     const result = await shard.broadcastEval(evalstr);
-    const values = {
-      guilds: await shard.fetchClientValues('guilds').reduce((prev, val) => prev + val, 0),
-      channels: await shard.fetchClientValues('channels').reduce((prev, val) => prev + val, 0),
-      users: await shard.fetchClientValues('users').reduce((prev, val) => prev + val, 0),
-      voiceConnections: await shard.fetchClientValues('voiceConnections').reduce((prev, val) => prev + val, 0),
-      uptime: await shard.fetchClientValues('uptime').reduce((prev, val) => prev + val, 0)
-    }
-    const avgUptime = values.uptime / shard.count;
+    let guilds = result.map(r => r[1]);
+    let users = result.map(r => r[2]);
+    let channels = result.map(r => r[3]);
+    let voiceConnections = result.map(r => r[4]);
+    let uptime = result.map(r => r[5]);
+    let memory = result.map(r => r[7]);
 
-    const total = `T : G ${values.guilds}, C ${values.channels}, U ${values.users}, VC ${values.voiceConnections}, M ${'N/A'}, UP: ${moment.duration(avgUptime).format}`;
-    msg.channel.send(`= Shards Information =\n${result.map(r => `${r[0]+1} : G ${r[1]}, C ${r[2]}, U ${r[3]}, VC ${r[5]}, M ${r[4]}, UP: ${formatUptime(r[6])}`).join('\n')}\n${total}`, { code: 'prolog'});
+    let totalMemory = (memory.reduce((a, b) => a + b, 0) / 1024 / 1024).toFixed(2);
+    let avgUptime = uptime.reduce((a, b) => a + b, 0) / shard.count;
+
+    const total = `T : G ${guilds.reduce((a, b) => a + b, 0)}, U ${users.reduce((a, b) => a + b, 0)}, C ${channels.reduce((a, b) => a + b, 0)}, VC ${voiceConnections.reduce((a, b) => a + b, 0)}, UP ${formatUptime(avgUptime)}, M ${totalMemory}`;
+
+    msg.channel.send(`= Shard Information =\n${result.map(r => `${r[0]+1} : G ${r[1]}, U ${r[2]}, C ${r[3]}, VC ${r[4]}, UP ${formatUptime(r[5])}, M ${r[6]}`).join('\n')}\n${total}`, { code: 'prolog'});
   }
 };
