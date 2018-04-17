@@ -6,7 +6,7 @@ module.exports = class TradeCommand extends Command {
       name: 'trade',
       group: 'pokemon',
       memberName: 'trade',
-      description: '[DISABLED] Trade your Pokemon with another user\'s Pokemon.',
+      description: 'Trade your Pokemon with another user\'s Pokemon.',
       details: 'Catch pokemon with the pokemon command.\nYou can trade the pokemon you catch with this command.',
       examples: ['trade @user pikachu charzard'],
       guildOnly: true,
@@ -45,10 +45,14 @@ module.exports = class TradeCommand extends Command {
     /*const xmark = this.client.emojis.get('345201622827139082');
     const checkmark = this.client.emojis.get('345201601427800064');*/
 
+    if (msg.author.id === user.id) return msg.reply(':no_entry_sign: You cannot trade pokemon with yourself!');
+
     const inventory = await this.client.pokemon.getInventory(msg.author.id);
     if (!inventory.length) return msg.reply(':no_entry_sign: you don\'t have any Pokemon to trade!');
     const inventory1 = await this.client.pokemon.getInventory(user.id);
     if (!inventory1.length) return msg.reply(':no_entry_sign: that user doesn\'t have any Pokemon to trade!');
+
+    if (pokemon1.toLowerCase() === pokemon2.toLowerCase()) return msg.reply('you cannot trade the same Pokemon, silly!');
 
     const hasPokemon = await this.client.pokemon.hasPokemon(msg.author.id, pokemon1),
       hasPokemon1 = await this.client.pokemon.hasPokemon(user.id, pokemon2);

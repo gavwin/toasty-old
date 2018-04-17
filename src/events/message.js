@@ -48,14 +48,15 @@ exports.run = (client, msg) => {
   }
 
   // console.log(/discord(?:app\.com|\.gg)[\/invite\/]?(?:(?!.*[Ii10OolL]).[a-zA-Z0-9]{5,6}|[a-zA-Z0-9\-]{2,32})/g.test(msg.content.toLowerCase()));
-  // console.log(settings.noinvite);
   if (
-    /discord(?:app\.com|\.gg)[/invite/]?(?:(?!.*[Ii10OolL]).[a-zA-Z0-9]{5,6}|[a-zA-Z0-9-]{2,32})/g.test(msg.content.toLowerCase())
+    /(discord\.gg\/.+|discordapp\.com\/invite\/.+)/i.test(msg.content.toLowerCase())
       && settings.noinvite === 'enabled'
+      && msg.author.id === client.user.id
+      && !client.isOwner(msg.author)
   ) {
-    //if (msg.author.id === msg.guild.ownerID || client.isOwner(msg.author)) return;
+    if (msg.author.id === msg.guild.ownerID || client.isOwner(msg.author)) return;
     if (!msg.guild.me.permissions.has('MANAGE_MESSAGES')) {
-      msg.channel.send(':no_entry_sign: **Error:** I could not delete a Discord invite because I do not have the **Manage Messages** permission!');
+      msg.channel.send(':no_entry_sign: **Error:** I could not delete a discord invite because I do not have the **Manage Messages** permission!');
     } else {
       msg.delete().then(() => msg.reply(':no_entry_sign: There is no invite link sending allowed on this server!'));
       if (settings.modlog === 'enabled') {

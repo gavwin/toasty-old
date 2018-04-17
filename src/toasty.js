@@ -77,9 +77,9 @@ client
         \`\`\`
       `, { split: { char: '', prepend: '```javascript\n', append: '\n```', maxLength: 1900 } }).catch(err_ => client.utils.logger.error('DISCORD', err_));
   })
-  .on('providerReady', () => console.info('SettingsProvider ready'))
+  .on('providerReady', () => console.info('SettingsProvider ready'));
   // eslint-disable-next-line max-len
-  .on('commandBlocked', (message, reason) => console.info(`Command ${message.command.groupID}:${message.command.memberName} blocked, reason: ${reason}`));
+  //.on('commandBlocked', (message, reason) => console.info(`Command ${message.command.groupID}:${message.command.memberName} blocked, reason: ${reason}`));
 
 // Load the events with huge chunks of code from the events folder
 (async () => {
@@ -157,7 +157,7 @@ client.registry
 
 client.login(token).catch(console.error);
 
-process.on('unhandledRejection', (err, promise) => {
+/*process.on('unhandledRejection', (err, promise) => {
   if (/ETIMEDOUT|getaddrinfo|Something took too long to do/.test(err)) process.exit(200);
   if (/SequelizeUniqueConstraintError/.test(err)) return;
   client.channels
@@ -169,4 +169,4 @@ process.on('unhandledRejection', (err, promise) => {
       \`\`\`
     `, { split: { char: '', prepend: '```javascript\n', append: '\n```', maxLength: 1900 } }).catch(err_ => client.utils.logger.error('DISCORD', err_));
   console.error('ERROR', 'Unhandled promise rejection at', promise, err);
-});
+});*/

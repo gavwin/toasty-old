@@ -53,9 +53,9 @@ module.exports = class ToggleCommand extends Command {
       } else
 
       if (feature === 'DJROLE') {
-        if (!msg.guild.settings.has('dj')) return msg.reply('there is no DJ Role set.');
-        msg.guild.settings.delete('dj');
-        return msg.reply('the DJ role has been disabled.');
+        if (!msg.guild.settings.get('dj')) return msg.reply(`:no_entry_sign: There is no DJ Role currently set.\nUse \`${this.client.commandPrefix}djrole [role]\` to set the DJ role.`);
+        msg.guild.settings.remove('dj');
+        return msg.reply('the DJ role has been **disabled**.');
       } else
 
       if (feature === 'NOINVITE' || feature === 'NOINV') {
