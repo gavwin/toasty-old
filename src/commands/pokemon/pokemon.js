@@ -38,10 +38,9 @@ module.exports = class PokemonCommand extends Command {
 
     const newPokemon = randomPokemon();
 
-    //const newPokemon = ['Pikachu', 'Bulbasaur'][Math.floor(Math.random() * 2)];
-
     try {
       const pe = this.client.emojis.get('433754631328235532');
+      const gif = this.client.emojis.get('435540970554261504');
       if (!pe) {
         await this.client.pokemon.addPokemon(newPokemon, user);
         return msg.say(stripIndents`
@@ -50,10 +49,13 @@ module.exports = class PokemonCommand extends Command {
         `);
       } else {
         await this.client.pokemon.addPokemon(newPokemon, user);
-        return msg.say(stripIndents`
-          **${user.username}**, ${pe.toString()} you've caught a **${newPokemon}**!
-          http://www.pokestadium.com/sprites/xy/${newPokemon.toLowerCase()}.gif
-        `);
+        const catchMsg = await msg.say(`${gif} catching...`);
+        setTimeout(() => {
+          return catchMsg.edit(stripIndents`
+            **${user.username}**, ${pe.toString()} you've caught a **${newPokemon}**!
+            http://www.pokestadium.com/sprites/xy/${newPokemon.toLowerCase()}.gif
+          `);
+        }, 2100);
       }
     } catch (err) {
       //console.error(err);
