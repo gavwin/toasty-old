@@ -50,6 +50,8 @@ module.exports = class TradeCommand extends Command {
     const inventory1 = await this.client.pokemon.getInventory(user.id);
     if (!inventory1.length) return msg.reply(':no_entry_sign: that user doesn\'t have any Pokemon to trade!');
 
+    if (pokemon1.toLowerCase() === pokemon2.toLowerCase()) return msg.reply('you cannot trade the same Pokemon, silly!');
+
     const hasPokemon = await this.client.pokemon.hasPokemon(msg.author.id, pokemon1),
       hasPokemon1 = await this.client.pokemon.hasPokemon(user.id, pokemon2);
 

@@ -56,6 +56,7 @@ module.exports = class PokemonCommand extends Command {
             http://www.pokestadium.com/sprites/xy/${newPokemon.toLowerCase()}.gif
           `);
         }, 2100);
+        return null;
       }
     } catch (err) {
       //console.error(err);
