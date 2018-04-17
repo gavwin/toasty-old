@@ -37,6 +37,9 @@ module.exports = class PokemonCommand extends Command {
     this.client.commands.pokemon++;
 
     const newPokemon = randomPokemon();
+    
+    let oldSprite = 'http://www.pokestadium.com/sprites/xy/';
+    let newSprite = 'https://play.pokemonshowdown.com/sprites/xyani/';
 
     try {
       const pe = this.client.emojis.get('433754631328235532');
@@ -45,7 +48,7 @@ module.exports = class PokemonCommand extends Command {
         await this.client.pokemon.addPokemon(newPokemon, user);
         return msg.say(stripIndents`
           **${user.username}**, you've caught a **${newPokemon}**!
-          http://www.pokestadium.com/sprites/xy/${newPokemon.toLowerCase()}.gif
+          ${newSprite}${newPokemon.toLowerCase()}.gif
         `);
       } else {
         await this.client.pokemon.addPokemon(newPokemon, user);
@@ -53,7 +56,7 @@ module.exports = class PokemonCommand extends Command {
         setTimeout(() => {
           return catchMsg.edit(stripIndents`
             **${user.username}**, ${pe.toString()} you've caught a **${newPokemon}**!
-            http://www.pokestadium.com/sprites/xy/${newPokemon.toLowerCase()}.gif
+            ${newSprite}${newPokemon.toLowerCase()}.gif
           `);
         }, 2100);
         return null;
