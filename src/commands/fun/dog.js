@@ -16,15 +16,12 @@ module.exports = class DogCommand extends Command {
   }
 
   async run(msg) {
-    try {
-      const { body } = await snekfetch.get('https://random.dog/woof.json');
-      const embed = new this.client.embed()
-        .setColor('RANDOM')
-        .setImage(body.url);
-      msg.embed(embed);
-      //return msg.say({ files: [body.url] }).catch(err => msg.say(`${err.name}: ${err.message}`));
-    } catch (err) {
-      return msg.say(`${err.name}: ${err.message}`);
-    }
+    const { body } = await this.client.snekfetch.get('https://api-v2.weeb.sh/images/random?type=animal_dog')
+      .set('Authorization', `Wolke ${this.client.config.weebshToken}`)
+      .catch(err => msg.say(`${err.name}: ${err.message}`));
+    const embed = new this.client.embed()
+      .setColor('RANDOM')
+      .setImage(body.url);
+    msg.embed(embed);
   }
 };

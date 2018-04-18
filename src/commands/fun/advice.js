@@ -1,5 +1,4 @@
 const { Command } = require('discord.js-commando');
-const snekfetch = require('snekfetch');
 
 module.exports = class AdviceCommand extends Command {
   constructor(client) {
@@ -17,7 +16,7 @@ module.exports = class AdviceCommand extends Command {
   }
 
   async run(msg) {
-    let res = await snekfetch.get('http://api.adviceslip.com/advice');
+    let res = await this.client.snekfetch.get('http://api.adviceslip.com/advice');
     let advice = JSON.parse(res.body);
     try {
       const embed = new this.client.embed()

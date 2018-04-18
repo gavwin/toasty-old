@@ -1,8 +1,6 @@
 const { Command } = require('discord.js-commando');
 const tts = require('google-tts-api');
 const path = require('path');
-const { discordbotsToken } = require(path.join(__dirname, '..', '..', 'config.json'));
-const snekfetch = require('snekfetch');
 
 module.exports = class TTSCommand extends Command {
   constructor(client) {
@@ -31,11 +29,12 @@ module.exports = class TTSCommand extends Command {
   async run(msg, args) {
     this.client.commands.tts++;
     if (!msg.guild.me.permissions.has('CONNECT') || !msg.guild.me.permissions.has('SPEAK')) return msg.say(':no_entry_sign: I don\'t have the **Connect** or **Speak** permission.');
-    /*const { body } = await snekfetch
+    /*const { body } = await this.client.snekfetch
       .get(`https://discordbots.org/api/bots/208946659361554432/votes?onlyids=1`)
-      .set('Authorization', discordbotsToken)
+      .set('Authorization', this.client.config.discordbotsToken)
         if (!body.includes(msg.author.id)) return msg.reply(`:no_entry_sign: You can\'t use this command because you haven\'t upvoted me.\nType, \`${this.client.commandPrefix}upvote\` for the steps on how to upvote me.`);
-        */const voiceChannel = msg.member.voiceChannel;
+        */
+    const voiceChannel = msg.member.voiceChannel;
     if (!voiceChannel) return msg.reply(':no_entry_sign: Please be in a voice channel first!');
     if (!this.client.voiceConnections.get(msg.channel.guild.id)) {
       voiceChannel.join()

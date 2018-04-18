@@ -12,6 +12,13 @@ exports.run = async client => {
   const guilds = guildRes.reduce((prev, val) => prev + val, 0);
   client.user.setPresence({ game: { name: `;help | ${guilds.toLocaleString()} servers!`, type: 0 } });
 
+  client.snekfetch.post(`https://botlist.space/api/bots/${client.user.id}`)
+    .set('Authorization', client.config.botlistspaceToken)
+    .send({
+      server_count: guilds,
+      shards: guildRes
+    }).end();
+
   /* snekfetch.post(`https://discordbots.org/api/bots/${client.user.id}/stats`)
     .set('Authorization', discordbotsToken)
     .send({

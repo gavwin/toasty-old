@@ -19,7 +19,6 @@ module.exports = class MemeCommand extends Command {
       group: 'fun',
       memberName: 'meme',
       description: 'Sends a random meme from a subreddit.',
-      guildOnly: true,
       throttling: {
         usages: 1,
         duration: 4

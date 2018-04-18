@@ -11,7 +11,7 @@ exports.run = (client, msg) => {
   if (msg.channel.type === 'dm') return;
 
   const data = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'servers.json'), 'utf8'));
-  const settings = data[msg.guild.id] ? data[msg.guild.id] : { nonsfw: 'disabled', noinvite: 'disabled', nomemedog: 'disabled' };
+  const settings = data[msg.guild.id] ? data[msg.guild.id] : { nonsfw: 'disabled', noinvite: 'disabled' };
 
   if (settings.nonsfw === 'enabled' && msg.attachments) {
     const urls = msg.attachments
@@ -76,14 +76,10 @@ exports.run = (client, msg) => {
       }
     }
   }
-
-  if (msg.content.includes('This is memedog.')
-    && msg.content.includes('Help memedog take over Discord by pasting in 10 other servers or he will never be a meme dog')
-    && settings.nomemedog === 'enabled') {
-    if (!msg.guild.me.permissions.has('MANAGE_MESSAGES')) {
-      msg.channel.send(':no_entry_sign: **Error:** I could not delete memedog because I do not have the **Manage Messages** permission!');
-    } else {
-      msg.delete().then(() => msg.reply(':no_entry_sign: There is no memedog allowed on this server!'));
-    }
-  }
 };
+
+const ctLogger = [];
+process.on('uncaughtException', err => {
+  if (err.name.includes('Could not extract html5player key:')) return ctLogger.push(err.stack);
+  return console.error(err);
+});

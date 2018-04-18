@@ -68,11 +68,6 @@ module.exports = class SettingsCommand extends Command {
     } else {
       var DJRole = settingsData.DJRole;
     }
-    if (!settingsData.nomemedog) {
-      var nomemedog = 'disabled';
-    } else {
-      var nomemedog = settingsData.nomemedog;
-    }
 
     embed.setColor('RANDOM')
       .setAuthor(`Server settings for, ${msg.guild.name}`, msg.guild.iconURL)
@@ -85,7 +80,6 @@ module.exports = class SettingsCommand extends Command {
       .addField('Mod Log', modlog, true)
       .addField('No Invite', noinvite, true)
       .addField('No NSFW', nonsfw, true)
-      .addField('No Memedog', nomemedog, true)
       .addField('DJ Role', DJRole, true);
     m.edit({ embed });
   }
