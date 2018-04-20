@@ -198,7 +198,7 @@ class Pokemon {
           const oldCount = data[newPokemon].count;
           if (oldCount - 1 < 1) {
             delete data[newPokemon];
-            console.log(data);
+            //console.log(data);
             // console.log(data[newPokemon]);
             // console.log(data);
             this.r.table('Pokemon')
@@ -217,7 +217,7 @@ class Pokemon {
                 console.log('Failed to update count for pokemon.', err);
               });
           } else {
-            console.log(response[user.id].pokemon)
+            //console.log(response[user.id].pokemon)
             this.r.table('Pokemon')
               .get(user.id)
               .update({

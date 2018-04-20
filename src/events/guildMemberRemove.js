@@ -3,8 +3,12 @@ const path = require('path');
 /* eslint-disable max-len */
 exports.run = (client, member) => {
   const { guild } = member;
-  const defaultChannel = guild.channels.find(c => c.permissionsFor(client.user).has('SEND_MESSAGES'))
-    .catch(() => console.log('Caught guildMemberRemove.js error.'));
+  let defaultChannel;
+  try {
+    defaultChannel = guild.channels.find(c => c.permissionsFor(client.user).has('SEND_MESSAGES'));
+  } catch (e) {
+    defaultChannel = guild.channels.find(c => c.name === 'general');
+  }
   const RichEmbed = client.embed;
   const data = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'servers.json')));
 

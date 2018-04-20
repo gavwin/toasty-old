@@ -43,7 +43,7 @@ module.exports = class SuggestCommand extends Command {
             msg.reply('There was an error while sending your suggestion to Toasty HQ. Please try again later.');
           } else {
             resolve(res);
-            msg.say(`:white_check_mark: **${msg.author.username}**, your suggestion has successfully been submitted to Toasty HQ for review. Thank you!`);
+            msg.say(`:white_check_mark: **${msg.author.username}**, your suggestion has successfully been submitted to Toasty HQ for review. Thank you!\nTo see if your suggestion was accepted, join **https://toastybot.com/hq**.`);
           }
         });
     });

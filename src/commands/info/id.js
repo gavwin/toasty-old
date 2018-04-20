@@ -26,6 +26,6 @@ module.exports = class IDCommand extends Command {
 
   run(msg, args) {
     const user = args.user || msg.author;
-    msg.channel.sendMessage(`:id: for **${user.username} :** \`${user.id}\``);
+    msg.channel.send(`:id: for **${user.username} :** \`${user.id}\``);
   }
 };

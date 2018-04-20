@@ -33,7 +33,7 @@ module.exports = class BugCommand extends Command {
     }
     const { bug } = args;
     const content = clean(`**${msg.author.username}**#${msg.author.discriminator} (${msg.author.id}) reported a bug:\n${bug}\nServer: **${msg.guild.name}**\nID: **${msg.guild.id}**`);
-    const id = '379285435152728069';
+    const id = '434879965486645259';
     new Promise((resolve, reject) => {
       superagent.post(`https://discordapp.com/api/channels/${id}/messages`)
         .set('Authorization', `Bot ${this.client.token}`).send({ content })
@@ -43,7 +43,7 @@ module.exports = class BugCommand extends Command {
             msg.reply('There was an error while sending your bug report to Toasty HQ. Please try again later.');
           } else {
             resolve(res);
-            msg.say(`:white_check_mark: **${msg.author.username}**, your bug report has successfully been submitted to Toasty HQ for review. Thank you!`);
+            msg.say(`:white_check_mark: **${msg.author.username}**, your bug report has successfully been submitted to Toasty HQ for review. Thank you!\nFor more information on it, join **https://toastybot.com/hq**.`);
           }
         });
     });

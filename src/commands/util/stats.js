@@ -23,8 +23,7 @@ module.exports = class StatsCommand extends Command {
     let m;
     if (msg.guild.me.permissions.has('USE_EXTERNAL_EMOJIS')) {
       let loadEmbed = new this.client.embed();
-      loadEmbed.setColor('RANDOM')
-        .setDescription(`${this.client.emojis.get('434890199022043136').toString()} **Loading...**`);
+      loadEmbed.setDescription(`${this.client.emojis.get('434890199022043136').toString()} **Loading...**`);
       m = await msg.embed(loadEmbed);
     } else {
       m = await msg.say('```Fetching my stats...```');

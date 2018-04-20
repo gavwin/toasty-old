@@ -10,7 +10,7 @@ module.exports = class ToggleCommand extends Command {
       group: 'config',
       memberName: 'toggle',
       description: 'Toggles a certain feature.',
-      details: 'Anybody with the Administrator permission can toggle a certain feature from the list below.\nnoinvite, nonsfw, nomemedog, modlog, djrole or joinlog.',
+      details: 'Anybody with the Administrator permission can toggle a certain feature from the list below.\nnoinvite, nonsfw, modlog, djrole or joinlog.',
       examples: ['toggle joinlog', 'toggle noinvite'],
       guildOnly: true,
       args: [
@@ -53,9 +53,9 @@ module.exports = class ToggleCommand extends Command {
       } else
 
       if (feature === 'DJROLE') {
-        if (!msg.guild.settings.has('dj')) return msg.reply('there is no DJ Role set.');
-        msg.guild.settings.delete('dj');
-        return msg.reply('the DJ role has been disabled.');
+        if (!msg.guild.settings.get('dj')) return msg.reply(`:no_entry_sign: There is no DJ Role currently set.\nUse \`${this.client.commandPrefix}djrole [role]\` to set the DJ role.`);
+        msg.guild.settings.remove('dj');
+        return msg.reply('the DJ role has been **disabled**.');
       } else
 
       if (feature === 'NOINVITE' || feature === 'NOINV') {
@@ -73,24 +73,6 @@ module.exports = class ToggleCommand extends Command {
           data[msg.guild.id].noinvite = 'enabled';
           fs.writeFileSync(jsonPath, JSON.stringify(data, null, 2));
           msg.reply(':white_check_mark: The no invite feature is now **enabled**.');
-        }
-      } else
-
-      if (feature === 'NOMEMEDOG') {
-        if (!data[msg.guild.id]) data[msg.guild.id] = {'nomemedog': 'disabled'};
-        if (data[msg.guild.id].nomemedog === 'enabled') {
-          data[msg.guild.id].nomemedog = 'disabled';
-          fs.writeFileSync(jsonPath, JSON.stringify(data, null, 2));
-          msg.reply(':white_check_mark: The no memedog feature is now **disabled**.');
-        } else
-        if (!data[msg.guild.id].nomemedog === 'disabled') {
-          data[msg.guild.id].nomemedog = 'enabled';
-          fs.writeFileSync(jsonPath, JSON.stringify(data, null, 2));
-          msg.reply(':white_check_mark: The no memedog feature is now **enabled**.');
-        } else {
-          data[msg.guild.id].nomemedog = 'enabled';
-          fs.writeFileSync(jsonPath, JSON.stringify(data, null, 2));
-          msg.reply(':white_check_mark: The no memedog feature is now **enabled**.');
         }
       } else
 

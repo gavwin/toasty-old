@@ -27,16 +27,18 @@ module.exports = class RoastCommand extends Command {
     });
   }
 
-  run(msg, args) {
+  run(msg, { thing }) {
     this.client.commands.roast++;
     const { thing } = args;
     if (msg.channel.nsfw) {
       if (thing.toLowerCase().includes('toasty') || thing.includes('<@208946659361554432>')) return msg.reply(':fire: Listen up you dumbass retard! I ain\'t gonna roast myself!');
-      if (thing.toLowerCase().includes('me')) return msg.say(`**${msg.author.username}**, :fire: ${allroasts[Math.floor(Math.random() * allroasts.length)]}`);
+      if (msg.content.toLowerCase().startsWith(`${this.client.commandPrefix}roastme`) || msg.content.toLowerCase().startsWith(`${this.client.commandPrefix}roast me`)) return msg.say(`**${msg.author.username}**, :fire: ${roasts[Math.floor(Math.random() * roasts.length)]}`);
+      msg.say(`**${thing}**, :fire: ${roasts[Math.floor(Math.random() * roasts.length)]}`);
       msg.say(`**${thing}**, :fire: ${allroasts[Math.floor(Math.random() * allroasts.length)]}`);
     } else {
-      if (thing.toLowerCase().includes('toasty') || thing.includes('<@208946659361554432>')) return msg.reply(':fire: Listen up, stupid! I ain\'t gonna roast myself!');
-      if (thing.toLowerCase().includes('me')) return msg.say(`**${msg.author.username}**, :fire: ${saferoasts[Math.floor(math.random() * saferoasts.length)]}`);
+      if (thing.toLowerCase().includes('toasty') || thing.includes('<@208946659361554432>')) return msg.reply(':fire: Listen up you dumbass retard! I ain\'t gonna roast myself!');
+      if (msg.content.toLowerCase().startsWith(`${this.client.commandPrefix}roastme`) || msg.content.toLowerCase().startsWith(`${this.client.commandPrefix}roast me`)) return msg.say(`**${msg.author.username}**, :fire: ${roasts[Math.floor(Math.random() * roasts.length)]}`);
+      msg.say(`**${thing}**, :fire: ${roasts[Math.floor(Math.random() * roasts.length)]}`);
       msg.say(`**${thing}**, :fire: ${saferoasts[Math.floor(Math.random() * saferoasts.length)]}`);
     }
   }
