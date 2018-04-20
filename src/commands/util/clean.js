@@ -7,6 +7,7 @@ module.exports = class CleanCommand extends Command {
       group: 'util',
       memberName: 'clean',
       description: 'Cleans all recent commands/messages sent by the bot.',
+      guildOnly: true,
       throttling: {
         usages: 1,
         duration: 10

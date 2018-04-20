@@ -10,6 +10,7 @@ module.exports = class SettingsCommand extends Command {
       aliases: ['serversettings', 'guildsettings'],
       memberName: 'settings',
       description: 'Shows all of the bot settings for your server.',
+      guildOnly: true,
       throttling: {
         usages: 1,
         duration: 5

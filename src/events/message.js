@@ -13,7 +13,7 @@ exports.run = (client, msg) => {
   const data = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'servers.json'), 'utf8'));
   const settings = data[msg.guild.id] ? data[msg.guild.id] : { nonsfw: 'disabled', noinvite: 'disabled' };
 
-  if (settings.nonsfw === 'enabled' && msg.attachments) {
+  /*if (settings.nonsfw === 'enabled' && msg.attachments) {
     const urls = msg.attachments
       .map(a => a.url)
       .concat(msg.content.split(' ')
@@ -45,7 +45,7 @@ exports.run = (client, msg) => {
           }
         }).catch(() => null);
     }
-  }
+  }*/
 
   // console.log(/discord(?:app\.com|\.gg)[\/invite\/]?(?:(?!.*[Ii10OolL]).[a-zA-Z0-9]{5,6}|[a-zA-Z0-9\-]{2,32})/g.test(msg.content.toLowerCase()));
   if (
