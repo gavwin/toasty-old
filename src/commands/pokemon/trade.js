@@ -38,7 +38,7 @@ module.exports = class TradeCommand extends Command {
 
   async run(msg, args) {
     const { user, pokemon1, pokemon2 } = args;
-    const RichEmbed = this.client.embed;
+    // const RichEmbed = this.client.embed;
     if (!msg.guild.me.hasPermission('USE_EXTERNAL_EMOJIS')) return msg.reply(':no_entry_sign: I don\'t have **External Emojies** permission to use this cmd!');
     if (!msg.guild.me.hasPermission('EMBED_LINKS')) return msg.reply(':no_entry_sign: I don\'t have **Embed Links** permission to use this cmd!');
 
@@ -69,45 +69,48 @@ module.exports = class TradeCommand extends Command {
     } else {
       await msg.reply('are you sure you want to trade that pokemon? Respond with `yes` or `no`');
       const filter = m => m.author.id === msg.author.id && ['yes', 'y', 'no', 'n'].includes(m.content.toLowerCase());
-      const collected = await msg.channel.awaitMessages(filter, { time: 30e3, errors: ['time'], max: 1 })
+      return msg.channel.awaitMessages(filter, { time: 30e3, errors: ['time'], max: 1 })
+        .then(async collected => {
+          if (!collected.size) return msg.reply('you didn\'t respond in time!');
+          if (['y', 'yes'].includes(collected.first().content.toLowerCase())) {
+            const filter1 = m => m.author.id === user.id && ['yes', 'y', 'no', 'n'].includes(m.content.toLowerCase());
+            await msg.say(`${user}, are you sure you want to trade that pokemon? Respond with \`yes\` or \`no\``);
+            const collected1 = await msg.channel.awaitMessages(filter1, { time: 30e3, errors: ['time'], max: 1 })
+              .catch(() => msg.reply(':no_entry_sign: Time ran out... Aborted command.'));
+    
+            if (['y', 'yes'].includes(collected1.first().content.toLowerCase())) {
+              try {
+                const toAdd = toCapitalCase(pokemon2);
+                const toAdd1 = toCapitalCase(pokemon1);
+                await Promise.all([
+                  await this.client.pokemon.addPokemonForce(toAdd1, user),
+                  await this.client.pokemon.removePokemon(toAdd1, msg.author),
+                ]).then(async () => {
+                  setTimeout(async () => {
+                    await Promise.all([
+                      await this.client.pokemon.addPokemonForce(toAdd, msg.author),
+                      await this.client.pokemon.removePokemon(toAdd, user),
+                    ]);
+                  }, 1000);
+                });
+                return msg.reply(`:white_check_mark: You've successfully traded your **${toAdd1}** for a **${toAdd}**!`);
+              } catch (err) {
+                this.client.emit('commandError', this, err);
+                return msg.reply(':no_entry_sign: An error occurred while trading that Pokemon! My developer has been notified.');
+              }
+            } else if (['n', 'no'].includes(collected1.first().content.toLowerCase())) {
+              return msg.reply(':no_entry_sign: Cancelled trade.');
+            } else {
+              return msg.reply(':no_entry_sign: That was not a valid option! Aborting trade...');
+            }
+          } else if (['n', 'no'].includes(collected.first().content.toLowerCase())) {
+            return msg.reply(':no_entry_sign: Cancelled trade.');
+          } else {
+            return msg.reply(':no_entry_sign: That was not a valid option! Aborting trade...');
+          }
+        })
         .catch(() => msg.reply(':no_entry_sign: Time ran out... Aborted command.'));
 
-      if (['y', 'yes'].includes(collected.first().content.toLowerCase())) {
-        const filter1 = m => m.author.id === user.id && ['yes', 'y', 'no', 'n'].includes(m.content.toLowerCase());
-        await msg.say(`${user}, are you sure you want to trade that pokemon? Respond with \`yes\` or \`no\``);
-        const collected1 = await msg.channel.awaitMessages(filter1, { time: 30e3, errors: ['time'], max: 1 })
-          .catch(() => msg.reply(':no_entry_sign: Time ran out... Aborted command.'));
-
-        if (['y', 'yes'].includes(collected1.first().content.toLowerCase())) {
-          try {
-            const toAdd = toCapitalCase(pokemon2);
-            const toAdd1 = toCapitalCase(pokemon1);
-            await Promise.all([
-              await this.client.pokemon.addPokemonForce(toAdd1, user),
-              await this.client.pokemon.removePokemon(toAdd1, msg.author),
-            ]).then(async () => {
-              setTimeout(async () => {
-                await Promise.all([
-                  await this.client.pokemon.addPokemonForce(toAdd, msg.author),
-                  await this.client.pokemon.removePokemon(toAdd, user),
-                ]);
-              }, 1000);
-            });
-            return msg.reply(`:white_check_mark: You've successfully traded your **${toAdd1}** for a **${toAdd}**!`);
-          } catch (err) {
-            this.client.emit('commandError', this, err);
-            return msg.reply(':no_entry_sign: An error occurred while trading that Pokemon! My developer has been notified.');
-          }
-        } else if (['n', 'no'].includes(collected1.first().content.toLowerCase())) {
-          return msg.reply(':no_entry_sign: Cancelled trade.');
-        } else {
-          return msg.reply(':no_entry_sign: That was not a valid option! Aborting trade...');
-        }
-      } else if (['n', 'no'].includes(collected.first().content.toLowerCase())) {
-        return msg.reply(':no_entry_sign: Cancelled trade.');
-      } else {
-        return msg.reply(':no_entry_sign: That was not a valid option! Aborting trade...');
-      }
     }
   }
 };

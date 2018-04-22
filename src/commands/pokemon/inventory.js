@@ -44,7 +44,7 @@ module.exports = class InventoryCommand extends Command {
     const mesg = await msg.say(stripIndents`
       __**${user.username}'s Pokemon:**__ Includes **${inventory.length}/802** Pokemon. [Page 1 (25 shown)]
       ${paginatedItems.items.join('\n')}
-    `, { embed: new RichEmbed().setDescription(`You may also view your inventory [here](http://toastybot.com/inventory?id=${user.id}&name=${user.username.replace(/\s/g, '%20')}&avatar=${user.avatarURL()})`) });
+    `, { embed: new RichEmbed().setDescription(`You may also view your inventory [here](http://toastybot.com/inventory?id=${user.id}&name=${encodeURIComponent(user.username)}&avatar=${user.avatarURL()})`) });
 
     if (msg.guild && msg.guild.me.hasPermission('ADD_REACTIONS')) {
       await Promise.all([
@@ -80,7 +80,7 @@ module.exports = class InventoryCommand extends Command {
     collector.on('collect', async reaction => {
       if (reaction.emoji.name === '⬅') {
         if (current === 1) {
-          await msg.reply("you cannot go back to a page if you're already on the first page.");
+          await msg.reply('you cannot go back to a page if you\'re already on the first page.');
         } else {
           current -= 1;
           await mesg.edit(stripIndents`
@@ -90,7 +90,7 @@ module.exports = class InventoryCommand extends Command {
         }
       } else if (reaction.emoji.name === '➡') {
         if (current >= max) {
-          await msg.reply("you cannot go to the next page if you're already on the last page.");
+          await msg.reply('you cannot go to the next page if you\'re already on the last page.');
         } else {
           current += 1;
           await mesg.edit(stripIndents`

@@ -36,7 +36,7 @@
     "moment-timezone": "^0.5.14",
     "newsapi": "^2.2.0",
     "node-opus": "^0.2.7",
-    "pokemon-random": "^1.2.5",
+    "pokemon-random": "github:YaBoyWonder/pokemon-random",
     "random-number": "0.0.9",
     "request": "^2.83.0",
     "request-promise": "^4.2.2",

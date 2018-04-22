@@ -38,8 +38,10 @@ module.exports = class PokemonCommand extends Command {
 
     const newPokemon = randomPokemon();
 
-    let oldSprite = 'http://www.pokestadium.com/sprites/xy/';
-    let newSprite = 'https://play.pokemonshowdown.com/sprites/xyani/';
+    if (!newPokemon || typeof newPokemon === 'undefined') return msg.reply('you failed to catch a pokemon 😢');
+
+    // const oldSprite = 'http://www.pokestadium.com/sprites/xy/';
+    const newSprite = 'https://play.pokemonshowdown.com/sprites/xyani/';
 
     const pe = this.client.emojis.get('433754631328235532');
     const gif = this.client.emojis.get('435540970554261504');
