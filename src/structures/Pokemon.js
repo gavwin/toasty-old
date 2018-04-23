@@ -92,8 +92,7 @@ class Pokemon {
                 pokemon: {
                   [newPokemon]: {
                     name: newPokemon,
-                    count: 1,
-                    gif: `http://www.pokestadium.com/sprites/xy/${newPokemon.toLowerCase()}.gif`
+                    count: 1
                   }
                 },
                 next: Date.now()
@@ -145,7 +144,7 @@ class Pokemon {
                   pokemon: {
                     [newPokemon]: {
                       name: newPokemon,
-                      count: 1, gif: `http://www.pokestadium.com/sprites/xy/${newPokemon.toLowerCase()}.gif`
+                      count: 1
                     }
                   }
                 }
@@ -166,8 +165,7 @@ class Pokemon {
                 pokemon: {
                   [newPokemon]: {
                     name: newPokemon,
-                    count: 1,
-                    gif: `http://www.pokestadium.com/sprites/xy/${newPokemon.toLowerCase()}.gif`
+                    count: 1
                   }
                 },
                 next: Date.now()
