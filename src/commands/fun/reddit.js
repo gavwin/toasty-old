@@ -29,7 +29,7 @@ module.exports = class RedditCommand extends Command {
 				msg.say(`:no_entry_sign: Something went wrong while trying to search that subreddit.\n${err.message}`);
 			});
 		const allowed = msg.channel.nsfw ? body.data.children : body.data.children.filter(post => !post.data.over_18);
-		if (!allowed.length) return msg.say(':no_entry_sign: It seems all the posts on this subreddit are gone, or it wasn\'t found!');
+		if (!allowed.length) return msg.say(':no_entry_sign: This post contains NSFW content! If you would like to view it, you can run this command in a NSFW channel.');
 		const embed = new this.client.embed();
 		let data = allowed[Math.floor(Math.random() * allowed.length)].data;
 		embed.setColor('RANDOM')

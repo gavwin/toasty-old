@@ -16,18 +16,18 @@ module.exports = class UsagesCommand extends Command {
 
   async run(msg) {
     const client = this.client;
+
     async function getUsages(command, client) {
       const usages = await client.shard.fetchClientValues(`commands.${command}`);
       return usages.reduce((prev, val) => prev + val, 0).toLocaleString();
     }
-    msg.say(
-      `Pokemon: **${await getUsages('pokemon', client)}**.
-TTS: **${await getUsages('tts', client)}**.
-Play: **${await getUsages('play', client)}**.
-Roast: **${await getUsages('roast', client)}**.
-Roast me: **${await getUsages('roastme', client)}**.
-Meme: **${await getUsages('meme', client)}**.`
-    );
-  }
 
+    let arr = [];
+    client.registry.commands.array().forEach(async (command) => {
+      arr.push(`${command.name}: ${await getUsages(command.name, client)}`);
+    });
+    console.log(arr);
+
+    msg.say(arr.join('\n'));
+  }
 };

@@ -15,14 +15,7 @@ module.exports = class ToastyClient extends CommandoClient {
       commands: 0,
       guilds: 0
     };
-    this.commands = {
-      pokemon: 0,
-      play: 0,
-      tts: 0,
-      roast: 0,
-      roastme: 0,
-      meme: 0
-    };
+    this.commands = {};
     this.timer = {};
     this.embed = RichEmbed;
     this.config = require('../config.json');

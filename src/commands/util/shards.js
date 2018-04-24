@@ -23,13 +23,13 @@ module.exports = class ShardsCommand extends Command {
     const evalstr = `[this.shard.id, this.guilds.size, this.users.size, this.channels.size, this.voiceConnections.size, this.uptime, (process.memoryUsage().heapTotal / 1024 / 1024).toFixed(2), process.memoryUsage().heapTotal]`;
     const shard = this.client.shard;
     const result = await shard.broadcastEval(evalstr);
+
     let guilds = result.map(r => r[1]);
     let users = result.map(r => r[2]);
     let channels = result.map(r => r[3]);
     let voiceConnections = result.map(r => r[4]);
     let uptime = result.map(r => r[5]);
     let memory = result.map(r => r[7]);
-
     let totalMemory = (memory.reduce((a, b) => a + b, 0) / 1024 / 1024).toFixed(2);
     let avgUptime = uptime.reduce((a, b) => a + b, 0) / shard.count;
 

@@ -64,6 +64,8 @@ client
   .on('commandRun', cmd => {
     //console.info(`COMMAND RUN: ${cmd.groupID}:${cmd.memberName}`);
     client.session.commands++;
+    if (!client.commands.hasOwnProperty(cmd.memberName)) client.commands[cmd.memberName] = 1;
+    else client.commands[cmd.memberName]++;
   })
   .on('commandError', (cmd, err) => {
     if (err instanceof FriendlyError) return;
