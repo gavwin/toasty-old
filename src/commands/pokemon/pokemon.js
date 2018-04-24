@@ -33,9 +33,7 @@ module.exports = class PokemonCommand extends Command {
         you need to wait another **${moment.duration(next).format(' H [hours], m [minutes] & s [seconds]')}** before catching another pokemon.
       `);
     }
-
-    this.client.commands.pokemon++;
-
+    
     const newPokemon = randomPokemon();
 
     if (!newPokemon || typeof newPokemon === 'undefined') return msg.reply('you failed to catch a pokemon 😢');

@@ -18,7 +18,6 @@ module.exports = class RoastMeCommand extends Command {
   }
 
   run(msg) {
-    this.client.commands.roastme++;
     msg.say(`**${msg.author.username}**, :fire: ${roasts[Math.floor(Math.random() * roasts.length)]}`);
   }
 };

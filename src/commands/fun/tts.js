@@ -27,7 +27,6 @@ module.exports = class TTSCommand extends Command {
   }
 
   async run(msg, args) {
-    this.client.commands.tts++;
     if (!msg.guild.me.permissions.has('CONNECT') || !msg.guild.me.permissions.has('SPEAK')) return msg.say(':no_entry_sign: I don\'t have the **Connect** or **Speak** permission.');
     /*const { body } = await this.client.snekfetch
       .get(`https://discordbots.org/api/bots/208946659361554432/votes?onlyids=1`)
