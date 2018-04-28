@@ -18,6 +18,6 @@ module.exports = class RoastMeCommand extends Command {
   }
 
   run(msg) {
-    msg.say(`**${msg.author.username}**, :fire: ${roasts[Math.floor(Math.random() * roasts.length)]}`);
+    msg.say(`**${msg.author.username}**, :fire: ${this.client.randomArray(roasts)}`);
   }
 };

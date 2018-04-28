@@ -20,14 +20,7 @@ module.exports = class StatsCommand extends Command {
   }
 
   async run(msg) {
-    let m;
-    if (msg.guild.me.permissions.has('USE_EXTERNAL_EMOJIS')) {
-      let loadEmbed = new this.client.embed();
-      loadEmbed.setDescription(`${this.client.emojis.get('434890199022043136').toString()} **Loading...**`);
-      m = await msg.embed(loadEmbed);
-    } else {
-      m = await msg.say('```Fetching my stats...```');
-    }
+    const m = await msg.say('```Fetching my stats...```');
     const statsData = JSON.parse(fs.readFileSync(path.join(__dirname, '..', '..', 'data', 'stats.json')));
     let guilds = await this.client.shard.fetchClientValues('guilds.size');
     guilds = guilds.reduce((prev, val) => prev + val, 0);

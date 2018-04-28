@@ -58,7 +58,11 @@ exports.run = (client, msg) => {
     if (!msg.guild.me.permissions.has('MANAGE_MESSAGES')) {
       msg.channel.send(':no_entry_sign: **Error:** I could not delete a discord invite because I do not have the **Manage Messages** permission!');
     } else {
-      msg.delete().then(() => msg.reply(':no_entry_sign: There is no invite link sending allowed on this server!'));
+      msg.delete().then(() => {
+        msg.reply(':no_entry_sign: There is no invite link sending allowed on this server!');
+      }).catch(err => {
+        msg.reply(':no_entry_sign: There is no invite link sending allowed on this server!');
+      });
       if (settings.modlog === 'enabled') {
         const embed = new RichEmbed();
         const today = new Date();
@@ -77,9 +81,3 @@ exports.run = (client, msg) => {
     }
   }
 };
-
-const ctLogger = [];
-process.on('uncaughtException', err => {
-  if (err.name.includes('Could not extract html5player key:')) return ctLogger.push(err.stack);
-  return console.error(err);
-});

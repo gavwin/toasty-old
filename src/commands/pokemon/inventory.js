@@ -21,7 +21,7 @@ module.exports = class InventoryCommand extends Command {
       ],
       throttling: {
         usages: 1,
-        duration: 30
+        duration: 15
       }
     });
   }

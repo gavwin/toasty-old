@@ -16,6 +16,6 @@ module.exports = class FaceCommand extends Command {
   }
 
   run(msg) {
-    msg.say(faces[Math.floor(Math.random()*faces.length)]);
+    msg.say(this.client.randomArray(faces));
   }
 };

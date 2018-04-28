@@ -26,8 +26,7 @@ module.exports = class RollCommand extends Command {
     });
   }
 
-  run(msg, args) {
-    const { num1, num2 } = args;
+  run(msg, { num1, num2 }) {
     msg.say(`**${msg.author.username}** :game_die: , you rolled a **${(Math.floor(Math.random() * num2) + num1).toLocaleString()}**.`);
   }
 };

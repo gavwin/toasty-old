@@ -20,6 +20,9 @@ module.exports = class ToastyClient extends CommandoClient {
     this.embed = RichEmbed;
     this.config = require('../config.json');
     this.snekfetch = require('snekfetch');
+    this.randomArray = (array) => {
+      return array[Math.floor(Math.random() * array.length)];
+    };
     this.r = r;
     this.pokemon = new Pokemon(this);
   }

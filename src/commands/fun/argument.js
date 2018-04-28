@@ -19,6 +19,6 @@ module.exports = class ArgumentCommand extends Command {
 
   run(msg, args) {
     const data = JSON.parse(fs.readFileSync(path.join(__dirname, '..', '..', 'data', 'arguments.json')));
-    msg.say(data[Math.floor(Math.random() * data.length)]);
+    msg.say(this.client.randomArray(data));
   }
 };

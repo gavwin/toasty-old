@@ -23,21 +23,25 @@ module.exports = class RedditCommand extends Command {
 	}
 
 	async run(msg, { subreddit }) {
-		const { body } = await this.client.snekfetch.get(`https://www.reddit.com/r/${subreddit}.json`)
-			.query({ limit: 1000 })
-      .catch(err => {
-				msg.say(`:no_entry_sign: Something went wrong while trying to search that subreddit.\n${err.message}`);
-			});
-		const allowed = msg.channel.nsfw ? body.data.children : body.data.children.filter(post => !post.data.over_18);
-		if (!allowed.length) return msg.say(':no_entry_sign: This post contains NSFW content! If you would like to view it, you can run this command in a NSFW channel.');
-		const embed = new this.client.embed();
-		let data = allowed[Math.floor(Math.random() * allowed.length)].data;
-		embed.setColor('RANDOM')
-			.setAuthor(`Requested by ${msg.author.username}`, msg.author.avatarURL())
-			.setTitle(data.title)
-			.setURL(`https://reddit.com${data.permalink}`)
-			.setImage(data.url)
-			.setFooter(`${data.subreddit_name_prefixed} | 👍 ${data.ups}`)
-		msg.embed(embed);
+		try {
+			const { body } = await this.client.snekfetch.get(`https://www.reddit.com/r/${subreddit}.json`)
+				.query({ limit: 1000 })
+      	.catch(err => {
+					msg.say(`:no_entry_sign: Something went wrong while trying to search that subreddit.\n${err.message}`);
+				});
+			const allowed = msg.channel.nsfw ? body.data.children : body.data.children.filter(post => !post.data.over_18);
+			if (!allowed.length) return msg.say(':no_entry_sign: This post contains NSFW content! If you would like to view it, you can run this command in a NSFW channel.');
+			const embed = new this.client.embed();
+			let data = this.client.randomArray(allowed).data;
+			embed.setColor('RANDOM')
+				.setAuthor(`Requested by ${msg.author.username}`, msg.author.avatarURL())
+				.setTitle(data.title)
+				.setURL(`https://reddit.com${data.permalink}`)
+				.setImage(data.url)
+		  	.setFooter(`${data.subreddit_name_prefixed} | 👍 ${data.ups}`)
+	  	msg.embed(embed);
+	  } catch(err) {
+			msg.reply(':no_entry_sign: **Error:** Something went wrong while trying to search for that subreddit. The subreddit may not exist, or is invite-only.');
+		}
 	}
 };

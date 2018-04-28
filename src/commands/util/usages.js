@@ -6,7 +6,7 @@ module.exports = class UsagesCommand extends Command {
       name: 'usages',
       group: 'util',
       memberName: 'usages',
-      description: 'Shows how many times the top commands have been used.',
+      description: 'Shows how many times the commands have been used.',
       throttling: {
         usages: 2,
         duration: 3
@@ -22,12 +22,10 @@ module.exports = class UsagesCommand extends Command {
       return usages.reduce((prev, val) => prev + val, 0).toLocaleString();
     }
 
-    let arr = [];
     client.registry.commands.array().forEach(async (command) => {
-      arr.push(`${command.name}: ${await getUsages(command.name, client)}`);
+      let usages = await getUsages(command.name, client);
+      if (usages < 1) return;
+      console.log(`${command.name}: ${usages}`);
     });
-    console.log(arr);
-
-    msg.say(arr.join('\n'));
   }
 };

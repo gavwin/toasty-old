@@ -25,7 +25,7 @@ const client = new ToastyClient({
 
 client
   .on('error', err => {
-    if (/ETIMEDOUT|getaddrinfo|Something took too long to do/.test(err)) process.exit(200);
+    /*if (/ETIMEDOUT|getaddrinfo|Something took too long to do/.test(err)) process.exit(200);
     if (/SequelizeUniqueConstraintError/.test(err)) return;
     client.channels
       .get('434682326232989696')
@@ -34,18 +34,18 @@ client
         \`\`\`javascript
         ${err.stack.split(client.token).join('-censored-')}
         \`\`\`
-      `, { split: { char: '', prepend: '```javascript\n', append: '\n```', maxLength: 1900 } }).catch(err_ => console.error('DISCORD', err_));
+      `, { split: { char: '', prepend: '```javascript\n', append: '\n```', maxLength: 1900 } }).catch(err_ => console.error('DISCORD', err_));*/
     console.error('ERROR', err);
   })
   .on('warn', warn => {
-    client.channels
+    /*client.channels
       .get('434682326232989696')
       .send(stripIndents`
         \`WARN EVENT EMITTED:\`
         \`\`\`
         ${warn.split(client.token).join('-censored-')}
         \`\`\`
-      `, { split: true }).catch(err_ => console.error('DISCORD', err_));
+      `, { split: true }).catch(err_ => console.error('DISCORD', err_));*/
   })
   .on('ready', async () => {
     console.log(oneLine`
@@ -57,9 +57,9 @@ client
   })
   .on('reconnecting', () => {
     console.log(`Reconnecting event fired on shard ${client.shard.id + 1}.`);
-    client.channels
+    /*client.channels
       .get('434682326232989696')
-      .send(`Reconnecting event fired on shard ${client.shard.id + 1} of ${client.shard}.`);
+      .send(`Reconnecting event fired on shard ${client.shard.id + 1} of ${client.shard}.`);*/
   })
   .on('commandRun', cmd => {
     //console.info(`COMMAND RUN: ${cmd.groupID}:${cmd.memberName}`);
@@ -70,14 +70,14 @@ client
   .on('commandError', (cmd, err) => {
     if (err instanceof FriendlyError) return;
     console.error(`Error in cmd ${cmd.name}:`, err);
-    client.channels
+    /*client.channels
       .get('434682326232989696')
       .send(stripIndents`
         \`COMMAND ERRORED: ${cmd.groupID}:${cmd.memberName}\`
         \`\`\`javascript
         ${err.stack.split(client.token).join('-censored-')}
         \`\`\`
-      `, { split: { char: '', prepend: '```javascript\n', append: '\n```', maxLength: 1900 } }).catch(err_ => client.utils.logger.error('DISCORD', err_));
+      `, { split: { char: '', prepend: '```javascript\n', append: '\n```', maxLength: 1900 } }).catch(err_ => client.utils.logger.error('DISCORD', err_));*/
   })
   .on('providerReady', () => console.info('SettingsProvider ready'));
   // eslint-disable-next-line max-len

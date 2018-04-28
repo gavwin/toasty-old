@@ -1,5 +1,4 @@
 const { Command } = require('discord.js-commando');
-const options = ['heads', 'tails'];
 
 module.exports = class CoinFlipCommand extends Command {
   constructor(client) {
@@ -17,9 +16,10 @@ module.exports = class CoinFlipCommand extends Command {
   }
 
   async run(msg) {
+    const options = ['heads', 'tails'];
     const m = await msg.say('Flipping.');
     setTimeout(() => { m.edit('Flipping..'); }, 350);
     setTimeout(() => { m.edit('Flipping...'); }, 700);
-    setTimeout(() => { m.edit(`**${msg.author.username}**, you got **${options[Math.floor(Math.random() * options.length)]}**!`); }, 1000);
+    setTimeout(() => { m.edit(`**${msg.author.username}**, you got **${this.client.randomArray(options)}**!`); }, 1000);
   }
 };
