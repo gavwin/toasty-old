@@ -16,8 +16,6 @@ module.exports = class ShowerthoughtCommand extends Command {
 			.query({ limit: 1000 });
 		const allowed = msg.channel.nsfw ? body.data.children : body.data.children.filter(post => !post.data.over_18);
 		if (!allowed.length) return msg.say('Hmm... It seems the thoughts are all gone right now. Try again later!');
-		const think = this.client.emojis.get('436275612898951198');
-	  if (!think) msg.say(this.client.randomArray(allowed).data.title);
-		else msg.say(`${think.toString()} ${this.client.randomArray(allowed).data.title}`);
+		msg.say(`🤔 ${this.client.randomArray(allowed).data.title}`);
 	}
 };

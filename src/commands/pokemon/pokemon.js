@@ -33,7 +33,7 @@ module.exports = class PokemonCommand extends Command {
         you need to wait another **${moment.duration(next).format(' H [hours], m [minutes] & s [seconds]')}** before catching another pokemon.
       `);
     }
-    
+
     const newPokemon = randomPokemon();
 
     if (!newPokemon || typeof newPokemon === 'undefined') return msg.reply('you failed to catch a pokemon 😢');
@@ -41,7 +41,7 @@ module.exports = class PokemonCommand extends Command {
     // const oldSprite = 'http://www.pokestadium.com/sprites/xy/';
     const newSprite = 'https://play.pokemonshowdown.com/sprites/xyani/';
 
-    const pe = this.client.emojis.get('433754631328235532');
+    const pe = this.client.emojis.get('440220815817048064');
     const gif = this.client.emojis.get('435540970554261504');
     if (!pe) {
       await this.client.pokemon.addPokemon(newPokemon, user);
