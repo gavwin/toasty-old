@@ -130,7 +130,6 @@ module.exports = class PlaySongCommand extends Command {
 
   async handlePlaylist(playlist, queue, voiceChannel, msg, statusMsg) {
     const videos = await playlist.getVideos();
-    console.log([...Object.values(videos)].length);
     for (const video of Object.values(videos)) {
       let video2;
       try {
@@ -163,7 +162,6 @@ module.exports = class PlaySongCommand extends Command {
           const connection = await queue.voiceChannel.join(); // eslint-disable-line no-await-in-loop
           queue.connection = connection;
           this.play(msg.guild, queue.songs[0]);
-          console.log([...Object.values(videos)].indexOf(video));
           if ([...Object.values(videos)].indexOf(video) === [...Object.values(videos)].length - 1) statusMsg.delete();
         } catch (error) {
           //console.error('DISCORD', 'Error occurred when joining voice channel.', error);
@@ -172,7 +170,6 @@ module.exports = class PlaySongCommand extends Command {
         }
       } else {
         await this.addSong(msg, video2); // eslint-disable-line no-await-in-loop
-        console.log([...Object.values(videos)].indexOf(video));
         if ([...Object.values(videos)].indexOf(video) === [...Object.values(videos)].length - 1) statusMsg.delete();
       }
     }
