@@ -29,6 +29,7 @@ module.exports = class ToggleCommand extends Command {
 
   run(msg, args) {
     if (!msg.member.permissions.has('ADMINISTRATOR') && msg.author.id !== msg.guild.ownerID) return msg.reply(':no_entry_sign: [**Invalid Permissions**]: You don\'t have the **Administrator** permission!');
+    if (!msg.guild.me.permissions.has('MANAGE_CHANNELS')) return msg.reply(':no_entry_sign: [**Missing Permissions**]: I don\'t have the **Manage Channels** permission!');
     const data = JSON.parse(fs.readFileSync(jsonPath), 'utf8');
     const feature = args.feature.toUpperCase();
 
