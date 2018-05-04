@@ -3,7 +3,7 @@ const HOURS = 3 * 60 * 60 * 1000;
 class Pokemon {
   constructor(client) {
     this.client = client;
-    this.r = client.r;
+    this.r = client.r.db('Pokemon');
   }
 
   hasReceived(id) {
