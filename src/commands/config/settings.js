@@ -1,6 +1,4 @@
 const { Command } = require('discord.js-commando');
-const fs = require('fs');
-const path = require('path');
 
 module.exports = class SettingsCommand extends Command {
   constructor(client) {
@@ -18,70 +16,34 @@ module.exports = class SettingsCommand extends Command {
     });
   }
 
-  async run(msg) {
-    const m = await msg.say('*Fetching your server settings...*');
-    const data = JSON.parse(fs.readFileSync(path.join(__dirname, '..', '..', 'data', 'servers.json')));
+  run(msg) {
     const embed = new this.client.embed();
-    const settingsData = data[msg.guild.id] ? data[msg.guild.id] : {settings: 'none'};
-
-    if (!settingsData.noinvite) {
-      var noinvite = 'disabled';
-    } else {
-      var noinvite = settingsData.noinvite;
-    }
-    if (!settingsData.joinMessage) {
-      var joinMessage = 'disabled';
-    } else {
-      var joinMessage = settingsData.joinMessage;
-    }
-    if (!settingsData.leaveMessage) {
-      var leaveMessage = 'disabled';
-    } else {
-      var leaveMessage = settingsData.leaveMessage;
-    }
-    if (!settingsData.joinDM) {
-      var joinDM = 'disabled';
-    } else {
-      var joinDM = settingsData.joinDM;
-    }
-    if (!settingsData.joinRole) {
-      var joinRole = 'disabled';
-    } else {
-      var joinRole = settingsData.joinRole;
-    }
-    if (!settingsData.joinlog) {
-      var joinlog = 'disabled';
-    } else {
-      var joinlog = settingsData.joinlog;
-    }
-    if (!settingsData.nonsfw) {
-      var nonsfw = 'disabled';
-    } else {
-      var nonsfw = settingsData.nonsfw;
-    }
-    if (!settingsData.modlog) {
-      var modlog = 'disabled';
-    } else {
-      var modlog = settingsData.modlog;
-    }
-    if (!settingsData.DJRole) {
-      var DJRole = 'disabled';
-    } else {
-      var DJRole = settingsData.DJRole;
-    }
-
-    embed.setColor('RANDOM')
-      .setAuthor(`Server settings for, ${msg.guild.name}`, msg.guild.iconURL)
-      .setDescription('')
-      .addField('Join Message', joinMessage, true)
-      .addField('Leave Message', leaveMessage, true)
-      .addField('Join DM', joinDM, true)
-      .addField('Join Role', joinRole, true)
-      .addField('Join Log', joinlog, true)
-      .addField('Mod Log', modlog, true)
-      .addField('No Invite', noinvite, true)
-      .addField('No NSFW', nonsfw, true)
-      .addField('DJ Role', DJRole, true);
-    m.edit({ embed });
+    this.client.database.getData(msg.guild.id).then(data => {
+      embed.setColor('RANDOM')
+        .setAuthor(`${msg.guild.name} Server Settings`, msg.guild.iconURL())
+        .addField('Join Message', data.joinMessage || 'disabled')
+        .addField('Leave Message', data.leaveMessage || 'disabled')
+        .addField('Join DM', data.joinDM || 'disabled')
+        .addField('Join Role', data.joinRole || 'disabled')
+        .addField('Join Log', data.joinlog || 'disabled')
+        .addField('Mod Log', data.modlog || 'disabled')
+        .addField('No Invite', data.noinvite || 'disabled')
+        .addField('No NSFW', data.nonsfw || 'disabled')
+        .addField('DJ Role', data.DJRole || 'disabled')
+      msg.embed(embed);
+    }).catch(e => {
+      embed.setColor('RANDOM')
+        .setAuthor(`${msg.guild.name} Server Settings`, msg.guild.iconURL())
+        .addField('Join Message', 'disabled')
+        .addField('Leave Message', 'disabled')
+        .addField('Join DM', 'disabled')
+        .addField('Join Role', 'disabled')
+        .addField('Join Log', 'disabled')
+        .addField('Mod Log', 'disabled')
+        .addField('No Invite', 'disabled')
+        .addField('No NSFW', 'disabled')
+        .addField('DJ Role', 'disabled')
+      msg.embed(embed);
+    });
   }
 };
