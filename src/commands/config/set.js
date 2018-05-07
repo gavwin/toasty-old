@@ -1,7 +1,4 @@
 const { Command } = require('discord.js-commando');
-const fs = require('fs');
-const path = require('path');
-const jsonPath = path.join(__dirname, '..', '..', 'data', 'servers.json');
 
 module.exports = class SetCommand extends Command {
   constructor(client) {
@@ -32,62 +29,51 @@ module.exports = class SetCommand extends Command {
     });
   }
 
-  run(msg, args) {
+  async run(msg, args) {
     if (!msg.member.permissions.has('ADMINISTRATOR') && msg.author.id !== msg.guild.ownerID) return msg.reply(':no_entry_sign: [**Invalid Permissions**]: You don\'t have the **Administrator** permission!');
-    const data = JSON.parse(fs.readFileSync(jsonPath), 'utf8');
     const feature = args.feature.toUpperCase();
-    const { to } = args;
+    const to = args.to;
+    const db = this.client.database;
+    const id = msg.guild.id;
 
-    function set(feature) {
+    async function set(feature) {
 
       if (feature === 'JOINMESSAGE') {
-        if (!data[msg.guild.id]) data[msg.guild.id] = {'joinMessage': 'disabled'};
         if (to === 'disabled') {
-          data[msg.guild.id].joinMessage = 'disabled';
-          fs.writeFileSync(jsonPath, JSON.stringify(data, null, 2));
+          await db.autoSet(id, 'joinMessage', 'disabled');
           msg.reply(':white_check_mark: The join message is now **disabled**.');
         } else {
-          data[msg.guild.id].joinMessage = to;
-          fs.writeFileSync(jsonPath, JSON.stringify(data, null, 2));
+          await db.autoSet(id, 'joinMessage', to);
           msg.reply(`:white_check_mark: The join message is now set to:\n${to}`);
         }
       } else
 
       if (feature === 'LEAVEMESSAGE') {
-        if (!data[msg.guild.id]) data[msg.guild.id] = {'leaveMessage': 'disabled'};
         if (to === 'disabled') {
-          data[msg.guild.id].leaveMessage = 'disabled';
-          fs.writeFileSync(jsonPath, JSON.stringify(data, null, 2));
+          await db.autoSet(id, 'leaveMessage', 'disabled');
           msg.reply(':white_check_mark: The leave message is now **disabled**.');
         } else {
-          data[msg.guild.id].leaveMessage = to;
-          fs.writeFileSync(jsonPath, JSON.stringify(data, null, 2));
+          await db.autoSet(id, 'leaveMessage', to);
           msg.reply(`:white_check_mark: The leave message is now set to:\n${to}`);
         }
       } else
 
       if (feature === 'JOINDM') {
-        if (!data[msg.guild.id]) data[msg.guild.id] = {'joinDM': 'disabled'};
         if (to === 'disabled') {
-          data[msg.guild.id].joinDM = 'disabled';
-          fs.writeFileSync(jsonPath, JSON.stringify(data, null, 2));
+          await db.autoSet(id, 'joinDM', 'disabled');
           msg.reply(':white_check_mark: The join DM is now **disabled**.');
         } else {
-          data[msg.guild.id].joinDM = to;
-          fs.writeFileSync(jsonPath, JSON.stringify(data, null, 2));
+          await db.autoSet(id, 'joinDM', to);
           msg.reply(`:white_check_mark: The join DM is now set to:\n${to}`);
         }
       } else
 
       if (feature === 'JOINROLE') {
-        if (!data[msg.guild.id]) data[msg.guild.id] = {'joinRole': 'disabled'};
         if (to === 'disabled') {
-          data[msg.guild.id].joinRole = 'disabled';
-          fs.writeFileSync(jsonPath, JSON.stringify(data, null, 2));
+          await db.autoSet(id, 'joinRole', 'disabled');
           msg.reply(':white_check_mark: The join role is now **disabled**.');
         } else {
-          data[msg.guild.id].joinRole = to;
-          fs.writeFileSync(jsonPath, JSON.stringify(data, null, 2));
+          await db.autoSet(id, 'joinRole', to);
           msg.reply(`:white_check_mark: The join role is now set to **${to}**`);
         }
       } else {

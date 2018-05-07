@@ -1,7 +1,5 @@
 const { Command } = require('discord.js-commando');
 const { caseNumber } = require('../../util/caseNumber.js');
-const fs = require('fs');
-const path = require('path');
 
 module.exports = class WarnCommand extends Command {
   constructor(client) {
@@ -28,16 +26,15 @@ module.exports = class WarnCommand extends Command {
   }
 
   async run(msg, args) {
-    const data = JSON.parse(fs.readFileSync(path.join(__dirname, '..', '..', 'data', 'servers.json'), 'utf8'));
     const { member, reason } = args;
     if (member.user.id === this.client.user.id) return msg.reply('I can\'t warn myself \\:P');
     if (!msg.member.permissions.has('KICK_MEMBERS') && msg.author.id !== msg.guild.ownerID) return msg.reply(':no_entry_sign: [**Invalid Permissions**]: You don\'t have the **Kick Members** command.\n*This command requires Kick Members permission.*');
 
-    const modlogData = data[msg.guild.id] ? data[msg.guild.id] : {modlog: 'disabled'};
-    if (modlogData.modlog === 'disabled' || !msg.guild.channels.find('name', 'mod-log')) {
+    const data = await this.client.database.getData(msg.guild.id);
+    if (data.modlog === 'disabled' || !msg.guild.channels.find('name', 'mod-log')) {
       msg.reply(`:no_entry_sign: The modlog must be enabled for me to issue warnings. Type, \`${this.client.commandPrefix}toggle modlog\` to enable it.`);
     } else
-    if (modlogData.modlog === 'enabled') {
+    if (data.modlog === 'enabled') {
       const embed = new this.client.embed();
       const channel = msg.guild.channels.find('name', 'mod-log');
       const caseNum = await caseNumber(this.client, channel);

@@ -1,7 +1,4 @@
 const { Command } = require('discord.js-commando');
-const fs = require('fs');
-const path = require('path');
-const jsonPath = path.join(__dirname, '..', '..', 'data', 'servers.json');
 
 module.exports = class RolesRemoveCommand extends Command {
   constructor(client) {
@@ -27,15 +24,11 @@ module.exports = class RolesRemoveCommand extends Command {
     });
   }
 
-  run(msg, args) {
+  async run(msg, { role }) {
     if (!msg.member.permissions.has('ADMINISTRATOR') && msg.author.id !== msg.guild.ownerID) return msg.reply(':no_entry_sign: [**Invalid Permissions**]: You don\'t have the **Administrator** permission!');
-    const data = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
-    const { role } = args;
-    if (!data[msg.guild.id]) data[msg.guild.id] = { roles: [] };
-    if (!data[msg.guild.id].roles.includes(role.name)) return msg.reply(`:no_entry_sign: The role, **${role.name}** is not in the server roles list.`);
-    const index = data[msg.guild.id].roles.indexOf(role.name);
-    data[msg.guild.id].roles.splice(index, 1);
-    fs.writeFileSync(jsonPath, JSON.stringify(data, null, 2));
+    const data = await this.client.database.getData(msg.guild.id);
+    if (data.hasOwnProperty('roles') && !data.roles.includes(role.name)) return msg.reply(`:no_entry_sign: The role, **${role.name}** is not in the server roles list.`);
+    await this.client.database.autoSet(msg.guild.id, 'roles', [ ]);
     msg.reply(`:white_check_mark: Successfully removed **${role.name}** from the server roles list.`);
   }
 };

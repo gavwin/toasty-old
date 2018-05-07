@@ -83,6 +83,6 @@ exports.run = (client, member) => { // eslint-disable-line complexity
     }
     return null;
   } catch (aLotOfErrors) {
-    return console.error(aLotOfErrors);
+    return console.log('guildMemberAdd.js errors:', aLotOfErrors);
   }
 };

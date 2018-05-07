@@ -1,7 +1,4 @@
 const { Command } = require('discord.js-commando');
-const fs = require('fs');
-const path = require('path');
-const jsonPath = path.join(__dirname, '..', '..', 'data', 'servers.json');
 
 module.exports = class RolesListCommand extends Command {
   constructor(client) {
@@ -20,11 +17,12 @@ module.exports = class RolesListCommand extends Command {
     });
   }
 
-  run(msg, args) {
-    const data = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
-    const { role } = args;
-    if (!data[msg.guild.id]) data[msg.guild.id] = { roles: [] };
-    if (!data[msg.guild.id].roles || data[msg.guild.id].roles === undefined || data[msg.guild.id].roles.size === 0) return msg.reply(`:no_entry_sign: There are currently no \`roleme\` roles on this server. If you are a server Administrator please add a role to the server roles list with, \`${this.client.commandPrefix}roles-add [role name]\``);
-    msg.channel.send(`Avaliable roleme roles for **${msg.guild.name}**:\n${data[msg.guild.id].roles.join('\n')}`);
+  async run(msg) {
+    let data = await this.client.database.getData(msg.guild.id).catch(e => {
+      return msg.reply(`:no_entry_sign: There are currently no \`roleme\` roles on this server. If you are a server Administrator please add a role to the server roles list with, \`${this.client.commandPrefix}roles-add [role name]\``);
+    });
+    let roles = data.roles;
+    if (!roles || roles == null || roles.length === 0) return msg.reply(`:no_entry_sign: There are currently no \`roleme\` roles on this server. If you are a server Administrator please add a role to the server roles list with, \`${this.client.commandPrefix}roles-add [role name]\``);
+    msg.say(`Avaliable roleme roles for **${msg.guild.name}**:\n${roles.join('\n')}`);
   }
 };
