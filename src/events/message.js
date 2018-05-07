@@ -1,17 +1,14 @@
 const { indicoToken, prefix } = require('../config.json');
 const indico = require('indico.io');
-const path = require('path');
-const fs = require('fs');
 const url = require('url');
 const { stripIndents } = require('common-tags');
 
-exports.run = (client, msg) => {
+exports.run = async (client, msg) => {
   const RichEmbed = client.embed;
   client.session.messages++;
   if (msg.channel.type === 'dm') return;
 
-  const data = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'servers.json'), 'utf8'));
-  const settings = data[msg.guild.id] ? data[msg.guild.id] : { nonsfw: 'disabled', noinvite: 'disabled' };
+  const settings = await client.database.getData(msg.guild.id);
 
   /*if (settings.nonsfw === 'enabled' && msg.attachments) {
     const urls = msg.attachments
@@ -58,11 +55,8 @@ exports.run = (client, msg) => {
     if (!msg.guild.me.permissions.has('MANAGE_MESSAGES')) {
       msg.channel.send(':no_entry_sign: **Error:** I could not delete a discord invite because I do not have the **Manage Messages** permission!');
     } else {
-      msg.delete().then(() => {
-        msg.reply(':no_entry_sign: There is no invite link sending allowed on this server!');
-      }).catch(err => {
-        msg.reply(':no_entry_sign: There is no invite link sending allowed on this server!');
-      });
+      await msg.delete().catch(err => msg.reply(':no_entry_sign: There is no invite link sending allowed on this server!'));
+      msg.reply(':no_entry_sign: There is no invite link sending allowed on this server!');
       if (settings.modlog === 'enabled') {
         const embed = new RichEmbed();
         const today = new Date();

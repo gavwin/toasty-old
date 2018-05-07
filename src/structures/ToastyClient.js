@@ -1,10 +1,10 @@
 const { CommandoClient } = require('discord.js-commando');
 const RichEmbed = require('./RichEmbed');
+const Database = require('./Database');
 const Pokemon = require('./Pokemon');
 const r = require('rethinkdbdash')({
   port: 28015,
-  host: 'localhost',
-  db: 'Pokemon'
+  host: 'localhost'
 });
 
 module.exports = class ToastyClient extends CommandoClient {
@@ -24,6 +24,7 @@ module.exports = class ToastyClient extends CommandoClient {
       return array[Math.floor(Math.random() * array.length)];
     };
     this.r = r;
+    this.database = new Database(this);
     this.pokemon = new Pokemon(this);
   }
 };

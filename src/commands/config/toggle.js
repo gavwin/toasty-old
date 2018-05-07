@@ -1,7 +1,4 @@
 const { Command } = require('discord.js-commando');
-const fs = require('fs');
-const path = require('path');
-const jsonPath = path.join(__dirname, '..', '..', 'data/servers.json');
 
 module.exports = class ToggleCommand extends Command {
   constructor(client) {
@@ -27,28 +24,25 @@ module.exports = class ToggleCommand extends Command {
     });
   }
 
-  run(msg, args) {
+  async run(msg, args) {
     if (!msg.member.permissions.has('ADMINISTRATOR') && msg.author.id !== msg.guild.ownerID) return msg.reply(':no_entry_sign: [**Invalid Permissions**]: You don\'t have the **Administrator** permission!');
     if (!msg.guild.me.permissions.has('MANAGE_CHANNELS')) return msg.reply(':no_entry_sign: [**Missing Permissions**]: I don\'t have the **Manage Channels** permission!');
-    const data = JSON.parse(fs.readFileSync(jsonPath), 'utf8');
     const feature = args.feature.toUpperCase();
+    const db = this.client.database;
+    const id = msg.guild.id;
 
-    function toggle(feature) {
+    async function toggle(feature) {
 
       if (feature === 'NONSFW') {
-        if (!data[msg.guild.id]) data[msg.guild.id] = {'nonsfw': 'disabled'};
-        if (data[msg.guild.id].nonsfw === 'enabled') {
-          data[msg.guild.id].nonsfw = 'disabled';
-          fs.writeFileSync(jsonPath, JSON.stringify(data, null, 2));
+        if (await db.checkSetting(id, 'nonsfw') === 'enabled') {
+          await db.autoSet(id, 'nonsfw', 'disabled');
           msg.reply(':white_check_mark: The no NSFW feature is now **disabled**.');
         } else
-        if (!data[msg.guild.id].nonsfw === 'disabled') {
-          data[msg.guild.id].nonsfw = 'enabled';
-          fs.writeFileSync(jsonPath, JSON.stringify(data, null, 2));
+        if (await db.checkSetting(id, 'nonsfw') === 'disabled') {
+          await db.autoSet(id, 'nonsfw', 'enabled');
           msg.reply(':white_check_mark: The no NSFW feature is now **enabled**.');
         } else {
-          data[msg.guild.id].nonsfw = 'enabled';
-          fs.writeFileSync(jsonPath, JSON.stringify(data, null, 2));
+          await db.autoSet(id, 'nonsfw', 'enabled');
           msg.reply(':white_check_mark: The no NSFW feature is now **enabled**.');
         }
       } else
@@ -60,45 +54,37 @@ module.exports = class ToggleCommand extends Command {
       } else
 
       if (feature === 'NOINVITE' || feature === 'NOINV') {
-        if (!data[msg.guild.id]) data[msg.guild.id] = {'noinvite': 'disabled'};
-        if (data[msg.guild.id].noinvite === 'enabled') {
-          data[msg.guild.id].noinvite = 'disabled';
-          fs.writeFileSync(jsonPath, JSON.stringify(data, null, 2));
+        if (await db.checkSetting(id, 'noinvite') === 'enabled') {
+          await db.autoSet(id, 'noinvite', 'disabled');
           msg.reply(':white_check_mark: The no invite feature is now **disabled**.');
         } else
-        if (!data[msg.guild.id].noinvite === 'disabled') {
-          data[msg.guild.id].noinvite = 'enabled';
-          fs.writeFileSync(jsonPath, JSON.stringify(data, null, 2));
+        if (await db.checkSetting(id, 'noinvite') === 'disabled') {
+          await db.autoSet(id, 'noinvite', 'enabled');
           msg.reply(':white_check_mark: The no invite feature is now **enabled**.');
         } else {
-          data[msg.guild.id].noinvite = 'enabled';
-          fs.writeFileSync(jsonPath, JSON.stringify(data, null, 2));
+          await db.autoSet(id, 'noinvite', 'enabled');
           msg.reply(':white_check_mark: The no invite feature is now **enabled**.');
         }
       } else
 
       if (feature === 'MODLOG') {
-        if (!data[msg.guild.id]) data[msg.guild.id] = {'modlog': 'disabled'};
-        if (data[msg.guild.id].modlog === 'enabled') {
-          data[msg.guild.id].modlog = 'disabled';
-          fs.writeFileSync(jsonPath, JSON.stringify(data, null, 2));
+        if (await db.checkSetting(id, 'modlog') === 'enabled') {
+          await db.autoSet(id, 'modlog', 'disabled');
           const channel = msg.guild.channels.find('name', 'mod-log');
           channel.delete().catch(err => {
             msg.reply(':no_entry_sign: **Error:** I couldn\'t delete the #mod-log channel. Make sure I have access to it!');
           });
           msg.reply(':white_check_mark: The modlog is now **disabled**.');
         } else
-        if (data[msg.guild.id].modlog === 'disabled') {
-          data[msg.guild.id].modlog = 'enabled';
-          fs.writeFileSync(jsonPath, JSON.stringify(data, null, 2));
+        if (await db.checkSetting(id, 'modlog') === 'disabled') {
+          await db.autoSet(id, 'modlog', 'enabled');
           msg.reply(':white_check_mark: The modlog is now **enabled**.');
           msg.guild.channels.create('mod-log', 'text')
             .then(modlog => {
               modlog.send('You have enabled the modlog. To disable this and delete this channel type, `toggle modlog`');
             });
         } else {
-          data[msg.guild.id].modlog = 'enabled';
-          fs.writeFileSync(jsonPath, JSON.stringify(data, null, 2));
+          await db.autoSet(id, 'modlog', 'enabled');
           msg.reply(':white_check_mark: The modlog is now **enabled**.');
           msg.guild.channels.create('mod-log', 'text')
             .then(modlog => {
@@ -108,27 +94,23 @@ module.exports = class ToggleCommand extends Command {
       } else
 
       if (feature === 'JOINLOG') {
-        if (!data[msg.guild.id]) data[msg.guild.id] = {'joinlog': 'disabled'};
-        if (data[msg.guild.id].joinlog === 'enabled') {
-          data[msg.guild.id].joinlog = 'disabled';
-          fs.writeFileSync(jsonPath, JSON.stringify(data, null, 2));
+        if (await db.checkSetting(id, 'joinlog') === 'enabled') {
+          await db.autoSet(id, 'joinlog', 'disabled');
           const channel = msg.guild.channels.find('name', 'join-log');
           channel.delete().catch(err => {
             msg.reply(':no_entry_sign: **Error:** I couldn\'t delete the #join-log channel. Make sure I have access to it!');
           });
           msg.reply(':white_check_mark: The joinlog is now **disabled**.');
         } else
-        if (!data[msg.guild.id].joinlog === 'disabled') {
-          data[msg.guild.id].joinlog = 'enabled';
-          fs.writeFileSync(jsonPath, JSON.stringify(data, null, 2));
+        if (await db.checkSetting(id, 'joinlog') === 'disabled') {
+          await db.autoSet(id, 'joinlog', 'enabled');
           msg.reply(':white_check_mark: The joinlog is now **enabled**.');
           msg.guild.channels.create('join-log', 'text')
             .then(joinlog => {
               joinlog.send('You have enabled the joinlog. To disable this and delete this channel, type, `toggle joinlog`');
             });
         } else {
-          data[msg.guild.id].joinlog = 'enabled';
-          fs.writeFileSync(jsonPath, JSON.stringify(data, null, 2));
+          await db.autoSet(id, 'joinlog', 'enabled');
           msg.reply(':white_check_mark: The joinlog is now **enabled**.');
           msg.guild.channels.create('join-log', 'text')
             .then(joinlog => {
@@ -136,7 +118,7 @@ module.exports = class ToggleCommand extends Command {
             });
         }
       } else {
-        msg.reply(':no_entry_sign: That\'s not a valid feature. Avaliable features include:\nnoinvite, nonsfw, nomemedog, modlog and joinlog.');
+        msg.reply(':no_entry_sign: That\'s not a valid feature. Avaliable features include:\nnoinvite, nonsfw, modlog and joinlog.');
       }
     }
 

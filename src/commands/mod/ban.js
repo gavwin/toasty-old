@@ -1,7 +1,5 @@
 const { Command } = require('discord.js-commando');
 const { caseNumber } = require('../../util/caseNumber.js');
-const fs = require('fs');
-const path = require('path');
 
 module.exports = class BanCommand extends Command {
   constructor(client) {
@@ -28,7 +26,7 @@ module.exports = class BanCommand extends Command {
   }
 
   async run(msg, args) {
-    const data = JSON.parse(fs.readFileSync(path.join(__dirname, '..', '..', 'data', 'servers.json'), 'utf8'));
+    const data = await this.client.database.getData(msg.guild.id);
     const { user, reason } = args;
     if (user.id === this.client.user.id) return msg.reply('I can\'t ban myself \\:P');
     if (!msg.member.permissions.has('BAN_MEMBERS') && msg.author.id !== msg.guild.ownerID) return msg.reply(':no_entry_sign: [**Invalid Permissions**]: You don\'t have the **Ban Members** permission!');
@@ -56,11 +54,10 @@ module.exports = class BanCommand extends Command {
       if (['yes', 'y'].includes(co.first().content)) {
         const m = await msg.say('*Banning user...*');
         await msg.guild.members.ban(user, 7);
-        const modlogData = data[msg.guild.id] ? data[msg.guild.id] : { modlog: 'disabled' };
-        if (modlogData.modlog === 'disabled' || !msg.guild.channels.find('name', 'mod-log')) {
+        if (data.modlog === 'disabled' || !msg.guild.channels.find('name', 'mod-log')) {
           m.edit(`**${member.user.username}**#${member.user.discriminator} has been banned.`);
         } else
-        if (modlogData.modlog === 'enabled') {
+        if (data.modlog === 'enabled') {
           const embed = new this.client.embed();
           const channel = msg.guild.channels.find('name', 'mod-log');
           const caseNum = await caseNumber(this.client, channel);

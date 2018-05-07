@@ -41,7 +41,7 @@ exports.run = (client, member) => {
         .setTitle('Bot Left:')
         .setDescription(`- ${member.user.username}#${member.user.discriminator} (${member.user.id})`)
         .setFooter(`${date} at ${time}`);
-      if (!guild.me.permissions.has('EMBED_LINKS')) {
+      if (!guild.member(client.user).permissions.has('EMBED_LINKS')) {
         defaultChannel.send(':no_entry_sign: **Error:** I couldn\'t send an embed in the #join-log. Please make sure I have the **Send Embeds** permission!');
         return;
       }
@@ -55,7 +55,7 @@ exports.run = (client, member) => {
         .setTitle('User Left:')
         .setDescription(`- ${member.user.username}#${member.user.discriminator} (${member.user.id})`)
         .setFooter(`${date} at ${time}`);
-      if (!guild.me.permissions.has('EMBED_LINKS')) {
+      if (!guild.member(client.user).permissions.has('EMBED_LINKS')) {
         defaultChannel.send(':no_entry_sign: **Error:** I couldn\'t send an embed in the #join-log. Please make sure I have the **Send Embeds** permission!');
         return;
       }
