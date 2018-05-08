@@ -4,7 +4,7 @@ module.exports = class CatCommand extends Command {
   constructor(client) {
     super(client, {
       name: 'cat',
-      group: 'fun',
+      group: 'image',
       memberName: 'cat',
       description: 'Sends a random image of a cat.',
       throttling: {

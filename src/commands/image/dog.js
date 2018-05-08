@@ -5,7 +5,7 @@ module.exports = class DogCommand extends Command {
   constructor(client) {
     super(client, {
       name: 'dog',
-      group: 'fun',
+      group: 'image',
       memberName: 'dog',
       description: 'Sends a random dog image.',
       throttling: {

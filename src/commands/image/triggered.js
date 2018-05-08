@@ -12,7 +12,7 @@ module.exports = class TriggeredCommand extends Command {
   constructor(client) {
     super(client, {
       name: 'triggered',
-      group: 'fun',
+      group: 'image',
       memberName: 'triggered',
       guildOnly: true,
       description: 'Takes a user\'s avatar and makes it into a triggered gif.',

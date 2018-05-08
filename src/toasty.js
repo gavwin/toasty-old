@@ -145,6 +145,7 @@ client.registry
     ['util', 'Utility'],
     ['useful', 'Useful'],
     ['fun', 'Fun'],
+    ['image', 'Image'],
     ['pokemon', 'Pokemon'],
     ['info', 'Information'],
     ['mod', 'Moderation'],
