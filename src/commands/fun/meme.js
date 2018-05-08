@@ -26,19 +26,13 @@ module.exports = class MemeCommand extends Command {
     });
   }
 
-  run(msg) {
-    /*const meme = Math.floor(Math.random() * (1309999 - 1290000 + 1) + 1290000);
-    const embed = new this.client.embed().setColor('RANDOM').setImage(`http://images.memes.com/meme/${meme}`);
-    msg.embed(embed);*/
-
+  async run(msg) {
     let meme = subreddits[Math.round(Math.random() * (subreddits.length - 1))];
-    randomPuppy(meme)
-      .then(url => {
-        const embed = new this.client.embed()
-          .setFooter(`/r/${meme}`)
-          .setImage(url)
-          .setColor('RANDOM');
-        return msg.embed(embed);
-      });
+    let url = await randomPuppy(meme);
+    const embed = new this.client.embed()
+      .setFooter(`/r/${meme}`)
+      .setImage(url)
+      .setColor('RANDOM');
+    msg.embed(embed);
   }
 };
