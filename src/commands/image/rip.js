@@ -32,7 +32,10 @@ module.exports = class RipCommand extends Command {
     img_bg.onload = () => {
       ctx.drawImage(img_bg, 0, 0, 504, 594);
       ctx.font = 'bold 40px Arial';
-      let args = text || msg.author.username;
+      let args;
+      let username = msg.mentions.users.size > 0 ? msg.mentions.users.first().username : msg.author.username;
+      if (username) args = username;
+      else args = text;
       ctx.fillText(args, 237 - ctx.measureText(args).width / 2, 330);
       ctx.font = 'bold 30px Arial';
       ctx.fillText(`???? - ${(new Date()).getFullYear()}`, 160, 380);
