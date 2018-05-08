@@ -62,7 +62,6 @@ client
       .send(`Reconnecting event fired on shard ${client.shard.id + 1} of ${client.shard}.`);*/
   })
   .on('commandRun', cmd => {
-    //console.info(`COMMAND RUN: ${cmd.groupID}:${cmd.memberName}`);
     client.session.commands++;
     if (!client.commands.hasOwnProperty(cmd.memberName)) client.commands[cmd.memberName] = 1;
     else client.commands[cmd.memberName]++;
@@ -80,8 +79,6 @@ client
       `, { split: { char: '', prepend: '```javascript\n', append: '\n```', maxLength: 1900 } }).catch(err_ => client.utils.logger.error('DISCORD', err_));*/
   })
   .on('providerReady', () => console.info('SettingsProvider ready'));
-  // eslint-disable-next-line max-len
-  //.on('commandBlocked', (message, reason) => console.info(`Command ${message.command.groupID}:${message.command.memberName} blocked, reason: ${reason}`));
 
 // Load the events with huge chunks of code from the events folder
 (async () => {
@@ -101,7 +98,6 @@ client
       }
       const [event] = file.split('.');
       client.on(event, (...args) => run(client, ...args));
-      //console.info('Loaded event:', event);
     }
   } catch (err) {
     console.error(err);
@@ -114,8 +110,6 @@ client.dispatcher.addInhibitor(msg => {
   return 'Has been blacklisted.';
 });
 
-/*client.dispatcher.addInhibitor(msg => {
-  if (!msg.command) return false;
   if (msg.command.name !== 'trade') return false;
   return [
     'Trade command',
