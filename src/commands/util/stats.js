@@ -1,9 +1,5 @@
 const { Command } = require('discord.js-commando');
-const { exec } = require('child_process');
-const fs = require('fs');
-const path = require('path');
-const moment = require('moment');
-require('moment-duration-format');
+const os = require('os');
 
 module.exports = class StatsCommand extends Command {
   constructor(client) {
@@ -20,52 +16,77 @@ module.exports = class StatsCommand extends Command {
   }
 
   async run(msg) {
-    const m = await msg.say('```Fetching my stats...```');
-    const statsData = JSON.parse(fs.readFileSync(path.join(__dirname, '..', '..', 'data', 'stats.json')));
-    let guilds = await this.client.shard.fetchClientValues('guilds.size');
-    guilds = guilds.reduce((prev, val) => prev + val, 0);
-    let users = await this.client.shard.fetchClientValues('users.size');
-    users = users.reduce((prev, val) => prev + val, 0);
-    let channels = await this.client.shard.fetchClientValues('channels.size');
-    channels = channels.reduce((prev, val) => prev + val, 0);
-    let voiceConnections = await this.client.shard.fetchClientValues('voiceConnections.size');
-    voiceConnections = voiceConnections.reduce((prev, val) => prev + val, 0);
-    let sessionGuilds = await this.client.shard.fetchClientValues('session.guilds');
-    sessionGuilds = sessionGuilds.reduce((prev, val) => prev + val, 0);
-    let sessionCommands = await this.client.shard.fetchClientValues('session.commands');
-    sessionCommands = sessionCommands.reduce((prev, val) => prev + val, 0);
-    let sessionMessages = await this.client.shard.fetchClientValues('session.messages');
-    sessionMessages = sessionMessages.reduce((prev, val) => prev + val, 0);
-    let sessionPokemon = await this.client.shard.fetchClientValues('commands.pokemon');
-    sessionPokemon = sessionPokemon.reduce((prev, val) => prev + val, 0);
-    const uptime = await this.client.shard.fetchClientValues('uptime');
-    const averageUptime = uptime.reduce((prev, val) => prev + val, 0) / this.client.shard.count;
+    const client = this.client;
+    const m = await msg.say('*Fetching my stats...*');
 
-    const embed = new this.client.embed();
-    const toExec = `
-top -bn2 | grep \"Cpu(s)\" | \\
-sed \"s/.*, *\\([0-9.]*\\)%* id.*/\\1/\" | \\
-awk '{print 100 - $1\"%\"}'
-`;
-    exec(toExec, {}, (err, stdout, stderr) => {
-      if (err) return msg.reply(':no_entry_sign: There was an error fetching my stats. Please try again later.');
-      embed.setColor('RANDOM')
-        .setAuthor(this.client.user.username + ' Statistics', this.client.user.avatarURL)
-        .addField('On All Shards:', `Servers: **${guilds.toLocaleString()}** | Users: **${users.toLocaleString()}** | Channels: **${channels.toLocaleString()}** | Connections: **${voiceConnections.toLocaleString()}**`, true)
-        .addField(`On Shard ${this.client.shard.id + 1}/${this.client.shard.count}:`, `Servers: **${this.client.guilds.size.toLocaleString()}** | Users: **${this.client.users.size.toLocaleString()}** | Channels: **${this.client.channels.size.toLocaleString()}** | Connections: **${this.client.voiceConnections.size.toLocaleString()}**`, true)
-        .addField('Average Shard Uptime:', moment.duration(averageUptime).format(' D [days], H [hrs], m [mins], s [secs]'))
-        .addField('Messages This Session:', sessionMessages.toLocaleString())
-        .addField('Commands This Session:', sessionCommands.toLocaleString())
-        .addField('Guilds This Session:', sessionGuilds.toLocaleString())
-        .addField('Pokemon Caught This Session:', sessionPokemon.toLocaleString())
-        .addField('Message Latency:', `${m.createdTimestamp - msg.createdTimestamp} MS`, true)
-        .addField('Discord Latency:', `${Math.round(this.client.ping)} MS`, true)
-        .addField('Memory Usage:', `${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB`, true)
-        .addField('Swap Size:', `${(process.memoryUsage().rss / 1024 / 1024).toFixed(2)} MB`, true)
-        .addField('CPU Usage:', stdout.substring(5), true)
-        .addField('Operating System:', 'Ubuntu 16.0.4 LTS', true)
-        .addField('Creator:', 'i am toast#1213');
-      m.edit({ embed });
-    });
+    let uptime = await client.shard.fetchClientValues('uptime');
+    let avgUptime = uptime.reduce((a, b) => a + b, 0) / client.shard.count;
+
+    const memory = await client.shard.broadcastEval('process.memoryUsage().heapTotal');
+    let memoryUsage = (memory.reduce((a, b) => a + b, 0) / 1024 / 1024).toFixed(2);
+
+    let CPUUsage = await getCPUUsage();
+
+    const data = [
+      `Servers: **${await getTotal(client, 'guilds.size')}**`,
+      `Users: **${await getTotal(client, 'users.size')}**`,
+      `Channels: **${await getTotal(client, 'channels.size')}**`,
+      `Voice Channels: **${await getTotal(client, 'voiceConnections.size')}**`,
+      `Average Shard Uptime: **${this.client.formatUptime(avgUptime)}**`,
+      `Messages This Session: **${await getTotal(client, 'session.messages')}**`,
+      `Commands This Session: **${await getTotal(client, 'session.commands')}**`,
+      `Guilds This Session: **${await getTotal(client, 'session.guilds')}**`,
+      `Pokemon Caught This Session: **${await getTotal(client, 'commands.pokemon')}**`,
+      `Discord Latency: **${Math.round(client.ping)}** MS`,
+      `Message Latency: **${m.createdTimestamp - msg.createdTimestamp}** MS`,
+      `Memory Usage: **${memoryUsage} / ${(os.totalmem() / 1024 / 1024).toFixed(2)}** MB`,
+      `Shard Swap Size: **${(process.memoryUsage().rss / 1024 / 1024).toFixed(2)}** MB`,
+      `CPU Usage: **${CPUUsage.toFixed(1)}%**`,
+      'Operating System: **Ubuntu 14.04 Server**',
+      `Node.js Version: **${process.version}**`,
+      'Creator: **i am toast**#1213'
+    ];
+
+    const embed = new client.embed()
+      .setColor('RANDOM')
+      .setAuthor(`${client.user.username} Stats`, client.user.avatarURL())
+      .setDescription(data.join('\n'));
+    m.edit({ embed });
   }
 };
+
+const getTotal = async (client, value) => {
+  let val = await client.shard.fetchClientValues(value);
+  return val.reduce((a, b) => a + b, 0).toLocaleString();
+}
+
+const getCPUUsage = async () => {
+  const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
+  let [timeUsed0, timeIdle0, timeUsed1, timeIdle1] = new Array(4).fill(0);
+
+  const cpu0 = os.cpus();
+  await sleep(1000);
+  const cpu1 = os.cpus();
+
+  for (const cpu of cpu1) {
+    timeUsed1 += (
+      cpu.times.user +
+      cpu.times.nice +
+      cpu.times.sys
+    )
+    timeIdle1 += cpu.times.idle;
+  }
+  for (const cpu of cpu0) {
+    timeUsed0 += (
+      cpu.times.user +
+      cpu.times.nice +
+      cpu.times.sys
+    )
+    timeIdle0 += cpu.times.idle;
+  }
+
+  const totalUsed = timeUsed1 - timeUsed0;
+  const totalIdle = timeIdle1 - timeIdle0;
+  return (totalUsed / (totalUsed + totalIdle)) * 100;
+}
