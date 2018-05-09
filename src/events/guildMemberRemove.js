@@ -1,7 +1,4 @@
-const fs = require('fs');
-const path = require('path');
-/* eslint-disable max-len */
-exports.run = (client, member) => {
+exports.run = async (client, member) => {
   const { guild } = member;
   let defaultChannel;
   try {
@@ -10,11 +7,10 @@ exports.run = (client, member) => {
     defaultChannel = guild.channels.find(c => c.name === 'general');
   }
   const RichEmbed = client.embed;
-  const data = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'servers.json')));
+  const data = await client.database.getData(guild.id);
 
-  if (!data[guild.id]) data[guild.id] = { 'leaveMessage': 'disabled' };
-  if (data[guild.id].leaveMessage && data[guild.id].leaveMessage !== 'disabled') {
-    const { leaveMessage } = data[guild.id];
+  if (data.leaveMessage && data.leaveMessage !== 'disabled') {
+    const { leaveMessage } = data;
     if (leaveMessage.includes('{user}')) {
       const message = leaveMessage.replace('{user}', member.user);
       if (!guild.channels.find('name', 'join-log')) return;
@@ -29,8 +25,8 @@ exports.run = (client, member) => {
     }
   }
 
-  if (!data[guild.id]) data[guild.id] = { 'joinlog': 'disabled' };
-  if (data[guild.id].joinlog && data[guild.id].joinlog === 'enabled') {
+  if (!data) data = { 'joinlog': 'disabled' };
+  if (data.joinlog && data.joinlog === 'enabled') {
     const embed = new RichEmbed();
     const today = new Date();
     const date = `${today.getMonth() + 1}/${today.getDate()}/${today.getFullYear()}`;

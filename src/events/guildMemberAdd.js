@@ -1,21 +1,15 @@
-const fs = require('fs');
-const path = require('path');
-
-/* eslint-disable max-len */
-
-exports.run = (client, member) => { // eslint-disable-line complexity
+exports.run = async (client, member) => { // eslint-disable-line complexity
   const RichEmbed = client.embed;
   try {
-    const data = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'servers.json')));
     const { guild } = member;
+    const data = await client.database.getData(guild.id);
 
-    if (!data[guild.id]) data[guild.id] = { 'joinDM': 'disabled' };
-    if (data[guild.id].joinDM && data[guild.id].joinDM !== 'disabled') member.send(data[guild.id].joinDM);
+    if (data.joinDM && data.joinDM !== 'disabled') member.send(data.joinDM);
 
-    if (!data[guild.id]) data[guild.id] = { 'joinMessage': 'disabled' };
-    if (data[guild.id].joinMessage && data[guild.id].joinMessage !== 'disabled') {
-      const { joinMessage } = data[guild.id];
-      if (data[guild.id].joinMessage.includes('{user}')) {
+    if (!data) data = { 'joinMessage': 'disabled' };
+    if (data.joinMessage && data.joinMessage !== 'disabled') {
+      const { joinMessage } = data;
+      if (data.joinMessage.includes('{user}')) {
         const message = joinMessage.replace('{user}', member.user);
         const defaultChannel = guild.channels.find(c => c.permissionsFor(client.user).has('SEND_MESSAGES'));
         if (!guild.channels.find('name', 'join-log')) return defaultChannel.send(':no_entry_sign: **Error:** I couldn\'t send the join message in the #join-log. Please make sure the join log is enabled!');
@@ -31,26 +25,24 @@ exports.run = (client, member) => { // eslint-disable-line complexity
       }
     }
 
-    if (!data[guild.id]) data[guild.id] = { 'joinRole': 'disabled', 'joinlog': 'disabled' };
-    if (data[guild.id].joinRole && data[guild.id].joinRole !== 'disabled') {
-      const { joinRole } = data[guild.id];
+    if (data.joinRole && data.joinRole !== 'disabled') {
+      const { joinRole } = data;
       const role = guild.roles.find('name', joinRole);
       const defaultChannel = guild.channels.find(c => c.permissionsFor(client.user).has('SEND_MESSAGES'));
       if (!role) return defaultChannel.send(`:no_entry_sign: **Error:** Couldn't add join role. Reason: \`${joinRole}\` isn't a role on this server!`);
       if (!guild.member(client.user).permissions.has('MANAGE_ROLES')) return defaultChannel.send(':no_entry_sign: **Error:** I couldn\'t add the join role because I don\'t have the **Manage Roles** permission!');
-      if (data[guild.id].joinlog) {
+      if (data.joinlog) {
         if (!guild.channels.find('name', 'join-log')) return defaultChannel.send(':no_entry_sign: **Error:** I couldn\'t send an embed in the #join-log. Please make sure I have access to a channel called join-log!');
         if (member.user.bot) return guild.channels.find('name', 'join-log').send(`Didn't add the join role to **${member.user.username}** because it is a bot.`);
         member.roles.add(role.id);
         guild.channels.find('name', 'join-log').send(`Added the join role of \`${joinRole}\` to **${member.user.username}**.`);
-      } else if (!data[guild.id].joinlog) {
+      } else if (!data.joinlog) {
         if (member.user.bot) return null;
         member.roles.add(role);
       }
     }
 
-    if (!data[guild.id]) data[guild.id] = { 'joinlog': 'disabled' };
-    if (data[guild.id].joinlog && data[guild.id].joinlog === 'enabled') {
+    if (data.joinlog && data.joinlog === 'enabled') {
       const embed = new RichEmbed();
       const today = new Date();
       const date = `${today.getMonth() + 1}/${today.getDate()}/${today.getFullYear()}`;
@@ -82,7 +74,7 @@ exports.run = (client, member) => { // eslint-disable-line complexity
       }
     }
     return null;
-  } catch (aLotOfErrors) {
-    return console.log('guildMemberAdd.js errors:', aLotOfErrors);
+  } catch (errs) {
+    return console.error('guildMemberAdd.js error:', errs);
   }
 };
