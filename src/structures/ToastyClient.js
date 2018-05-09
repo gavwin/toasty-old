@@ -23,6 +23,11 @@ module.exports = class ToastyClient extends CommandoClient {
     this.randomArray = (array) => {
       return array[Math.floor(Math.random() * array.length)];
     };
+    this.formatUptime = (ms) => {
+      const moment = require('moment');
+      require('moment-duration-format');
+      return moment.duration(ms).format(' D [days], H [hrs], m [mins], s [secs]');
+    };
     this.r = r;
     this.database = new Database(this);
     this.pokemon = new Pokemon(this);
