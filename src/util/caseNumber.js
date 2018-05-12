@@ -11,4 +11,4 @@ async function caseNumber(client, modlog) {
   return thisCase ? parseInt(thisCase[1]) + 1 : 1;
 }
 
-module.exports = {caseNumber};
+module.exports = { caseNumber };
