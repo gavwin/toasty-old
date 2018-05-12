@@ -30,6 +30,7 @@ module.exports = class CookieCommand extends Command {
   }
 
   async run(msg, { user }) {
+    if (!msg.guild.me.permissions.has('ATTACH_FILES')) return msg.reply(':no_entry_sign: [**Missing Permissions**]: I don\'t have the **Attach Files** permission!');
     msg.channel.send(`**🍪 | <@${msg.author.id}> has given <@${user.id}> a cookie!**`, {
       files: [{
         attachment: this.client.randomArray(cookies)
