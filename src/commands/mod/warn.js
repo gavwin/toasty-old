@@ -32,7 +32,7 @@ module.exports = class WarnCommand extends Command {
 
     const data = await this.client.database.getData(msg.guild.id);
     if (data.modlog === 'disabled' || !msg.guild.channels.find('name', 'mod-log')) {
-      msg.reply(`:no_entry_sign: The modlog must be enabled for me to issue warnings. Type, \`${this.client.commandPrefix}toggle modlog\` to enable it.`);
+      msg.reply(`:no_entry_sign: The modlog must be enabled for me to issue warnings. Type, \`${msg.guild.commandPrefix}toggle modlog\` to enable it.`);
     } else
     if (data.modlog === 'enabled') {
       const embed = new this.client.embed();
@@ -49,7 +49,7 @@ module.exports = class WarnCommand extends Command {
       msg.delete();
       msg.say(`<@${member.user.id}>, :no_entry_sign: This is a warning!\n${reason}`);
     } else {
-      msg.reply(`:no_entry_sign: The modlog must be enabled for me to issue warnings. Type, \`${this.client.commandPrefix}toggle modlog\` to enable it.`);
+      msg.reply(`:no_entry_sign: The modlog must be enabled for me to issue warnings. Type, \`${msg.guild.commandPrefix}toggle modlog\` to enable it.`);
     }
   }
 

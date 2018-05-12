@@ -28,8 +28,8 @@ module.exports = class RoleMeCommand extends Command {
     const data = await this.client.database.getData(msg.guild.id);
     const roles = data.roles;
     if (!msg.guild.me.permissions.has('MANAGE_ROLES')) return msg.reply(':no_entry_sign: [**Missing Permissions**]: I don\'t have the **Manage Roles** permission!');
-    if (roles == null || roles.size === 0) return msg.reply(`:no_entry_sign: That isn't an avaliable role to gain with this command. If you are a server Administrator please add a role to the server roles list with, \`${this.client.commandPrefix}roles-add [role name]\``);
-    if (!roles.includes(role)) return msg.reply(`:no_entry_sign: The role, **${role}** isn't an avaliable role to gain with this command. You can check the avaliable roles with \`${this.client.commandPrefix}roles-list\`.`);
+    if (roles == null || roles.size === 0) return msg.reply(`:no_entry_sign: That isn't an avaliable role to gain with this command. If you are a server Administrator please add a role to the server roles list with, \`${msg.guild.commandPrefix}roles-add [role name]\``);
+    if (!roles.includes(role)) return msg.reply(`:no_entry_sign: The role, **${role}** isn't an avaliable role to gain with this command. You can check the avaliable roles with \`${msg.guild.commandPrefix}roles-list\`.`);
     if (msg.guild.me.roles.highest.comparePositionTo(role) < 1) return msg.reply(':no_entry_sign: [**Missing Permissions**]: I don\'t have permissions to edit this role, please check the role order!');
     const m = await msg.say('*Adding...*');
     const authorMember = await msg.guild.members.fetch(msg.author);
