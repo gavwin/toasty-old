@@ -13,7 +13,8 @@ module.exports = class ToastyClient extends CommandoClient {
     this.session = {
       messages: 0,
       commands: 0,
-      guilds: 0
+      guilds: 0,
+      pokemon: 0
     };
     this.commands = {};
     this.timer = {};

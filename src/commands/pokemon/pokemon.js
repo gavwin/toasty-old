@@ -38,6 +38,8 @@ module.exports = class PokemonCommand extends Command {
 
     if (!newPokemon || typeof newPokemon === 'undefined') return msg.reply('you failed to catch a pokemon 😢');
 
+    this.client.session.pokemon++;
+
     // const oldSprite = 'http://www.pokestadium.com/sprites/xy/';
     const newSprite = 'https://play.pokemonshowdown.com/sprites/xyani/';
 

@@ -36,7 +36,7 @@ module.exports = class StatsCommand extends Command {
       `Messages This Session: **${await getTotal(client, 'session.messages')}**`,
       `Commands This Session: **${await getTotal(client, 'session.commands')}**`,
       `Guilds This Session: **${await getTotal(client, 'session.guilds')}**`,
-      `Pokemon Caught This Session: **${await getTotal(client, 'commands.pokemon')}**`,
+      `Pokemon Caught This Session: **${await getTotal(client, 'session.pokemon')}**`,
       `Discord Latency: **${Math.round(client.ping)}** MS`,
       `Message Latency: **${m.createdTimestamp - msg.createdTimestamp}** MS`,
       `Memory Usage: **${memoryUsage} / ${(os.totalmem() / 1024 / 1024).toFixed(2)}** MB`,
