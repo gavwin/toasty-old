@@ -28,7 +28,7 @@ module.exports = class CleanCommand extends Command {
     );
     msg.channel.bulkDelete(msgArray);
     m.edit(':white_check_mark: Successfully cleaned up my commands!');
-    setTimeout(msg.delete, 1000);
+    setTimeout(() => { msg.delete() }, 1000);
     return null;
   }
 };
