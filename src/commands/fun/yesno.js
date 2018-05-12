@@ -25,7 +25,8 @@ module.exports = class YesNoCommand extends Command {
   	const embed = new this.client.embed()
       .setAuthor(msg.author.username, msg.author.avatarURL())
       .setTitle(question)
-      .setImage(body.image);
+			.setColor('RANDOM')
+      .setImage(body.image)
     msg.embed(embed);
 	}
 };
