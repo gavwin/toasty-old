@@ -220,7 +220,7 @@ module.exports = class PlaySongCommand extends Command {
         this.play(guild, queue.songs[0]);
       });
     const dispatcher = queue.connection.play(stream, { passes: 5 })
-      .on('finish', () => {
+      .on('end', () => {
         if (streamErrored) return;
         queue.songs.shift();
         this.play(guild, queue.songs[0]);
