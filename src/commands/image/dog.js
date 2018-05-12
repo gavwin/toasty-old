@@ -1,5 +1,4 @@
 const { Command } = require('discord.js-commando');
-const snekfetch = require('snekfetch');
 
 module.exports = class DogCommand extends Command {
   constructor(client) {
@@ -17,7 +16,7 @@ module.exports = class DogCommand extends Command {
 
   async run(msg) {
     const { body } = await this.client.snekfetch.get('https://api-v2.weeb.sh/images/random?type=animal_dog')
-      .set('Authorization', `Wolke ${this.client.config.weebshToken}`)
+      .set('Authorization', `Wolke ${this.client.config.tokens.weebsh}`)
       .catch(err => msg.say(`${err.name}: ${err.message}`));
     const embed = new this.client.embed()
       .setColor('RANDOM')

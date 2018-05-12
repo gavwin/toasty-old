@@ -1,8 +1,7 @@
 const { Command } = require('discord.js-commando');
-const path = require('path');
-const { newsApiToken } = require(path.join(__dirname, '..', '..', 'config.json'));
+const { tokens } = require('../../config.json');
 const NewsAPI = require('newsapi');
-const newsapi = new NewsAPI(newsApiToken);
+const newsapi = new NewsAPI(tokens.news);
 
 module.exports = class CleanCommand extends Command {
   constructor(client) {
@@ -20,7 +19,7 @@ module.exports = class CleanCommand extends Command {
       ],
       throttling: {
         usages: 1,
-        duration: 15
+        duration: 10
       }
     });
   }

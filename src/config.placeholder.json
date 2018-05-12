@@ -1,11 +1,25 @@
 {
-  "me": "owner id",
   "prefix": "prefix",
-  "youTubeToken": "youtube api token for simple-youtube-api",
   "token": "bot token",
-  "shardCount": "auto",
-  "spawnDelay": 5000,
-  "autoRespawn": true,
-  "serversPerShard": 1000,
-  "newsApiToken": "news api token"
+  "betaToken": "",
+  "oauth": "bot oauth (invite url)",
+  "me": "owner id",
+  "sharding": {
+    "shardCount": "auto",
+    "spawnDelay": 5500,
+    "guildsPerShard": 1450,
+    "autoRespawn": true
+  },
+  "tokens": {
+    "discordbotspw": "",
+    "discordbotsorg": "",
+    "botlistspace": "",
+    "news": "",
+    "cleverbot": "",
+    "indico": "",
+    "youtube": "youtube api token",
+    "weebsh": "",
+    "fortnite": ""
+  },
+  "use_keymetrics": false
 }

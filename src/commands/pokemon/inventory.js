@@ -35,6 +35,11 @@ module.exports = class InventoryCommand extends Command {
       msg.reply(`${args.user ? 'that user doesn\'t' : 'you don\'t'} have any Pokemon!`);
       return;
     }
+
+    if (user.username.includes('(')) user.username = user.username.replace('(', '');
+    if (user.username.includes(')')) user.username = user.username.replace(')', '');
+    const invURL = `http://toastybot.com/inventory?id=${user.id}&name=${user.username.replace(/\s/g, '%20')}&avatar=${user.avatarURL()}`;
+
     inventory = inventory.map(item => `**${item.name}** x${item.count}`);
     const paginatedItems = util.paginate(inventory, 1, 25);
 
@@ -45,7 +50,7 @@ module.exports = class InventoryCommand extends Command {
     const mesg = await msg.say(stripIndents`
       __**${user.username}'s Pokemon:**__ Includes **${inventory.length}/802** Pokemon. [Page 1 (25 shown)]
       ${paginatedItems.items.join('\n')}
-    `, { embed: new RichEmbed().setDescription(`You may also view your inventory [here](http://toastybot.com/inventory?id=${user.id}&name=${encodeURIComponent(user.username)}&avatar=${user.avatarURL()})`) });
+    `, { embed: new RichEmbed().setDescription(`You may also view your inventory [here](${invURL})`) });
 
     if (msg.guild && msg.guild.me.hasPermission('ADD_REACTIONS')) {
       await Promise.all([
@@ -87,7 +92,7 @@ module.exports = class InventoryCommand extends Command {
           await mesg.edit(stripIndents`
             __**${user.username}'s Pokemon:**__ Includes **${inventory.length}/802** Pokemon. [Page 1 (25 shown)]
             ${util.paginate(inventory, current, 25).items.join('\n')}
-          `, { embed: new RichEmbed().setDescription(`You may also view your inventory [here](http://toastybot.com/inventory?id=${user.id}&name=${user.username.replace(/\s/g, '%20')}&avatar=${user.avatarURL()})`) });
+          `, { embed: new RichEmbed().setDescription(`You may also view your inventory [here](${invURL})`) });
         }
       } else if (reaction.emoji.name === '➡') {
         if (current >= max) {
@@ -97,7 +102,7 @@ module.exports = class InventoryCommand extends Command {
           await mesg.edit(stripIndents`
             __**${user.username}'s Pokemon:**__ Includes **${inventory.length}/802** Pokemon. [Page 1 (25 shown)]
             ${util.paginate(inventory, current, 25).items.join('\n')}
-          `, { embed: new RichEmbed().setDescription(`You may also view your inventory [here](http://toastybot.com/inventory?id=${user.id}&name=${user.username.replace(/\s/g, '%20')}&avatar=${user.avatarURL()})`) });
+          `, { embed: new RichEmbed().setDescription(`You may also view your inventory [here](${invURL})`) });
         }
       } else if (reaction.emoji.name === '❌') {
         collector.stop('user');

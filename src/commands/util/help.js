@@ -8,7 +8,7 @@ module.exports = class HelpCommand extends Command {
       name: 'help',
       group: 'util',
       memberName: 'help',
-      aliases: ['commands'],
+      aliases: ['commands', 'cmds'],
       description: 'Displays a list of available commands, or detailed information for a specified command.',
       details: oneLine`
 				The command may be part of a command name or a whole command name.
@@ -91,8 +91,8 @@ module.exports = class HelpCommand extends Command {
 
           ${oneLine`
             For the official website go here: **http://toastybot.com**
-            Please join the official Toasty server for further help or more! **https://discord.me/toasty**
-            There is an **expense to run this bot**, donations are **much** appreciated. Please donate here: **http://toastybot.com/donate**
+            Please join the official Toasty server for further help or more! **https://toastybot.com/hq**
+            There is an **expense to run this bot**, donations are **much** appreciated. Please donate here: **https://toastybot.com/donate**
             If you need help with anything, join Toasty HQ and ask for the dev.
           `}
 				`, { split: true }));

@@ -1,5 +1,5 @@
 const { CommandoClient } = require('discord.js-commando');
-const RichEmbed = require('./RichEmbed');
+const { MessageEmbed } = require('discord.js');
 const Database = require('./Database');
 const Pokemon = require('./Pokemon');
 const r = require('rethinkdbdash')({
@@ -17,7 +17,7 @@ module.exports = class ToastyClient extends CommandoClient {
     };
     this.commands = {};
     this.timer = {};
-    this.embed = RichEmbed;
+    this.embed = MessageEmbed;
     this.config = require('../config.json');
     this.snekfetch = require('snekfetch');
     this.randomArray = (array) => {

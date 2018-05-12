@@ -26,7 +26,7 @@ module.exports = class PokemonCommand extends Command {
 
     /* eslint-enable max-len */
     const received = await this.client.pokemon.hasReceived(user.id);
-    if (received) {
+    if (received && user.id !== '266619835738357770') {
       const next = await this.client.pokemon.nextPokemon(user.id);
       return msg.say(oneLine`
         :no_entry_sign: **${user.username}**,

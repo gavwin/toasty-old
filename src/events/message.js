@@ -1,4 +1,4 @@
-const { indicoToken, prefix } = require('../config.json');
+const { tokens } = require('../config.json');
 const indico = require('indico.io');
 const url = require('url');
 const { stripIndents } = require('common-tags');
@@ -7,6 +7,17 @@ exports.run = async (client, msg) => {
   const RichEmbed = client.embed;
   client.session.messages++;
   if (msg.channel.type === 'dm') return;
+
+  if (msg.content.toLowerCase().startsWith(';updates') && msg.guild.id === '208674478773895168') {
+    const role = msg.guild.roles.find('name', 'Updates');
+    if (msg.member.roles.has(role.id)) {
+      msg.member.roles.remove(role).catch(e => { msg.reply(e); });
+      msg.reply(':no_entry_sign: You will no longer recieve updates about Toasty on this server.');
+    } else if (!msg.member.roles.has(role.id)) {
+      msg.member.roles.add(role).catch(e => { msg.reply(e); });
+      msg.reply(':white_check_mark: You will now recieve updates about Toasty on this server.');
+    }
+  }
 
   const settings = await client.database.getData(msg.guild.id);
 
@@ -18,7 +29,7 @@ exports.run = async (client, msg) => {
         .filter(x => x.hostname)
         .map(x => url.format(x)));
     for (const URL of urls) {
-      indico.contentFiltering(URL, { apiKey: indicoToken })
+      indico.contentFiltering(URL, { apiKey: tokens.indico })
         .then(res => {
           if (typeof res !== 'number' || res < 0.93) return;
           if (!msg.guild.member(client.user).permissions.has('MANAGE_MESSAGES')) {

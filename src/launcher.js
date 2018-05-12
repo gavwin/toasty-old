@@ -2,10 +2,12 @@ const { ShardingManager, Util } = require('discord.js');
 const { stripIndents } = require('common-tags');
 const moment = require('moment');
 require('moment-duration-format');
-const { token, shardCount, spawnDelay, serversPerShard, autoRespawn = true } = require('./config.json');
+const config = require('./config.json');
+const { token, sharding } = config;
+const { guildsPerShard, spawnDelay, shardCount, autoRespawn = true } = sharding;
 
 if (shardCount === 'auto') {
-  Util.fetchRecommendedShards(token, serversPerShard).then(count => {
+  Util.fetchRecommendedShards(token, guildsPerShard).then(count => {
     let time = count * spawnDelay;
     console.log('Shards launching via AUTO');
     console.log(stripIndents`

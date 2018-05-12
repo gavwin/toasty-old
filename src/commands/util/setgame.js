@@ -22,10 +22,8 @@ module.exports = class SetGameCommand extends Command {
     return this.client.options.owner === msg.author.id;
   }
 
-  async run(msg, args) {
-    const { game } = args;
-    const m = await msg.say('*Setting my game...*');
-    await this.client.shard.broadcastEval(`this.user.setPresence({ game: { name: \`${game}\`, type: 0 } })`);
-    m.edit(`I'm now playing **${game}**.`);
+  async run(msg, { game }) {
+    await this.client.shard.broadcastEval(`this.user.setActivity(\`${game}\`)`).catch(e => msg.say(`${e.name}: ${e.message}`));
+    msg.say(`I'm now playing **${game}**.`);
   }
 };
