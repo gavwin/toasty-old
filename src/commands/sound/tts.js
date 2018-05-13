@@ -5,7 +5,7 @@ module.exports = class TTSCommand extends Command {
   constructor(client) {
     super(client, {
       name: 'tts',
-      group: 'fun',
+      group: 'sound',
       aliases: ['vsay', 'voicesay'],
       memberName: 'tts',
       description: 'Joins your voice channel and speaks the text you specified.',
@@ -30,18 +30,11 @@ module.exports = class TTSCommand extends Command {
     const voiceChannel = msg.member.voiceChannel;
     if (!voiceChannel) return msg.reply(':no_entry_sign: Please be in a voice channel first!');
     if (!this.client.voiceConnections.get(msg.channel.guild.id)) {
-      voiceChannel.join()
-        .then(connnection => {
-          tts(text, 'en', 1)
-            .then((url) => {
-              const dispatcher = connnection.play(url);
-              msg.react('📢');
-              dispatcher.on('end', () => voiceChannel.leave());
-            })
-            .catch((err) => {
-              msg.say(':no_entry_sign: Something wen\'t wrong.\n' + err);
-            });
-        });
+      const connection = await voiceChannel.join().catch(e => msg.say(`:no_entry_sign: Something wen't wrong!\n${e}`));
+      const url = tts(text, 'en', 1);
+      const dispatcher = connnection.play(url);
+      msg.react('📢');
+      dispatcher.on('end', () => voiceChannel.leave());
     } else {
       msg.say(':no_entry_sign: Sorry but it seems like I\'m already playing something on this server.');
     }

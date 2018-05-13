@@ -3,10 +3,6 @@ const fs = require('fs');
 const path = require('path');
 
 const dir = path.join(__dirname, '..', '..', 'data', 'audio', 'airhorn');
-const horns = [
-  `${dir}/1.mp3`,
-  `${dir}/2.mp3`
-];
 
 module.exports = class AirhornCommand extends Command {
   constructor(client) {
@@ -26,11 +22,12 @@ module.exports = class AirhornCommand extends Command {
 
   async run(msg) {
     if (!msg.guild.me.permissions.has('CONNECT') || !msg.guild.me.permissions.has('SPEAK')) return msg.say(':no_entry_sign: I don\'t have the **Connect** or **Speak** permission.');
+    const files = fs.readdirSync(dir);
     const voiceChannel = msg.member.voiceChannel;
     if (!voiceChannel) return msg.reply(':no_entry_sign: Please be in a voice channel first!');
     if (!this.client.voiceConnections.get(msg.channel.guild.id)) {
       const connnection = await voiceChannel.join().catch(e => msg.say(`:no_entry_sign: Something wen't wrong!\n${e}`));
-      const dispatcher = connnection.play(this.client.randomArray(horns));
+      const dispatcher = connnection.play(`${dir}/${this.client.randomArray(files)}`);
       msg.react('📢');
       dispatcher.on('end', () => voiceChannel.leave());
     } else {
