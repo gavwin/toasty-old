@@ -18,7 +18,6 @@ module.exports = class PlaySongCommand extends Command {
         usages: 2,
         duration: 3
       },
-
       args: [
         {
           key: 'url',
@@ -201,14 +200,9 @@ module.exports = class PlaySongCommand extends Command {
     }
 
     if (!song) {
-      try {
-        queue.textChannel.send('The queue is empty! Stopping playback...');
-        queue.voiceChannel.leave();
-        this.queue.delete(guild.id);
-      } catch(err) {
-        queue.voiceChannel.leave();
-        this.queue.delete(guild.id);
-      }
+      queue.textChannel.send('The queue is empty! Stopping playback...').catch(e => console.log('Failed to send msg in queue text channel:\n'+e));
+      queue.voiceChannel.leave();
+      this.queue.delete(guild.id);
     }
 
     const playing = queue.textChannel.send(stripIndents`
