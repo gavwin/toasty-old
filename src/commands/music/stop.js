@@ -24,7 +24,7 @@ module.exports = class StopMusicCommand extends Command {
 
   run(msg) {
     const queue = this.queue.get(msg.guild.id);
-    if (!queue) return msg.reply('there isn\'t any music playing right now.');
+    if (!queue) return msg.reply(`there isn't any music playing right now.\n*If I'm playing music through any of the Sound Commands, use* \`${msg.guild.commandPrefix}leave\``);
     const song = queue.songs[0];
     queue.songs = [];
     if (song && song.dispatcher) song.dispatcher.end();

@@ -138,6 +138,7 @@ client.registry
     ['mod', 'Moderation'],
     ['config', 'Configuration'],
     ['music', 'Music'],
+    ['sound', 'Sound'],
     ['misc', 'Miscellaneous'],
     ['commands', 'Commands']
   ])
