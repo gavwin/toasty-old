@@ -59,10 +59,10 @@ exports.run = async (client, msg) => {
   if (
     /(discord\.gg\/.+|discordapp\.com\/invite\/.+)/i.test(msg.content.toLowerCase())
       && settings.noinvite === 'enabled'
-      && msg.author.id === client.user.id
-      && !client.isOwner(msg.author)
+      && msg.author.id !== client.user.id
   ) {
     if (msg.author.id === msg.guild.ownerID || client.isOwner(msg.author)) return;
+    if (msg.author.id === '330488924449275916') return; //pokebot
     if (!msg.guild.me.permissions.has('MANAGE_MESSAGES')) {
       msg.channel.send(':no_entry_sign: **Error:** I could not delete a discord invite because I do not have the **Manage Messages** permission!');
     } else {
@@ -75,7 +75,7 @@ exports.run = async (client, msg) => {
         const time = `${today.getHours()}:${today.getMinutes()}:${today.getSeconds()}`;
         const channel = msg.guild.channels.find('name', 'mod-log').id;
         embed.setColor(0xADD8E6)
-          .setAuthor(`${msg.author.username} (${msg.author.id})`, msg.author.avatarURL)
+          .setAuthor(`${msg.author.username} (${msg.author.id})`, msg.author.avatarURL())
           .setDescription(stripIndents`
             **Invite by ${msg.author.tag} deleted in ${msg.channel.toString()}**
           `)
