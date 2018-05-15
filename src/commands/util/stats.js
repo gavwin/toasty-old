@@ -32,7 +32,7 @@ module.exports = class StatsCommand extends Command {
       `Users: **${await getTotal(client, 'users.size')}**`,
       `Channels: **${await getTotal(client, 'channels.size')}**`,
       `Voice Channels: **${await getTotal(client, 'voiceConnections.size')}**`,
-      `Average Shard Uptime: **${this.client.formatUptime(avgUptime)}**`,
+      `Average Shard Uptime: **${client.formatUptime(avgUptime)}**`,
       `Messages This Session: **${await getTotal(client, 'session.messages')}**`,
       `Commands This Session: **${await getTotal(client, 'session.commands')}**`,
       `Guilds This Session: **${await getTotal(client, 'session.guilds')}**`,
