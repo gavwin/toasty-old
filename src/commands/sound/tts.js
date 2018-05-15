@@ -31,8 +31,8 @@ module.exports = class TTSCommand extends Command {
     if (!voiceChannel) return msg.reply(':no_entry_sign: Please be in a voice channel first!');
     if (!this.client.voiceConnections.get(msg.channel.guild.id)) {
       const connection = await voiceChannel.join().catch(e => msg.say(`:no_entry_sign: Something wen't wrong!\n${e}`));
-      const url = tts(text, 'en', 1);
-      const dispatcher = connnection.play(url);
+      const url = await tts(text, 'en', 1);
+      const dispatcher = connection.play(url);
       msg.react('📢');
       dispatcher.on('end', () => voiceChannel.leave());
     } else {
