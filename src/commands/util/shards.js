@@ -33,8 +33,9 @@ module.exports = class ShardsCommand extends Command {
     let totalMemory = (memory.reduce((a, b) => a + b, 0) / 1024 / 1024).toFixed(2);
     let avgUptime = uptime.reduce((a, b) => a + b, 0) / shard.count;
 
+    const shards = `${result.map(r => `${r[0]+1} : G ${r[1]}, U ${r[2]}, C ${r[3]}, VC ${r[4]}, UP ${formatUptime(r[5])}, M ${r[6]}`).join('\n')}`;
     const total = `T : G ${guilds.reduce((a, b) => a + b, 0)}, U ${users.reduce((a, b) => a + b, 0)}, C ${channels.reduce((a, b) => a + b, 0)}, VC ${voiceConnections.reduce((a, b) => a + b, 0)}, UP ${formatUptime(avgUptime)}, M ${totalMemory}`;
 
-    msg.channel.send(`= Shard Information =\n${result.map(r => `${r[0]+1} : G ${r[1]}, U ${r[2]}, C ${r[3]}, VC ${r[4]}, UP ${formatUptime(r[5])}, M ${r[6]}`).join('\n')}\n${total}`, { code: 'prolog'});
+    msg.channel.send(`= Shard Information =\n${shards}\n${total}`, { code: 'prolog'});
   }
 };

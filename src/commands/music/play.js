@@ -200,9 +200,10 @@ module.exports = class PlaySongCommand extends Command {
     }
 
     if (!song) {
-      queue.textChannel.send('The queue is empty! Stopping playback...').catch(e => console.log('Failed to send msg in queue text channel:\n'+e));
+      queue.textChannel.send('The queue is empty! Stopping playback...');
       queue.voiceChannel.leave();
       this.queue.delete(guild.id);
+      return;
     }
 
     const playing = queue.textChannel.send(stripIndents`
