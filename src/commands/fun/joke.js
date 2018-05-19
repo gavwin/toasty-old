@@ -1,14 +1,13 @@
 const { Command } = require('discord.js-commando');
-const knockknock = require('knock-knock-jokes');
 
 module.exports = class JokeCommand extends Command {
   constructor(client) {
     super(client, {
       name: 'joke',
       group: 'fun',
-      aliases: ['knockknock', 'kkjoke'],
+      aliases: ['dadjoke'],
       memberName: 'joke',
-      description: 'Sends a knock-knock joke.',
+      description: 'Sends a random dad joke.',
       throttling: {
         usages: 2,
         duration: 3
@@ -17,7 +16,9 @@ module.exports = class JokeCommand extends Command {
   }
 
   async run(msg) {
-    const joke = await knockknock();
-    msg.say(`**${msg.author.username}**, ${joke}`);
+    const { body } = await this.client.snekfetch.get('https://icanhazdadjoke.com/')
+      .set('Accept', 'application/json')
+      .catch(err => msg.say(`${err.name}: ${err.message}`));
+    msg.say(`**${msg.author.username}**, ${body.joke}`);
   }
 };
