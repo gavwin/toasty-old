@@ -41,7 +41,7 @@ module.exports = class SetCommand extends Command {
       if (feature === 'JOINMESSAGE') {
         if (to === 'disabled') {
           await db.autoSet(id, 'joinMessage', 'disabled');
-          msg.reply(':white_check_mark: The join message is now **disabled**.');
+          msg.reply('<:red_check_mark:447576694845603840> The join message is now **disabled**.');
         } else {
           await db.autoSet(id, 'joinMessage', to);
           msg.reply(`:white_check_mark: The join message is now set to:\n${to}`);
@@ -51,7 +51,7 @@ module.exports = class SetCommand extends Command {
       if (feature === 'LEAVEMESSAGE') {
         if (to === 'disabled') {
           await db.autoSet(id, 'leaveMessage', 'disabled');
-          msg.reply(':white_check_mark: The leave message is now **disabled**.');
+          msg.reply('<:red_check_mark:447576694845603840> The leave message is now **disabled**.');
         } else {
           await db.autoSet(id, 'leaveMessage', to);
           msg.reply(`:white_check_mark: The leave message is now set to:\n${to}`);
@@ -61,7 +61,7 @@ module.exports = class SetCommand extends Command {
       if (feature === 'JOINDM') {
         if (to === 'disabled') {
           await db.autoSet(id, 'joinDM', 'disabled');
-          msg.reply(':white_check_mark: The join DM is now **disabled**.');
+          msg.reply('<:red_check_mark:447576694845603840> The join DM is now **disabled**.');
         } else {
           await db.autoSet(id, 'joinDM', to);
           msg.reply(`:white_check_mark: The join DM is now set to:\n${to}`);
@@ -71,7 +71,7 @@ module.exports = class SetCommand extends Command {
       if (feature === 'JOINROLE') {
         if (to === 'disabled') {
           await db.autoSet(id, 'joinRole', 'disabled');
-          msg.reply(':white_check_mark: The join role is now **disabled**.');
+          msg.reply('<:red_check_mark:447576694845603840> The join role is now **disabled**.');
         } else {
           await db.autoSet(id, 'joinRole', to);
           msg.reply(`:white_check_mark: The join role is now set to **${to}**`);

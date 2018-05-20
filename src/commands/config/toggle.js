@@ -36,7 +36,7 @@ module.exports = class ToggleCommand extends Command {
       if (feature === 'NONSFW') {
         if (await db.checkSetting(id, 'nonsfw') === 'enabled') {
           await db.autoSet(id, 'nonsfw', 'disabled');
-          msg.reply(':white_check_mark: The no NSFW feature is now **disabled**.');
+          msg.reply('<:red_check_mark:447576694845603840> The no NSFW feature is now **disabled**.');
         } else
         if (await db.checkSetting(id, 'nonsfw') === 'disabled') {
           await db.autoSet(id, 'nonsfw', 'enabled');
@@ -56,7 +56,7 @@ module.exports = class ToggleCommand extends Command {
       if (feature === 'NOINVITE' || feature === 'NOINV') {
         if (await db.checkSetting(id, 'noinvite') === 'enabled') {
           await db.autoSet(id, 'noinvite', 'disabled');
-          msg.reply(':white_check_mark: The no invite feature is now **disabled**.');
+          msg.reply('<:red_check_mark:447576694845603840> The no invite feature is now **disabled**.');
         } else
         if (await db.checkSetting(id, 'noinvite') === 'disabled') {
           await db.autoSet(id, 'noinvite', 'enabled');
@@ -74,7 +74,7 @@ module.exports = class ToggleCommand extends Command {
           channel.delete().catch(err => {
             msg.reply(':no_entry_sign: **Error:** I couldn\'t delete the #mod-log channel. Make sure I have access to it!');
           });
-          msg.reply(':white_check_mark: The modlog is now **disabled**.');
+          msg.reply('<:red_check_mark:447576694845603840> The modlog is now **disabled**.');
         } else
         if (await db.checkSetting(id, 'modlog') === 'disabled') {
           await db.autoSet(id, 'modlog', 'enabled');
@@ -100,7 +100,7 @@ module.exports = class ToggleCommand extends Command {
           channel.delete().catch(err => {
             msg.reply(':no_entry_sign: **Error:** I couldn\'t delete the #join-log channel. Make sure I have access to it!');
           });
-          msg.reply(':white_check_mark: The joinlog is now **disabled**.');
+          msg.reply('<:red_check_mark:447576694845603840> The joinlog is now **disabled**.');
         } else
         if (await db.checkSetting(id, 'joinlog') === 'disabled') {
           await db.autoSet(id, 'joinlog', 'enabled');

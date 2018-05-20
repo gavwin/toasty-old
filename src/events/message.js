@@ -12,7 +12,7 @@ exports.run = async (client, msg) => {
     const role = msg.guild.roles.find('name', 'Updates');
     if (msg.member.roles.has(role.id)) {
       msg.member.roles.remove(role).catch(e => { msg.reply(e); });
-      msg.reply(':no_entry_sign: You will no longer recieve updates about Toasty on this server.');
+      msg.reply('<:red_check_mark:447576694845603840> You will no longer recieve updates about Toasty on this server.');
     } else if (!msg.member.roles.has(role.id)) {
       msg.member.roles.add(role).catch(e => { msg.reply(e); });
       msg.reply(':white_check_mark: You will now recieve updates about Toasty on this server.');
