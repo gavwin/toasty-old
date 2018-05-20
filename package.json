@@ -6,7 +6,7 @@
   "dependencies": {
     "botlist.space": "^1.0.5",
     "cookie-parser": "^1.4.3",
-    "discord.js-commando": "^0.11.0-dev",
+    "discord.js-commando": "^0.10.0",
     "express": "^4.16.3",
     "gifencoder": "^1.1.0",
     "jimp": "^0.2.28",
