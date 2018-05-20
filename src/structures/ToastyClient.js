@@ -21,6 +21,8 @@ module.exports = class ToastyClient extends CommandoClient {
     this.embed = MessageEmbed;
     this.config = require('../config.json');
     this.snekfetch = require('snekfetch');
+    this.donators = require('../data/donators.json');
+    this.staff = require('../data/staff.json');
     this.randomArray = (array) => {
       return array[Math.floor(Math.random() * array.length)];
     };
