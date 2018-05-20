@@ -22,8 +22,8 @@ module.exports = class OofCommand extends Command {
     const voiceChannel = msg.member.voiceChannel;
     if (!voiceChannel) return msg.reply(':no_entry_sign: Please be in a voice channel first!');
     if (!this.client.voiceConnections.get(msg.channel.guild.id)) {
-      const connnection = await voiceChannel.join().catch(e => msg.say(`:no_entry_sign: Something wen't wrong!\n${e}`));
-      const dispatcher = connnection.play(path.join(__dirname, '..', '..', 'data', 'audio', 'oof', 'oof.mp3'));
+      const connection = await voiceChannel.join().catch(e => msg.say(`:no_entry_sign: Something wen't wrong!\n${e}`));
+      const dispatcher = connection.play(path.join(__dirname, '..', '..', 'data', 'audio', 'oof', 'oof.mp3'));
       msg.react('☠');
       dispatcher.on('end', () => voiceChannel.leave());
     } else {
