@@ -9,6 +9,7 @@ module.exports = class B1nzyCommand extends Command {
       group: 'image',
       memberName: 'b1nzy',
       description: 'Makes b1nzy talk.',
+      guildOnly: true,
       throttling: {
         usages: 2,
         duration: 3
