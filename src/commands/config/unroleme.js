@@ -28,15 +28,14 @@ module.exports = class UnRoleMeCommand extends Command {
   }
 
   async run(msg, { role }) {
-    const data = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
-    if (!data.hasOwnProperty(msg.guild.id)) data[msg.guild.id] = {}, data[msg.guild.id].roles = [];
-    if (!data[msg.guild.id].roles || data[msg.guild.id].roles === undefined || data[msg.guild.id].roles.size === 0) return msg.reply(`:no_entry_sign: That isn't an avaliable role to gain with this command. If you are a server Administrator please add a role to the server roles list with, \`${msg.guild.commandPrefix}roles-add [role name]\``);
-    if (!data[msg.guild.id].roles.includes(role)) return msg.reply(`:no_entry_sign: The role, **${role}** isn't an avaliable role to gain with this command. You can check the avaliable roles with \`${msg.guild.commandPrefix}roles-list\`.`);
+    const data = await this.client.database.getData(msg.guild.id);
+    const roles = data.roles;
     if (!msg.guild.me.permissions.has('MANAGE_ROLES')) return msg.reply(':no_entry_sign: [**Missing Permissions**]: I don\'t have the **Manage Roles** permission!');
+    if (roles == null || roles.size === 0) return msg.reply(`:no_entry_sign: That isn't an avaliable role to gain with this command. If you are a server Administrator please add a role to the server roles list with, \`${msg.guild.commandPrefix}roles-add [role name]\``);
     if (msg.guild.me.roles.highest.comparePositionTo(role) < 1) return msg.reply(':no_entry_sign: [**Missing Permissions**]: I don\'t have permissions to edit this role, please check the role order!');
     const m = await msg.say('*Removing...*');
     const authorMember = await msg.guild.members.fetch(msg.author);
     await authorMember.roles.remove(msg.guild.roles.find('name', role).id);
-    return m.edit(`:white_check_mark: I have removed you from **${role}**.`);
+    return m.edit(`<:red_check_mark:447576694845603840> I have removed you from **${role}**.`);
   }
 };
