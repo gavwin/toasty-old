@@ -22,6 +22,7 @@ module.exports = class RolesListCommand extends Command {
       return msg.reply(`:no_entry_sign: There are currently no \`roleme\` roles on this server. If you are a server Administrator please add a role to the server roles list with, \`${msg.guild.commandPrefix}roles-add [role name]\``);
     });
     let roles = data.roles;
+    console.log(await this.client.database.getData(msg.guild.id))
     if (!roles || roles == null || roles.length === 0) return msg.reply(`:no_entry_sign: There are currently no \`roleme\` roles on this server. If you are a server Administrator please add a role to the server roles list with, \`${msg.guild.commandPrefix}roles-add [role name]\``);
     msg.say(`Avaliable roleme roles for **${msg.guild.name}**:\n${roles.join('\n')}`);
   }

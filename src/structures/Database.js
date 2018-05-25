@@ -105,6 +105,90 @@ class Database {
     }
   }
 
+  async addRole(id, value) {
+    if (this.hasEntry(id)) {
+      if (this.hasSetting(id, 'roles')) {
+        let data = await this.getData(id);
+        this.r.get(id)
+        .update({
+          id: id,
+          [id]: {
+            data: {
+              'roles': data.roles.push(value)
+            }
+          }
+        })
+        .run()
+        .then(response => {
+          //console.log('response:', response);
+        }).error(err => {
+          console.log('error in addRole:', err);
+        });
+      } else {
+        this.r.get(id)
+        .update({
+          id: id,
+          [id]: {
+            data: {
+              'roles': [value]
+            }
+          }
+        })
+        .run()
+        .then(response => {
+          //console.log('response:', response);
+        }).error(err => {
+          console.log('error in addRole:', err);
+        });
+      }
+    } else {
+      this.r
+      .insert({
+        id: id,
+        [id]: {
+          data: {
+            'roles': [value]
+          }
+        }
+      })
+      .run()
+      .then(response => {
+        //console.log('response:', response);
+      }).error(err => {
+        console.log('error in addRole:', err);
+      });
+    }
+  }
+
+  async removeRole(id, value) {
+    if (this.hasEntry(id)) {
+      if (this.hasSetting(id, 'roles')) {
+        let data = await this.getData(id);
+        let index = data.roles.indexOf(value);
+        data.roles.splice(index, 1);
+        this.r.get(id)
+        .update({
+          id: id,
+          [id]: {
+            data: {
+              'roles': data.roles
+            }
+          }
+        })
+        .run()
+        .then(response => {
+          //console.log('response:', response);
+        }).error(err => {
+          console.log('error in removeRole:', err);
+        });
+      } else {
+        return;
+      }
+    } else {
+      return;
+    }
+  }
+
   removeEntry(id) {
     if (this.hasEntry(id)) {
       this.r.get(id)
@@ -114,7 +198,7 @@ class Database {
           //console.log('response:', response);
         }).error(err => {
           console.error(`Failed to removeEntry on guild ${id}.\n${err}`);
-        })
+        });
     } else {
       return;
     }

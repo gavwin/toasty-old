@@ -28,7 +28,7 @@ module.exports = class RolesAddCommand extends Command {
     if (!msg.member.permissions.has('ADMINISTRATOR') && msg.author.id !== msg.guild.ownerID) return msg.reply(':no_entry_sign: [**Invalid Permissions**]: You don\'t have the **Administrator** permission!');
     const data = await this.client.database.getData(msg.guild.id);
     if (data.hasOwnProperty('roles') && data.roles.includes(role)) return msg.reply(`:no_entry_sign: The role, **${role.name}** is already in the server roles list.`);
-    await this.client.database.autoSet(msg.guild.id, 'roles', [role.name]);
+    this.client.database.addRole(msg.guild.id, role.name);
     msg.reply(`:white_check_mark: Successfully added **${role.name}** to the server roles list.`);
   }
 };
