@@ -15,7 +15,7 @@ class Database {
     const entry = await this.hasEntry(id);
     if (!entry) return false;
     const data = await this.getData(id);
-    return data.hasOwnProperty(setting);
+    if (data.hasOwnProperty(setting)) return true;
   }
 
   async getData(id) {
@@ -106,15 +106,17 @@ class Database {
   }
 
   async addRole(id, value) {
-    if (this.hasEntry(id)) {
-      if (this.hasSetting(id, 'roles')) {
+    if (await this.hasEntry(id)) {
+      if (await this.hasSetting(id, 'roles')) {
         let data = await this.getData(id);
+        data.roles.push(value);
+        let arr = data.roles;
         this.r.get(id)
         .update({
           id: id,
           [id]: {
             data: {
-              'roles': data.roles.push(value)
+              'roles': arr
             }
           }
         })
@@ -161,17 +163,18 @@ class Database {
   }
 
   async removeRole(id, value) {
-    if (this.hasEntry(id)) {
-      if (this.hasSetting(id, 'roles')) {
+    if (await this.hasEntry(id)) {
+      if (await this.hasSetting(id, 'roles')) {
         let data = await this.getData(id);
         let index = data.roles.indexOf(value);
         data.roles.splice(index, 1);
+        let arr = data.roles;
         this.r.get(id)
         .update({
           id: id,
           [id]: {
             data: {
-              'roles': data.roles
+              'roles': arr
             }
           }
         })

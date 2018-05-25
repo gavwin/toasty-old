@@ -27,8 +27,9 @@ module.exports = class RolesRemoveCommand extends Command {
   async run(msg, { role }) {
     if (!msg.member.permissions.has('ADMINISTRATOR') && msg.author.id !== msg.guild.ownerID) return msg.reply(':no_entry_sign: [**Invalid Permissions**]: You don\'t have the **Administrator** permission!');
     const data = await this.client.database.getData(msg.guild.id);
-    if (data.hasOwnProperty('roles') || !data.roles.includes(role.name)) return msg.reply(`:no_entry_sign: The role, **${role.name}** is not in the server roles list.`);
-    this.client.database.removeRole(msg.guild.id, role.name);
+    if (data.hasOwnProperty('roles')) return msg.reply(`:no_entry_sign: There are currently no \`roleme\` roles on this server. If you are a server Administrator please add a role to the server roles list with, \`${msg.guild.commandPrefix}roles-add [role name]\``);
+    if (data.hasOwnProperty('roles') && !data.roles.includes(role.name)) return msg.reply(`:no_entry_sign: The role, **${role.name}** is not in the server roles list.`);
+    await this.client.database.removeRole(msg.guild.id, role.name);
     msg.reply(`:white_check_mark: Successfully removed **${role.name}** from the server roles list.`);
   }
 };
