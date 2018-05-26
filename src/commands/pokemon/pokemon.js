@@ -44,13 +44,10 @@ module.exports = class PokemonCommand extends Command {
     const newSprite = 'https://play.pokemonshowdown.com/sprites/xyani/';
     const newName = newPokemon.toLowerCase().replace(/\W/g, '');
 
-    await this.client.pokemon.addPokemon(newPokemon, user);
-    const catchMsg = await msg.say('<:pokeballGif:435540970554261504> catching...');
-    setTimeout(() => {
-      return catchMsg.edit(stripIndents`
-        **${user.username}**, <:pokeball:440220815817048064> you've caught a **${newPokemon}**!
-        ${newSprite}${newName}.gif
-      `);
-    }, 2100);
+    await this.client.pokemon.addPokemon(newPokemon, user.id);
+    msg.say(stripIndents`
+      **${user.username}**, <:pokeball:440220815817048064> you've caught a **${newPokemon}**!
+      ${newSprite}${newName}.gif
+    `);
   }
 };

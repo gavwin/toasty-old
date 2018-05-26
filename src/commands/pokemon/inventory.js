@@ -28,6 +28,7 @@ module.exports = class InventoryCommand extends Command {
 
   async run(msg, args) {
     if (!msg.guild.me.permissions.has('ADD_REACTIONS')) return msg.reply(':no_entry_sign: [**Missing Permissions**]: I don\'t have the **Add Reactions** permission!');
+    if (!msg.guild.me.permissions.has('EMBED_LINKS')) return msg.reply(':no_entry_sign: [**Missing Permissions**]: I don\'t have the **Embed Links** permission!');
     const { embed: RichEmbed } = this.client;
     const user = args.user || msg.author;
     let inventory = await this.client.pokemon.getInventory(user.id);
