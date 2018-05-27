@@ -266,7 +266,7 @@ class Pokemon {
               });
           }
         } catch (err) {
-          console.error(err);
+          //console.error(err);
         }
       })
       .error(err => {
