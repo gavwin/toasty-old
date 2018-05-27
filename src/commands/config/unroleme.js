@@ -17,7 +17,7 @@ module.exports = class UnRoleMeCommand extends Command {
         {
           key: 'role',
           prompt: 'What role would you like to be removed from?\n',
-          type: 'string'
+          type: 'role'
         }
       ],
       throttling: {
@@ -33,9 +33,8 @@ module.exports = class UnRoleMeCommand extends Command {
     if (!msg.guild.me.permissions.has('MANAGE_ROLES')) return msg.reply(':no_entry_sign: [**Missing Permissions**]: I don\'t have the **Manage Roles** permission!');
     if (roles == null || roles.size === 0) return msg.reply(`:no_entry_sign: That isn't an avaliable role to gain with this command. If you are a server Administrator please add a role to the server roles list with, \`${msg.guild.commandPrefix}roles-add [role name]\``);
     if (msg.guild.me.roles.highest.comparePositionTo(role) < 1) return msg.reply(':no_entry_sign: [**Missing Permissions**]: I don\'t have permissions to edit this role, please check the role order!');
-    const m = await msg.say('*Removing...*');
     const authorMember = await msg.guild.members.fetch(msg.author);
-    await authorMember.roles.remove(msg.guild.roles.find('name', role).id);
-    return m.edit(`<:red_check_mark:447576694845603840> I have removed you from **${role}**.`);
+    await authorMember.roles.remove(role);
+    return msg.say(`<:red_check_mark:447576694845603840> I have removed you from **${role.name}**.`);
   }
 };
