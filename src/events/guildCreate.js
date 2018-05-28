@@ -1,8 +1,3 @@
-const fs = require('fs');
-const path = require('path');
-const jsonPath = path.join(__dirname, '..', '..', 'web', 'static', 'assets', 'json', 'stats.json');
-let statsData = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
-
 /* eslint-disable capitalized-comments, max-len */
 exports.run = async client => {
   client.session.guilds++;
@@ -18,25 +13,4 @@ exports.run = async client => {
       server_count: guilds,
       shards: guildRes
     }).end();
-
-  const total = [];
-  const users = await client.shard.fetchClientValues('users.size');
-  const channels = await client.shard.fetchClientValues('channels.size');
-  const voiceConnections = await client.shard.fetchClientValues('voiceConnections.size');
-  total.push(guilds);
-  total.push(users.reduce((prev, val) => prev + val, 0));
-  total.push(channels.reduce((prev, val) => prev + val, 0));
-  total.push(voiceConnections.reduce((prev, val) => prev + val, 0));
-  // eslint-disable-next-line curly
-  if (!statsData) statsData = {
-    'servers': 0,
-    'users': 0,
-    'channels': 0,
-    'voiceConnections': 0
-  };
-  statsData.servers = total[0];
-  statsData.users = total[1];
-  statsData.channels = total[2];
-  statsData.voiceConnections = total[3];
-  fs.writeFileSync(jsonPath, JSON.stringify(statsData, null, 2));
 };

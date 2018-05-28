@@ -8,6 +8,7 @@ module.exports = class RipCommand extends Command {
       group: 'image',
       description: 'Rest in peace.',
       memberName: 'rip',
+      guildOnly: true,
       args: [
         {
           key: 'text',
@@ -24,6 +25,8 @@ module.exports = class RipCommand extends Command {
   }
 
   async run(msg, { text }) {
+    if (!msg.guild.me.permissions.has('ATTACH_FILES')) return msg.channel.send(':no_entry_sign: [**Missing Permissions**]: I don\'t have the **Attach Files** permission!');
+
     const r = await this.client.snekfetch.get('http://cliparts.co/cliparts/pi7/8ok/pi78okjMT.png')
       .catch(err => msg.say(`${err.name}: ${err.message}`));
     const canvas = new Canvas(504, 594);

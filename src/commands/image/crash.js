@@ -16,16 +16,17 @@ module.exports = class CrashCommand extends Command {
       name: 'crash',
       group: 'image',
       description: 'Make your computer crash.',
-      memberName: 'crash',
+      memberName: 'crash'
     });
   }
 
   async run(msg, { user }) {
-    if (!msg.guild.me.permissions.has('EMBED_LINKS')) return msg.reply(':no_entry_sign: [**Missing Permissions**]: I don\'t have the **Embed Links** permission!');
     const embed = new this.client.embed()
       .setColor('RANDOM')
       .setTitle('❌ Uh oh!')
       .setImage(this.client.randomArray(images));
+    if (msg.channel.type === 'dm') return msg.embed(embed);
+    if (!msg.guild.me.permissions.has('EMBED_LINKS')) return msg.reply(':no_entry_sign: [**Missing Permissions**]: I don\'t have the **Embed Links** permission!');
     msg.embed(embed);
   }
 };

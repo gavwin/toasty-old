@@ -15,6 +15,7 @@ module.exports = class CookieCommand extends Command {
       group: 'image',
       description: 'Give a user a cookie!',
       memberName: 'cookie',
+      guildOnly: true,
       args: [
         {
           key: 'user',

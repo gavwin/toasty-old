@@ -47,12 +47,6 @@ client
         \`\`\`
       `, { split: true }).catch(err_ => console.error('DISCORD', err_));*/
   })
-  .on('ready', () => {
-    console.log(oneLine`
-    Shard ${client.shard.id + 1}/${client.shard.count} ready!
-    On ${client.guilds.size.toLocaleString()} guilds w/ ${client.users.size.toLocaleString()} users.`);
-    client.user.setActivity(';help | toastybot.com');
-  })
   .on('reconnecting', () => {
     console.log(`Reconnecting event fired on shard ${client.shard.id + 1}.`);
     /*client.channels
@@ -78,7 +72,7 @@ client
   })
   .on('providerReady', () => console.info('SettingsProvider ready'));
 
-// Load the events with huge chunks of code from the events folder
+// Load the events with larger chunks of code from the events folder
 (async () => {
   try {
     const files = await readdir(`${__dirname}/events/`);
@@ -146,16 +140,20 @@ client.registry
 
 client.login(token).catch(console.error);
 
-/*process.on('unhandledRejection', (err, promise) => {
+process.on('unhandledRejection', (err, promise) => {
   if (/ETIMEDOUT|getaddrinfo|Something took too long to do/.test(err)) process.exit(200);
   if (/SequelizeUniqueConstraintError/.test(err)) return;
-  client.channels
-    .get('434682326232989696')
-    .send(stripIndents`
-      \`UNHANDLED PROMISE REJECTION:\`
-      \`\`\`javascript
-      ${require('util').inspect(promise, { depth: 2 }).split(client.token).join('-censored-')}
-      \`\`\`
-    `, { split: { char: '', prepend: '```javascript\n', append: '\n```', maxLength: 1900 } }).catch(err_ => client.utils.logger.error('DISCORD', err_));
-  console.error('ERROR', 'Unhandled promise rejection at', promise, err);
-});*/
+  try {
+    client.channels
+      .get('448560097216430090')
+      .send(stripIndents`
+        \`UNHANDLED PROMISE REJECTION:\`
+        \`\`\`javascript
+        ${require('util').inspect(promise, { depth: 2 }).split(client.token).join('-censored-')}
+        \`\`\`
+      `, { split: { char: '', prepend: '```javascript\n', append: '\n```', maxLength: 1900 } }).catch(err_ => client.utils.logger.error('DISCORD', err_));
+  } catch(e) {
+    return;
+  }
+  //console.error('ERROR', 'Unhandled promise rejection at', promise, err);
+});
