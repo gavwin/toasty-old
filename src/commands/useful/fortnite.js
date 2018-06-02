@@ -1,7 +1,6 @@
 const { Command } = require('discord.js-commando');
 
 module.exports = class FortniteCommand extends Command {
-
   constructor(client) {
     super(client, {
       name: 'fortnite',

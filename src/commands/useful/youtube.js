@@ -1,11 +1,11 @@
 const { Command } = require('discord.js-commando');
 
 module.exports = class YouTubeCommand extends Command {
-
   constructor(client) {
     super(client, {
       name: 'youtube',
       group: 'useful',
+      aliases: ['yt'],
       description: 'Get YouTube channel stats.',
       memberName: 'youtube',
       args: [
@@ -17,7 +17,7 @@ module.exports = class YouTubeCommand extends Command {
       ],
       throttling: {
         usages: 1,
-        duration: 7
+        duration: 5
       }
     });
   }
@@ -33,8 +33,8 @@ module.exports = class YouTubeCommand extends Command {
     const dData = data.body.items[0];
 
     const embed = new this.client.embed()
-      .setColor('#ea5655')
-      .setAuthor('YouTube Channel Statistics', 'https://i.imgur.com/1sLSPUr.png')
+      .setColor('#FE0000')
+      .setAuthor('YouTube Channel Statistics', 'https://pbs.twimg.com/profile_images/985908628329771008/QGaAYux6_400x400.jpg')
       .setThumbnail(sData.snippet.thumbnails.high.url)
       .setDescription([
         `❯ **Channel Name:** ${sData.snippet.channelTitle}`,

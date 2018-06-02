@@ -33,7 +33,7 @@ module.exports = class RedditCommand extends Command {
 			if (!allowed.length) return msg.say(':no_entry_sign: This post contains NSFW content! If you would like to view it, you can run this command in a NSFW channel.');
 			const embed = new this.client.embed();
 			let data = this.client.randomArray(allowed).data;
-			embed.setColor('RANDOM')
+			embed.setColor('#FF4500')
 				.setAuthor(`Requested by ${msg.author.username}`, msg.author.avatarURL())
 				.setTitle(data.title)
 				.setURL(`https://reddit.com${data.permalink}`)
