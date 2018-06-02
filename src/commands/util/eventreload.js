@@ -22,7 +22,7 @@ module.exports = class EventReloadCommand extends Command {
   }
 
   run(msg, args) {
-    if (!this.client.isOwner(msg.author)) return msg.reply(':no_entry_sign: [**Invalid Permissions**]: Only the bot owner can use this command!');
+    if (!this.client.isOwner(msg.author)) return msg.reply(':no_entry_sign: [**Invalid Permissions**]: Only the bot creator can use this command!');
     const { event } = args;
     const dir = path.resolve('src/events');
     if (!fs.existsSync(dir)) msg.reply(':no_entry_sign: I could not load the directory.');

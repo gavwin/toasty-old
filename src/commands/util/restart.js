@@ -20,7 +20,7 @@ module.exports = class RestartCommand extends Command {
   }
 
   async run(msg, args) {
-    if (msg.author.id !== this.client.options.owner && !this.client.staff.includes(msg.author.id)) return msg.reply(':no_entry_sign: [**Invalid Permissions**]: Only the bot owner can use this command!');
+    if (msg.author.id !== this.client.options.owner && !this.client.staff.includes(msg.author.id)) return msg.reply(':no_entry_sign: [**Invalid Permissions**]: Only a member of Toasty staff can use this command!');
     const restartType = args.restartType.toLowerCase();
     if (restartType === 'this') {
       msg.say(`\`\`\`css\nRestarting shard ${this.client.shard.id + 1}...\`\`\``);

@@ -21,7 +21,7 @@ module.exports = class ExecuteCommand extends Command {
   }
 
   async run(msg, args) {
-    if (!this.client.isOwner(msg.author)) return msg.reply(':no_entry_sign: [**Invalid Permissions**]: Only the bot owner can use this command!');
+    if (!this.client.isOwner(msg.author)) return msg.reply(':no_entry_sign: [**Invalid Permissions**]: Only the bot creator can use this command!');
     exec(args.code, (err, stdout, stderr) => {
       if (err) return msg.channel.send(err.message, { code: '' });
       return msg.channel.send(stdout, { code: '' });
