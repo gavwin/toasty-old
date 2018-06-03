@@ -152,10 +152,11 @@ module.exports = class TradeCommand extends Command {
 };
 
 function toCapitalCase(str) {
-  const words = str.split(' ');
   const toReturn = [];
-  for (const word of words) {
-    toReturn.push(`${word.slice(0, 1).toUpperCase()}${word.slice(1, word.length)}`);
-  }
-  return toReturn.join(' ');
+  let join;
+  if (str.includes('-')) join = '-';
+  else join = ' ';
+  const words = str.split(join);
+  for (const word of words) toReturn.push(`${word.slice(0, 1).toUpperCase()}${word.slice(1, word.length)}`);
+  return toReturn.join(join);
 }
