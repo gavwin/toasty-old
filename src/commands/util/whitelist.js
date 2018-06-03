@@ -18,7 +18,7 @@ module.exports = class WhitelistCommand extends Command {
   }
 
   async run(msg, args) {
-    if (msg.author.id !== this.client.options.owner && msg.author.id !== '220568440161697792') return msg.reply(':no_entry_sign: [**Invalid Permissions**]: Only the bot owner can use this command!');
+    if (msg.author.id !== this.client.options.owner && msg.author.id !== '220568440161697792') return msg.reply(':no_entry_sign: [**Invalid Permissions**]: Only the bot creator can use this command!');
     const user = args.userID;
     const blacklist = this.client.provider.get('global', 'userBlacklist', []);
     if (!blacklist.includes(user)) return msg.reply(':no_entry_sign: That user is not blacklisted.');
