@@ -84,9 +84,15 @@ module.exports = class PollCommand extends Command {
       }
     });
     collect.on('end', (col, reas) => {
-      if (reas === 'time' && col.size < 1) return msg.say('**The poll has ended without any votes.**');
-      else if (reas === 'early' && col.size < 2) return msg.say('**The poll has ended without any votes.**');
-      else done(col.first());
+      if (reas === 'time' && col.size < 1) {
+        msg.say('**The poll has ended without any votes.**');
+        delete poll[id];
+      } else if (reas === 'early' && col.size < 2) {
+        msg.say('**The poll has ended without any votes.**');
+        delete poll[id];
+      } else {
+        done(col.first());
+      }
     });
 
     function done(message) {
