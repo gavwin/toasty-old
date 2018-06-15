@@ -36,6 +36,6 @@ module.exports = class RoleMembersCommand extends Command {
     });
 
     if (arr.join(' ').length > 1900) return msg.say(`Users with the role, **${_role.name}**:\nToo many users to display.`);
-    msg.say(`Users with the role, **${_role.name}**:\n${arr.join('\n')}`);
+    msg.say(`Users with the role, **__${_role.name}__** (**${arr.length}** results)\n\n${arr.join(', ')}`);
   }
 };
