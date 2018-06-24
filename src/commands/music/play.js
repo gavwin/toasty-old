@@ -215,7 +215,7 @@ module.exports = class PlaySongCommand extends Command {
       Now playing: **${song}**
     `);
     let streamErrored = false;
-    const stream = ytdl(song.url, { audioonly: true })
+    const stream = ytdl(song.url, { quality: 'highestaudio' })
       .on('error', err => {
         streamErrored = true;
         //console.error('YTDL', 'Error occurred when streaming video:', err);
