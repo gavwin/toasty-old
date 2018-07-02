@@ -26,7 +26,7 @@ module.exports = class PokemonCommand extends Command {
 
     /* eslint-enable max-len */
     const received = await this.client.pokemon.hasReceived(user.id);
-    if (received && user.id !== '266619835738357770') {
+    if (received) {
       const next = await this.client.pokemon.nextPokemon(user.id);
       return msg.say(oneLine`
         :no_entry_sign: **${user.username}**,
@@ -45,9 +45,13 @@ module.exports = class PokemonCommand extends Command {
     const newName = newPokemon.toLowerCase().replace(/\W/g, '');
 
     await this.client.pokemon.addPokemon(newPokemon, user.id);
-    msg.say(stripIndents`
+    const embed = new this.client.embed()
+      .setDescription(`**${user.username}**, <:pokeball:440220815817048064> you've caught a **${newPokemon}**!`)
+      .setImage(`${newSprite}${newName}.gif`)
+    msg.embed(embed);
+    /*msg.say(stripIndents`
       **${user.username}**, <:pokeball:440220815817048064> you've caught a **${newPokemon}**!
       ${newSprite}${newName}.gif
-    `);
+    `);*/
   }
 };
