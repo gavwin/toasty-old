@@ -106,7 +106,7 @@ client.dispatcher.addInhibitor(msg => {
   if (!msg.command) return false;
   if (!msg.guild) return false;
   if (msg.guild.id !== '208674478773895168') return false;
-  if (msg.channel.id === '303206425113657344' && msg.channel.id === '463102287074689024') return false;
+  if (msg.channel.id === '303206425113657344' || msg.channel.id === '463102287074689024') return false;
   if (msg.command.groupID !== 'pokemon') return false;
   return [
     'pokemon outside commands',
