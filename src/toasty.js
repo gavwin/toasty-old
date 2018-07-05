@@ -102,7 +102,7 @@ client.dispatcher.addInhibitor(msg => {
   return 'Has been blacklisted.';
 });
 
-client.dispatcher.addInhibitor(msg => {
+/*client.dispatcher.addInhibitor(msg => {
   if (!msg.command) return false;
   if (!msg.guild) return false;
   if (msg.guild.id !== '208674478773895168') return false;
@@ -112,7 +112,7 @@ client.dispatcher.addInhibitor(msg => {
     'pokemon outside commands',
     msg.reply('pokemon commands must be used in <#303206425113657344>!')
   ];
-});
+});*/
 
 sqlite.open(path.join(__dirname, 'data', 'servers.sqlite3')).then(db => {
   client.setProvider(new SQLiteProvider(db));
