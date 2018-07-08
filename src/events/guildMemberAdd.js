@@ -2,6 +2,12 @@ exports.run = async (client, member) => { // eslint-disable-line complexity
   const RichEmbed = client.embed;
   try {
     const { guild } = member;
+    let defaultChannel;
+    try {
+      defaultChannel = guild.channels.find(c => c.permissionsFor(client.user).has('SEND_MESSAGES'));
+    } catch (e) {
+      defaultChannel = guild.channels.find(c => c.name === 'general');
+    }
     const data = await client.database.getData(guild.id);
 
     if (data.joinDM && data.joinDM !== 'disabled') member.send(data.joinDM);
@@ -13,9 +19,15 @@ exports.run = async (client, member) => { // eslint-disable-line complexity
         const message = joinMessage.replace('{user}', member.user);
         const defaultChannel = guild.channels.find(c => c.permissionsFor(client.user).has('SEND_MESSAGES'));
         if (!guild.channels.find('name', 'join-log')) return defaultChannel.send(':no_entry_sign: **Error:** I couldn\'t send the join message in the #join-log. Please make sure the join log is enabled!');
-        guild.channels.find('name', 'join-log').send(message).catch(() => {
-          defaultChannel.channel.send(':no_entry_sign: **Error:** I couldn\'t send the join message in the #join-log. Please make sure the join log is enabled!');
-        });
+        if (guild.id === '208674478773895168') {
+          guild.channels.get('208674478773895168').send(message).catch(err => {
+            defaultChannel.channel.send(':no_entry_sign: **Error:** I couldn\'t send the join message in the #general.\n' + err);
+          });
+        } else {
+          guild.channels.find('name', 'join-log').send(message).catch(() => {
+            defaultChannel.channel.send(':no_entry_sign: **Error:** I couldn\'t send the join message in the #join-log. Please make sure the join log is enabled!');
+          });
+        }
       } else {
         const defaultChannel = guild.channels.find(c => c.permissionsFor(client.user).has('SEND_MESSAGES'));
         if (!guild.channels.find('name', 'join-log')) return defaultChannel.send(':no_entry_sign: **Error:** I couldn\'t send the join message in the #join-log. Please make sure the join log is enabled!');
@@ -49,7 +61,7 @@ exports.run = async (client, member) => { // eslint-disable-line complexity
       const time = `${today.getHours()}:${today.getMinutes()}:${today.getSeconds()}`;
       if (member.user.bot) {
         embed.setColor(0x32CD32)
-          .setAuthor(member.user.username, member.user.avatarURL)
+          .setAuthor(member.user.username, member.user.avatarURL())
           .setTitle('Bot Joined:')
           .setDescription(`+ ${member.user.username}#${member.user.discriminator} (${member.user.id})`)
           .setFooter(`${date} at ${time}`);
@@ -61,7 +73,7 @@ exports.run = async (client, member) => { // eslint-disable-line complexity
         });
       } else {
         embed.setColor(0x32CD32)
-          .setAuthor(member.user.username, member.user.avatarURL)
+          .setAuthor(member.user.username, member.user.avatarURL())
           .setTitle('User Joined:')
           .setDescription(`+ ${member.user.username}#${member.user.discriminator} (${member.user.id})`)
           .setFooter(`${date} at ${time}`);
@@ -75,6 +87,6 @@ exports.run = async (client, member) => { // eslint-disable-line complexity
     }
     return null;
   } catch (errs) {
-    return console.error('guildMemberAdd.js error:', errs);
+    return;
   }
 };

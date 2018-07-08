@@ -33,7 +33,7 @@ exports.run = async (client, member) => {
     const time = `${today.getHours()}:${today.getMinutes()}:${today.getSeconds()}`;
     if (member.user.bot === true) {
       embed.setColor(0xFF0000)
-        .setAuthor(member.user.username, member.user.avatarURL)
+        .setAuthor(member.user.username, member.user.avatarURL())
         .setTitle('Bot Left:')
         .setDescription(`- ${member.user.username}#${member.user.discriminator} (${member.user.id})`)
         .setFooter(`${date} at ${time}`);
@@ -47,7 +47,7 @@ exports.run = async (client, member) => {
       });
     } else {
       embed.setColor(0xFF0000)
-        .setAuthor(member.user.username, member.user.avatarURL)
+        .setAuthor(member.user.username, member.user.avatarURL())
         .setTitle('User Left:')
         .setDescription(`- ${member.user.username}#${member.user.discriminator} (${member.user.id})`)
         .setFooter(`${date} at ${time}`);
