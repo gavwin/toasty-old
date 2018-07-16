@@ -67,8 +67,8 @@ module.exports = class TradeCommand extends Command {
     const hasPokemon = await this.client.pokemon.hasPokemon(msg.author.id, pokemon1),
       hasPokemon1 = await this.client.pokemon.hasPokemon(user.id, pokemon2);
 
-    if (!hasPokemon) return msg.reply('you don\'t have that Pokemon!');
-    if (!hasPokemon1) return msg.reply('that user doesn\'t have that Pokemon!');
+    if (!hasPokemon && pokemon1 !== 'zekrom') return msg.reply('you don\'t have that Pokemon!');
+    if (!hasPokemon1 && pokemon2 !== 'zekrom') return msg.reply('that user doesn\'t have that Pokemon!');
 
 
     trading.push(msg.author.id);
