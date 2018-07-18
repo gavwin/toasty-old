@@ -1,36 +1,32 @@
 const { Command, util } = require('discord.js-commando');
 const { stripIndents, oneLine } = require('common-tags');
 
-module.exports = class InventoryCommand extends Command {
+module.exports = class DuplicatesCommand extends Command {
   constructor(client) {
     super(client, {
-      name: 'inventory',
+      name: 'duplicates',
       group: 'pokemon',
-      aliases: ['inv'],
-      memberName: 'inventory',
-      description: 'Shows your or others pokemon inventory.',
-      details: 'Catch pokemon with the pokemon command.\nYou can view your or others pokemon with this command.',
-      examples: ['inventory', 'inventory @user'],
+      aliases: ['dupes'],
+      memberName: 'duplicates',
+      description: 'Shows all of the duplicate pokemon you have in your inventory.',
       guildOnly: true,
       args: [
         {
           key: 'user',
-          prompt: 'Who\'s pokemon inventory would you like to view?\n',
+          prompt: 'Who\'s pokemon duplicates would you like to view?\n',
           type: 'user',
           default: ''
         }
       ],
       throttling: {
         usages: 1,
-        duration: 15
+        duration: 10
       }
     });
   }
 
   async run(msg, args) {
     if (!msg.guild.me.permissions.has('ADD_REACTIONS')) return msg.reply(':no_entry_sign: [**Missing Permissions**]: I don\'t have the **Add Reactions** permission!');
-    if (!msg.guild.me.permissions.has('EMBED_LINKS')) return msg.reply(':no_entry_sign: [**Missing Permissions**]: I don\'t have the **Embed Links** permission!');
-    const { embed: RichEmbed } = this.client;
     const user = args.user || msg.author;
     let inventory = await this.client.pokemon.getInventory(user.id);
     if (!inventory.length) {
@@ -38,21 +34,24 @@ module.exports = class InventoryCommand extends Command {
       return;
     }
 
-    if (user.username.includes('(')) user.username = user.username.replace('(', '');
-    if (user.username.includes(')')) user.username = user.username.replace(')', '');
-    const invURL = `http://toastybot.com/inventory?id=${user.id}&name=${user.username.replace(/\s/g, '%20')}&avatar=${user.avatarURL()}`;
-
-    inventory = inventory.map(item => `**${item.name}** x${item.count}`);
-    const paginatedItems = util.paginate(inventory, 1, 25);
+    let toSend = new Array();
+    const r = this.client.r.db('Pokemon').table('Pokemon');
+    const res = await r.get(user.id).run();
+    let data = res[user.id].pokemon;
+    Object.keys(data).forEach(key => {
+      if (data[key].count < 2) return;
+      toSend.push(`**${data[key].name}** x${data[key].count}`);
+    });
+    const paginatedItems = util.paginate(toSend, 1, 25);
 
     let current = 1;
-    const max = Math.ceil(inventory.length / 25);
+    const max = Math.ceil(toSend.length / 25);
 
     /* eslint-disable max-len */
     const mesg = await msg.say(stripIndents`
-      __**${user.username}'s Pokemon:**__ Includes **${inventory.length}/802** Pokemon. [Page 1 (25 shown)]
+      __**${user.username}'s Duplicates:**__ [Page 1 (25 shown)]
       ${paginatedItems.items.join('\n')}
-    `, { embed: new RichEmbed().setDescription(`You may also view your inventory [here](${invURL})`) });
+    `);
 
     if (msg.guild && msg.guild.me.hasPermission('ADD_REACTIONS')) {
       await Promise.all([
@@ -92,9 +91,9 @@ module.exports = class InventoryCommand extends Command {
         } else {
           current -= 1;
           await mesg.edit(stripIndents`
-            __**${user.username}'s Pokemon:**__ Includes **${inventory.length}/802** Pokemon. [Page ${current} (25 shown)]
-            ${util.paginate(inventory, current, 25).items.join('\n')}
-          `, { embed: new RichEmbed().setDescription(`You may also view your inventory [here](${invURL})`) });
+            __**${user.username}'s Duplicates:**__ [Page ${current} (25 shown)]
+            ${util.paginate(toSend, current, 25).items.join('\n')}
+          `);
         }
       } else if (reaction.emoji.name === '➡') {
         if (current >= max) {
@@ -102,13 +101,12 @@ module.exports = class InventoryCommand extends Command {
         } else {
           current += 1;
           await mesg.edit(stripIndents`
-            __**${user.username}'s Pokemon:**__ Includes **${inventory.length}/802** Pokemon. [Page ${current} (25 shown)]
-            ${util.paginate(inventory, current, 25).items.join('\n')}
-          `, { embed: new RichEmbed().setDescription(`You may also view your inventory [here](${invURL})`) });
+            __**${user.username}'s Duplicates:**__ [Page ${current} (25 shown)]
+            ${util.paginate(toSend, current, 25).items.join('\n')}
+          `);
         }
       } else if (reaction.emoji.name === '❌') {
         collector.stop('user');
-        mesg.edit('', { embed: null });
         mesg.edit('Pokemon inventory session ended.');
       }
     });
