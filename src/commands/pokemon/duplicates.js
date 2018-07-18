@@ -49,7 +49,7 @@ module.exports = class DuplicatesCommand extends Command {
 
     /* eslint-disable max-len */
     const mesg = await msg.say(stripIndents`
-      __**${user.username}'s Duplicates:**__ [Page 1 (25 shown)]
+      __**${user.username}'s Duplicates:**__ Includes **${toSend.length}** duplicates. [Page 1 (25 shown)]
       ${paginatedItems.items.join('\n')}
     `);
 
@@ -91,7 +91,7 @@ module.exports = class DuplicatesCommand extends Command {
         } else {
           current -= 1;
           await mesg.edit(stripIndents`
-            __**${user.username}'s Duplicates:**__ [Page ${current} (25 shown)]
+            __**${user.username}'s Duplicates:**__ Includes **${toSend.length}** duplicates. [Page ${current} (25 shown)]
             ${util.paginate(toSend, current, 25).items.join('\n')}
           `);
         }
@@ -101,7 +101,7 @@ module.exports = class DuplicatesCommand extends Command {
         } else {
           current += 1;
           await mesg.edit(stripIndents`
-            __**${user.username}'s Duplicates:**__ [Page ${current} (25 shown)]
+            __**${user.username}'s Duplicates:**__ Includes **${toSend.length}** duplicates. [Page ${current} (25 shown)]
             ${util.paginate(toSend, current, 25).items.join('\n')}
           `);
         }
