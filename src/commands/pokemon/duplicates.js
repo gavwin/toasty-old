@@ -42,6 +42,12 @@ module.exports = class DuplicatesCommand extends Command {
       if (data[key].count < 2) return;
       toSend.push(`**${data[key].name}** x${data[key].count}`);
     });
+
+    if (toSend.length === 0) {
+      msg.reply(`${args.user ? 'that user doesn\'t' : 'you don\'t'} have any duplicates.`);
+      return;
+    }
+
     const paginatedItems = util.paginate(toSend, 1, 25);
 
     let current = 1;
